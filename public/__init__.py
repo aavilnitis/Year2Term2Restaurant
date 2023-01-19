@@ -1,5 +1,4 @@
 from flask import Flask
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 
@@ -15,8 +14,8 @@ def create_app():
 
     db.init_app(app)
 
-    from .views import views
-    app.register_blueprint(views, url_prefix='/')
+    from .customer_view import customer_view
+    app.register_blueprint(customer_view, url_prefix='/')
 
     create_database(app)
 
