@@ -26,4 +26,4 @@ def create_database(app):
     if not path.exists('public/' + DB_NAME):
         with app.app_context():
             db.create_all()
-        print('Created Database!')
+        print('Created Database! ')
