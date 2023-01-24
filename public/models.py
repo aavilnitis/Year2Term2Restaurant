@@ -2,6 +2,7 @@ from . import db
 from flask_sqlalchemy import SQLAlchemy
 
 class MenuItem(db.Model):
+    __tablename__ = "menu_items"
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(100), nullable = False)
     price = db.Column(db.Float, nullable = False)
@@ -15,6 +16,7 @@ class MenuItem(db.Model):
         self.type = type
 
 class Order(db.Model):
+    __tablename__ = "orders"
     id = db.Column(db.Integer, primary_key = True)
     order_total = db.Column(db.Float, nullable = False)
     status = db.Column(db.Enum('complete', 'incomplete', name='order_status'), nullable = False)
