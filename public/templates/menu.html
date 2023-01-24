@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %} Menu Page{% endblock %}
+{% block content %}
+    {% for item in menu_items %}
+        <h3>{{item.id}}. {{item.name}}</h3>
+        <h5>{{item.price}}</h5>
+        <p>{{item.description}}</p>
+        <button>Add to cart</button>
+    {% endfor %}
+{% endblock %}
