@@ -14,3 +14,7 @@ def menu():
 @customer_view.route('/cart')
 def cart():
     return render_template('cart.html')
+
+@customer_view.route('/view-all-items')
+def view_all_items():
+    return render_template('base.html')
