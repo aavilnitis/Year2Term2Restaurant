@@ -10,3 +10,7 @@ def home():
 @customer_view.route('/menu')
 def menu():
     return render_template("menu.html")
+
+@customer_view.route('/cart')
+def cart():
+    return render_template('cart.html')
