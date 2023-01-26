@@ -15,7 +15,7 @@ class MenuItem(db.Model):
         self.description = description
         self.type = type
 
-#association table
+    #association table
 order_menu_item = db.Table("order_menu_item",
     db.Column("order_id", db.Integer, db.ForeignKey("orders.id"), primary_key=True),
     db.Column("menu_item_id", db.Integer, db.ForeignKey("menu_items.id"), primary_key=True)
