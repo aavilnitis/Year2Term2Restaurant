@@ -66,13 +66,29 @@ def remove_from_cart(id):
     session["cart"] = cart_items
     return redirect(url_for("customer_view.cart"))
 
+@customer_view.route('/confirm_cart', methods=['POST', 'GET'])
+def confirm_cart():
+    cart_ids = session['cart']
+    if len(cart_ids) > 0:
+        order = Order([])
+        order.order_total = 20.0
+        for cart_id in cart_ids:
+            menu_item = MenuItem.query.filter_by(id = cart_id).first()
+            order.menu_items_list.append(menu_item)
+        session['cart'] = []
+        db.session.add(order)
+        db.session.commit()
+        return redirect(url_for("customer_view.view_all_orders"))
+    else:
+        return redirect(url_for("customer_view.cart"))
 
 @customer_view.route('/view-all-items')
 def view_all_items():
     menu_items = MenuItem.query.all()
-    return render_template('view-all-items.html', menu_items = menu_items)
+    return render_template('view-all-items.html', items = menu_items)
 
 
 @customer_view.route('/view-all-orders')
 def view_all_orders():
-    return render_template('base.html')
+    orders = Order.query.all()
+    return render_template('view-all-orders.html', items = orders)
