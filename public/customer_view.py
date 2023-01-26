@@ -37,20 +37,34 @@ def addToCart():
         return redirect(url_for("customer_view.cart"))
     else: 
         create_cart()
-        return redirect(url_for("customer_view.addToCart"))
+        cart = session['cart']
+        cart.append(int(request.form.get("item_id")))
+        session['cart'] = cart
+        return redirect(url_for("customer_view.cart"))
 
 
 @customer_view.route('/cart')
 def cart():
-    cart = session['cart']
-    cart_items = []
-    for id in cart:
-        cart_item = MenuItem.query.filter_by(id=id).first()
-        if cart_item:
-            cart_items.append(cart_item)
+    if 'cart' in session:
+        cart = session['cart']
+        cart_items = []
+        for id in cart:
+            cart_item = MenuItem.query.filter_by(id=id).first()
+            if cart_item:
+                cart_items.append(cart_item)
+        return render_template("cart.html", cart_items = cart_items)
+    else:
+        create_cart()
+        return redirect(url_for("customer_view.cart"))
 
-    
-    return render_template("cart.html", cart_items = cart_items)
+@customer_view.route('/remove_from_cart/<int:id>', methods=['POST', 'GET'])
+def remove_from_cart(id):
+    cart_items = session['cart']
+    for cartId in cart_items:
+        if cartId == id:
+            cart_items.remove(cartId)
+    session["cart"] = cart_items
+    return redirect(url_for("customer_view.cart"))
 
 
 @customer_view.route('/view-all-items')

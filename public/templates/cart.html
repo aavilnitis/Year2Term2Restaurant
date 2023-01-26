@@ -7,9 +7,6 @@
         <h3>{{item.name}}</h3>
         <h5>{{item.price}}</h5>
         <p>{{item.description}}</p>
-        <form  method="POST">
-            <button type="submit">Remove</button>
-        </form>
-        
+        <a href="{{ url_for('customer_view.remove_from_cart', id=item.id) }}" class="btn btn-danger">Remove</a>
     {% endfor %}
 {% endblock %}
