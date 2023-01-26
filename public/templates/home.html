@@ -1,3 +1,24 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-<h1>This is the home page</h1>
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    <center>
+        <h1 style="font-size: 300%">Restranut Name</h1>
+        <p style="font-size: 150%">
+            Some details about restaurant.
+        </p>
+
+    <button type="Button"
+            onclick="window.location.href = 'cart.html'"
+            style="font-size:100%;height:40px;width:80px"
+    >My Cart</button>
+    <button TYPE="button"
+            onclick="window.location.href = 'menu.html'"
+            style="font-size:100%;height:40px;width:80px"
+    >Menu</button>
+    <button TYPE="button"
+            onclick="window.location.href = 'view-all-items.html'"
+            style="font-size:100%;height:40px;width:80px"
+    >All Items</button>
+    </center>
 {%endblock%}
