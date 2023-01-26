@@ -17,7 +17,7 @@ def cart():
 
 @customer_view.route('/view-all-items')
 def view_all_items():
-    return render_template('base.html')
+    return render_template('view-all-items.html')
 
 @customer_view.route('/view-all-orders')
 def view_all_orders():
