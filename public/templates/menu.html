@@ -5,6 +5,9 @@
         <h3>{{item.id}}. {{item.name}}</h3>
         <h5>{{item.price}}</h5>
         <p>{{item.description}}</p>
-        <button>Add to cart</button>
+        <form action="/add-to-cart" method="post">
+            <input type="hidden" name="item_id" value="{{item.id}}">
+            <button class="btn btn-primary">Add to order</button>
+        </form>
     {% endfor %}
 {% endblock %}
