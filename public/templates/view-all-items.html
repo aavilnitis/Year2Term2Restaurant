@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} 
+
+{% block content %}
+<h1>Display All Items</h1>
+<ul>
+    {% for item in menu_items %}
+        <li>{{ item.name }}</li>
+    {% endfor %}
+</ul>
+{%endblock%}
