@@ -26,7 +26,7 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     menu_items_list = db.relationship("MenuItem", secondary = order_menu_item, back_populates="orders")
     order_total = db.Column(db.Float, nullable = False, default = 0)
-    status = db.Column(db.Enum('complete', 'incomplete', name='order_status'), nullable = False, defualt = 'incomplete')
+    status = db.Column(db.Enum('complete', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
     
     def __init__(self, menu_items_list, order_total = 0, status = 'incomplete'):
         self.menu_items_list = menu_items_list
