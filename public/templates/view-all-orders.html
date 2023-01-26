@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block title %}Display all Orders{% endblock %} 
+
+{% block content %}
+<h3>View all Orders</h3>
+<ul>
+    {% for item in items %}
+        <li>Order: {{item.id}}</li>
+        <ol>
+            {% for menu_item in item.menu_items_list %}
+                <li>{{menu_item.name}}</li>
+            {% endfor %}
+        </ol>
+    {% endfor %}
+</ul>
+{%endblock%}

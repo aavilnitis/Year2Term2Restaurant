@@ -14,14 +14,14 @@
               <p class="card-text">{{ item.description }}</p>
             </div>
             <div class="card-footer text-center">
-              <a href="{{ url_for('customer_view.remove_from_cart', id=item.id) }}" class="btn btn-danger">Remove</a>
+              <a href="{{ url_for('customer.remove_from_cart', id=item.id) }}" class="btn btn-danger">Remove</a>
             </div>
           </div>
         </div>
       {% endfor %}
     </div>
     <div class="text-center my-4">
-      <a href="{{ url_for('customer_view.confirm_cart') }}" class="btn btn-primary">Confirm Order</a>
+      <a href="{{ url_for('customer.confirm_cart') }}" class="btn btn-primary">Confirm Order</a>
     </div>
   </div>
 {% endblock %}

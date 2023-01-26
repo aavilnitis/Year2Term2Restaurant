@@ -1,4 +1,4 @@
-from . import db
+from packages.extensions import db
 from flask_sqlalchemy import SQLAlchemy
 
 class MenuItem(db.Model):

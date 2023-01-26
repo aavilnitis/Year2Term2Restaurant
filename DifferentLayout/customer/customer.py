@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for
-from public.models import MenuItem, Order, db
+from packages.models import MenuItem, Order, db
 from sqlalchemy.sql import text
 
 # register customer_view as a Flask Blueprint
-customer_view = Blueprint('customer_view', __name__)
+customer = Blueprint("customer", __name__, template_folder="templates")
 
 # Creates an empty array as a session directory
 def create_cart():
@@ -18,12 +18,12 @@ def populate_menu():
             db.session.commit()
 
 # Flask home route
-@customer_view.route('/')
+@customer.route('/')
 def home():
     return render_template("home.html")
 
 # Flask route to view all menu items that have been added to the database
-@customer_view.route('/menu')
+@customer.route('/menu')
 def menu():
     if MenuItem.query.filter_by(name = "Cheeseburger").first() == None:
         populate_menu()
@@ -32,22 +32,22 @@ def menu():
 
 # Flask route to add an item to the cart and redirect the customer to the cart page
 # This route isn't accessed manually, but instead from pressing "Add to cart" button in menu page
-@customer_view.route('/add-to-cart/', methods=["POST"])
+@customer.route('/add-to-cart/', methods=["POST"])
 def addToCart():
     if 'cart' in session:
         cart = session['cart']
         cart.append(int(request.form.get("item_id")))
         session['cart'] = cart
-        return redirect(url_for("customer_view.cart"))
+        return redirect(url_for("customer.cart"))
     else: 
         create_cart()
         cart = session['cart']
         cart.append(int(request.form.get("item_id")))
         session['cart'] = cart
-        return redirect(url_for("customer_view.cart"))
+        return redirect(url_for("customer.cart"))
 
 # Flask route to view all items that have been added to the cart
-@customer_view.route('/cart')
+@customer.route('/cart')
 def cart():
     if 'cart' in session:
         cart = session['cart']
@@ -59,21 +59,21 @@ def cart():
         return render_template("cart.html", cart_items = cart_items)
     else:
         create_cart()
-        return redirect(url_for("customer_view.cart"))
+        return redirect(url_for("customer.cart"))
 
 # Flask route to remove an item from the cart and redirect the customer back to the cart page
 # This route isn't accessed manually, but instead from pressing "remove" button in cart
-@customer_view.route('/remove_from_cart/<int:id>', methods=['POST', 'GET'])
+@customer.route('/remove_from_cart/<int:id>', methods=['POST', 'GET'])
 def remove_from_cart(id):
     cart_items = session['cart']
     for cartId in cart_items:
         if cartId == id:
             cart_items.remove(cartId)
     session["cart"] = cart_items
-    return redirect(url_for("customer_view.cart"))
+    return redirect(url_for("customer.cart"))
 
 # Flask route to confirm an order and "send it to the restaurant"
-@customer_view.route('/confirm_cart', methods=['POST', 'GET'])
+@customer.route('/confirm_cart', methods=['POST', 'GET'])
 def confirm_cart():
     cart_ids = session['cart']
     if len(cart_ids) > 0:
@@ -85,19 +85,19 @@ def confirm_cart():
         session['cart'] = []
         db.session.add(order)
         db.session.commit()
-        return redirect(url_for("customer_view.view_all_orders"))
+        return redirect(url_for("customer.view_all_orders"))
     else:
-        return redirect(url_for("customer_view.cart"))
+        return redirect(url_for("customer.cart"))
 
 
 # Flask route to load all menu items from DB and display in a list - DEBUGGING PURPOSES
-@customer_view.route('/view-all-items')
+@customer.route('/view-all-items')
 def view_all_items():
     menu_items = MenuItem.query.all()
     return render_template('view-all-items.html', items = menu_items)
 
 # Flask route to load all orders from DB and display in a list - DEBUGGING PURPOSES
-@customer_view.route('/view-all-orders')
+@customer.route('/view-all-orders')
 def view_all_orders():
     orders = Order.query.all()
     return render_template('view-all-orders.html', items = orders)
