@@ -1,4 +1,5 @@
 from flask import Blueprint,render_template
+from public.models import MenuItem, db
 
 customer_view = Blueprint('customer_view', __name__)
 
@@ -9,7 +10,8 @@ def home():
 
 @customer_view.route('/menu')
 def menu():
-    return render_template("menu.html")
+    menu_items = MenuItem.query.all()
+    return render_template("menu.html", menu_items = menu_items)
 
 @customer_view.route('/cart')
 def cart():

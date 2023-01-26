@@ -15,7 +15,7 @@ class TestModels(unittest.TestCase):
             self.db = db
             self.db.create_all()
             #opening sql file and executing each line
-            with open("public/populatemenu.sql", "r") as f:
+            with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
                 lines = f.readlines()
                 for line in lines:
                     self.db.session.execute(text(line))
@@ -40,11 +40,7 @@ class TestModels(unittest.TestCase):
             #checking if they have the same price
             self.assertEqual(sql_result.price, 8.99)                                                           
 
-    def tearDown(self):
-        #clearing the database after using it
-        with self.app.app_context():
-            self.db.session.remove()
-            self.db.drop_all()
+
 
 if __name__ == '__main__':
     unittest.main           

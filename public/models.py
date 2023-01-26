@@ -24,7 +24,7 @@ order_menu_item = db.Table("order_menu_item",
 class Order(db.Model):
     __tablename__ = "orders"
     id = db.Column(db.Integer, primary_key = True)
-    menu_items_list = db.relationship("MenuItem", secondary = order_menu_item, back_populates="orders")
+    menu_items_list = db.relationship("MenuItem", secondary = order_menu_item, lazy = "dynamic")
     order_total = db.Column(db.Float, nullable = False, default = 0)
     status = db.Column(db.Enum('complete', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
     
