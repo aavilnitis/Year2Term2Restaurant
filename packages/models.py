@@ -1,12 +1,27 @@
 from packages.extensions import db
 from flask_sqlalchemy import SQLAlchemy
 
+class Ingredient(db.Model):
+    __tablename__ = "ingredients"
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    name = db.Column(db.String(100), nullable = False)
+
+    def __init__(self, name):
+        self.name = name
+
+menu_item_ingredient = db.Table("menu_item_ingredient",
+    db.Column("menu_item_id", db.Integer, db.ForeignKey("menu_items.id"), primary_key=True),
+    db.Column("ingredient_id", db.Integer, db.ForeignKey("ingredients.id"), primary_key=True)
+) 
+
 class MenuItem(db.Model):
     __tablename__ = "menu_items"
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(100), nullable = False)
     price = db.Column(db.Float, nullable = False)
     description = db.Column(db.String(300))
+    ingredients = db.relationship("Ingredient", secondary=menu_item_ingredient, lazy="dynamic")
+    calories = db.Column(db.Integer)
     type = db.Column(db.Enum('food', 'drink', name='menuItem_type'), nullable = False)
 
     def __init__(self, name, price, description, type):
@@ -32,4 +47,4 @@ class Order(db.Model):
         self.menu_items_list = menu_items_list
         self.order_total = order_total
         self.status = status
-   
+  
