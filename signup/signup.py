@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for, flash
-from packages.models import MenuItem, Order, db
-from sqlalchemy.sql import text
+from packages.models import User
+from packages.extensions import db
+import bcrypt
 
 # register customer_view as a Flask Blueprint
 signup = Blueprint("signup", __name__, static_folder="static", template_folder="templates")
@@ -16,8 +17,12 @@ def sign_up():
         if len(password) < 5:
             flash('Password must be longer than 5 characters!', category='error')
             return redirect(url_for('signup.sign_up'))
+        password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        user = User(username, password, 'customer')
+        db.session.add(user)
+        db.session.commit()
         flash('User created succesfully', category='success')
-        return render_template("signup.html")
+        return redirect(url_for("customer.home"))
     return render_template("signup.html")
 
 
