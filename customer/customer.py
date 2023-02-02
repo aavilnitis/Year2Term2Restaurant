@@ -85,7 +85,7 @@ def confirm_cart():
     cart_ids = session['cart']
     if len(cart_ids) > 0:
         order = Order([])
-        order.order_total = 20.0
+        order_total = 0
         db.session.add(order)
         db.session.flush()
         for cart_id in cart_ids:
@@ -93,9 +93,12 @@ def confirm_cart():
             order_menu_item = OrderMenuItem.query.filter_by(order_id = order.id, menu_item_id = menu_item.id).first()
             if order_menu_item:
                 order_menu_item.quantity +=1
+                order_total += menu_item.price
             else:
                 order_menu_item = OrderMenuItem(order_id = order.id, menu_item_id = menu_item.id, quantity = 1)
                 db.session.add(order_menu_item)
+                order_total += menu_item.price
+        order.order_total = order_total        
         session['cart'] = []
         db.session.commit()
         return redirect(url_for("customer.view_all_orders"))
