@@ -21,7 +21,14 @@ def populate_menu():
 # Flask home route
 @customer.route('/')
 def home():
-    return render_template("home.html")
+    if 'user' in session:
+        if session['user'] == 'customer':
+            return render_template("home.html")
+        else:
+            return redirect(url_for("login.login"))
+    else:
+        #this is only for now:
+        return render_template("home.html")
 
 # Flask route to view all menu items that have been added to the database
 @customer.route('/menu')
