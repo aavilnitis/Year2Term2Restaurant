@@ -7,6 +7,6 @@ signup = Blueprint("signup", __name__, static_folder="static", template_folder="
 
 @signup.route('/')
 def home():
-    return "<h1>Sign up</h1>"
+    return render_template("signup.html")
 
 
