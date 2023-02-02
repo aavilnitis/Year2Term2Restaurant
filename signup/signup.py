@@ -3,10 +3,10 @@ from packages.models import MenuItem, Order, db
 from sqlalchemy.sql import text
 
 # register customer_view as a Flask Blueprint
-waiter = Blueprint("waiter", __name__, static_folder="static", template_folder="templates")
+signup = Blueprint("signup", __name__, static_folder="static", template_folder="templates")
 
-@waiter.route('/')
+@signup.route('/')
 def home():
-    return render_template('waiter-home.html')
+    return "<h1>Sign up</h1>"
 
 

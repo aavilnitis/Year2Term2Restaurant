@@ -1,5 +1,4 @@
 from packages.extensions import db
-from flask_sqlalchemy import SQLAlchemy
 
 class MenuItem(db.Model):
     __tablename__ = "menu_items"

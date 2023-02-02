@@ -3,7 +3,8 @@ from packages.models import MenuItem, Order, db
 from sqlalchemy.sql import text
 
 # register customer_view as a Flask Blueprint
-customer = Blueprint("customer", __name__, template_folder="templates")
+customer = Blueprint("customer", __name__, static_folder="static", template_folder="templates")
+
 
 # Creates an empty array as a session directory
 def create_cart():
