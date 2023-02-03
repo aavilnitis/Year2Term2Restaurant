@@ -29,23 +29,25 @@ class MenuItem(db.Model):
         self.description = description
         self.type = type
 
-    #association table
-order_menu_item = db.Table("order_menu_item",
-    db.Column("order_id", db.Integer, db.ForeignKey("orders.id"), primary_key=True),
-    db.Column("menu_item_id", db.Integer, db.ForeignKey("menu_items.id"), primary_key=True)
-)
-
 class Order(db.Model):
     __tablename__ = "orders"
     id = db.Column(db.Integer, primary_key = True)
-    menu_items_list = db.relationship("MenuItem", secondary = order_menu_item, lazy = "dynamic")
+    order_menu_items = db.relationship("OrderMenuItem", backref = "order", lazy = "dynamic")
     order_total = db.Column(db.Float, nullable = False, default = 0)
     status = db.Column(db.Enum('complete', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
     
-    def __init__(self, menu_items_list, order_total = 0, status = 'incomplete'):
-        self.menu_items_list = menu_items_list
+    def __init__(self, order_menu_items, order_total = 0, status = 'incomplete'):
+        self.order_menu_items = order_menu_items
         self.order_total = order_total
         self.status = status
+
+class OrderMenuItem(db.Model):
+    __tablename__ = "order_menu_item"
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable = False)
+    menu_item_id = db.Column(db.Integer, db.ForeignKey("menu_items.id"), nullable = False)
+    quantity = db.Column(db.Integer, nullable = False, default = 1)
+
 
 class User(db.Model):
     __tablename__ = "users"

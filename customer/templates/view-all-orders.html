@@ -6,10 +6,15 @@
     {% for item in items %}
         <li>Order: {{item.id}}</li>
         <ol>
-            {% for menu_item in item.menu_items_list %}
-                <li>{{menu_item.name}}</li>
+            {% for order_menu_item in item.order_menu_items %}
+                {% for menu_item in menu_items %}
+                    {% if order_menu_item.menu_item_id == menu_item.id %}
+                        <li>{{menu_item.name}} - Quantity: {{order_menu_item.quantity}}</li>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         </ol>
+        <ol>Order Total: {{item.order_total}}</ol>
     {% endfor %}
 </ul>
 {%endblock%}

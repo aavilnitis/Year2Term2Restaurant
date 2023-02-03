@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for
-from packages.models import MenuItem, Order, db
+from packages.models import MenuItem, Order, OrderMenuItem, db
 from sqlalchemy.sql import text
 
 # register customer_view as a Flask Blueprint
@@ -74,9 +74,8 @@ def cart():
 @customer.route('/remove_from_cart/<int:id>', methods=['POST', 'GET'])
 def remove_from_cart(id):
     cart_items = session['cart']
-    for cartId in cart_items:
-        if cartId == id:
-            cart_items.remove(cartId)
+    if id in cart_items:
+        cart_items.remove(id)
     session["cart"] = cart_items
     return redirect(url_for("customer.cart"))
 
@@ -86,12 +85,21 @@ def confirm_cart():
     cart_ids = session['cart']
     if len(cart_ids) > 0:
         order = Order([])
-        order.order_total = 20.0
+        order_total = 0
+        db.session.add(order)
+        db.session.flush()
         for cart_id in cart_ids:
             menu_item = MenuItem.query.filter_by(id = cart_id).first()
-            order.menu_items_list.append(menu_item)
+            order_menu_item = OrderMenuItem.query.filter_by(order_id = order.id, menu_item_id = menu_item.id).first()
+            if order_menu_item:
+                order_menu_item.quantity +=1
+                order_total += menu_item.price
+            else:
+                order_menu_item = OrderMenuItem(order_id = order.id, menu_item_id = menu_item.id, quantity = 1)
+                db.session.add(order_menu_item)
+                order_total += menu_item.price
+        order.order_total = order_total        
         session['cart'] = []
-        db.session.add(order)
         db.session.commit()
         return redirect(url_for("customer.view_all_orders"))
     else:
@@ -108,4 +116,5 @@ def view_all_items():
 @customer.route('/view-all-orders')
 def view_all_orders():
     orders = Order.query.all()
-    return render_template('view-all-orders.html', items = orders)
+    menu_items = MenuItem.query.all()
+    return render_template('view-all-orders.html', items = orders, menu_items = menu_items)
