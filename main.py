@@ -1,11 +1,15 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from os import path
+import os
 from packages.extensions import db
 from packages.models import MenuItem
 from customer.customer import customer
 from waiter.waiter import waiter
 from signup.signup import signup
+
+if os.path.exists("instance/database.db"):
+    print('is database')
+    os.remove("instance/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
