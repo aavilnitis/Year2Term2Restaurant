@@ -10,3 +10,9 @@ def home():
     return render_template('waiter-home.html')
 
 
+@waiter.route('/menu')
+def menu():
+    menu_items = MenuItem.query.all()
+    return render_template('waiter-menu.html', items=menu_items)
+
+
