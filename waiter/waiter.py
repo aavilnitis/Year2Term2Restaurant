@@ -16,3 +16,12 @@ def menu():
     return render_template('waiter-menu.html', items=menu_items)
 
 
+# Flask route to cancel an order
+# Delete the order from the database
+@waiter.route('/cancel_order/<int:order_id>', methods=['POST'])
+def cancel_order(order_id):
+    order = Order.query.get(order_id)
+    db.delete(order)
+    db.commit()
+    return redirect(url_for('orders'))
+
