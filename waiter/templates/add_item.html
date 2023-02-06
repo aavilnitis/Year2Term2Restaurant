@@ -1,10 +1,33 @@
+{% extends "base.html" %}
+{% block title %}add_item{% endblock %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+<form>
+<label for="Name">Name:</label><br>
+  <input type="text" id="Name" name="Name"><br>
+  <label for="Price">ID:</label><br>
+  <input type="text" id="ID" name="ID"><br>
+
+  <label for="Price">Price:</label><br>
+  <input type="text" id="Price" name="Price"><br>
+
+  <label for="Description">Description:</label><br>
+  <input type="text" id="Des" name="Description"><br>
+
+  <label for="Ingredients">Ingredients:</label><br>
+  <input type="text" id="Ing" name="Ingredients"><br>
+
+  <label for="Calories">Calories:</label><br>
+  <input type="text" id="Cal" name="Calories"><br>
+
+   <label for="Type">Type:</label><br>
+  <input type="text" id="Type" name="Type"><br>
+</form>
 </body>
 </html>
