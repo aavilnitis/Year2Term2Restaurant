@@ -17,10 +17,6 @@
         <ol>Order Total: {{item.order_total}}</ol>
     {% endfor %}
 </ul>
-<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#allergens">Show More </button>
-<div id="allergens" class="collapse">
-  <p> List of allergens: gluten, peanuts, wheat, egg, fish, soy, etc. </p>
-</div>
   <form action="{{ url_for('cancel_order', order_id=order.id) }}" method="post">
     <button type="submit" class="btn btn-danger"> Cancel Order </button>
   </form>
