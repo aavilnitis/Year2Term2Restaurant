@@ -25,6 +25,6 @@
     <button type="submit" class="btn btn-danger"> Cancel Order </button>
   </form>
   <form action="{{ url_for('confirm_order', order_id=order.id) }}" method="post">
-    <button type="submit" class="btn btn-danger"> Confirm Order </button>
+    <button type="submit" class="btn btn-success"> Confirm Order </button>
   </form>
 {%endblock%}
