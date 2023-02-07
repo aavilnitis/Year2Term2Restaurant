@@ -15,6 +15,8 @@
               <h5 class="card-title text-success">{{ item.name }}</h5>
               <h6 class="card-subtitle mb-2 text-muted">{{ item.price }}</h6>
               <p class="card-text">{{ item.description }}</p>
+              <p class="card-text">Ingredients: {{ item.ingredients }}</p>
+              <p class="card-text">Calories: {{ item.calories }}</p>
               <form action="/add-to-cart" method="post">
                 <input type="hidden" name="item_id" value="{{item.id}}">
                 <button class="btn btn-primary">Add to order</button>
