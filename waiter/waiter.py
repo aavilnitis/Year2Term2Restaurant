@@ -25,15 +25,8 @@ def menu():
     return render_template('waiter-menu.html', items=menu_items)
 
 # Route to add item into menu
-@waiter.route('/add_item')
+@waiter.route('/add-item')
 def additem():
-    name = request.form['Name']
-    price = request.form['Price']
-    des = request.form['Des']    # Description
-    ingre = request.form['Ing']  # Ingredients
-    cal = request.form['Cal']    # calories
-    type = request.form['Type']
-    form_data = MenuItem(name, price, des, type)
     return render_template('add_item.html')
 
 
