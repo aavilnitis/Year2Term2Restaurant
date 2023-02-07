@@ -1,33 +1,45 @@
 {% extends "base.html" %}
 {% block title %}add_item{% endblock %}
+{% block content %}
+<div class="container">
+  <h2>add-item</h2>
+  <form method="post">
+      <div class="add-item form">
+          <label for="ID">ID:</label>
+          <input type="text" class="form-control" id="ID" placeholder="Enter ID" name="ID">
+      </div>
+      <div class="add-item form">
+          <label for="name">Password:</label>
+          <input type="password" class="form-control" id="name" placeholder="Enter name" name="name">
+       </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form>
-<label for="Name">Name:</label><br>
-  <input type="text" id="Name" name="Name"><br>
-  <label for="Price">ID:</label><br>
-  <input type="text" id="ID" name="ID"><br>
+       <div class="add-item form">
+        <label for=" price"> Price:</label>
+        <input type=" priced" class="form-control" id="price" placeholder="Enter  price" name=" price">
+       </div>
 
-  <label for="Price">Price:</label><br>
-  <input type="text" id="Price" name="Price"><br>
+       <div class="add-item form">
+        <label for="description">Description:</label>
+        <input type="description" class="form-control" id="description" placeholder="Enter description" name="description">
+       </div>
 
-  <label for="Description">Description:</label><br>
-  <input type="text" id="Des" name="Description"><br>
+       <div class="add-item form">
+        <label for="ingredients">Ingredients:</label>
+        <input type="ingredients" class="form-control" id="ingredients" placeholder="Enter ingredients" name="ingredients">
+       </div>
 
-  <label for="Ingredients">Ingredients:</label><br>
-  <input type="text" id="Ing" name="Ingredients"><br>
+       <div class="add-item form">
+        <label for="calories">Calories:</label>
+        <input type="calories" class="form-control" id="calories" placeholder="Enter calories" name="calories">
+       </div>
 
-  <label for="Calories">Calories:</label><br>
-  <input type="text" id="Cal" name="Calories"><br>
+       <div class="add-item form">
+        <label for="type">Type:</label>
+        <input type="type" class="form-control" id="type" placeholder="Enter type" name="type">
+       </div>
+  </form>
 
-   <label for="Type">Type:</label><br>
-  <input type="text" id="Type" name="Type"><br>
-</form>
-</body>
-</html>
+  <button>Submit</button>
+</div> 
+
+{%endblock%}
