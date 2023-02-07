@@ -24,21 +24,15 @@ def menu():
     menu_items = MenuItem.query.all()
     return render_template('waiter-menu.html', items=menu_items)
 
+
+@waiter.route('/confirm-new-item')
+def confirm_new_item():
+    return render_template('waiter-home.html')
+
+
 # Route to add item into menu
 @waiter.route('/add-item')
 def additem():
     return render_template('add_item.html')
 
 
-
-
-
- #   name = request.form['Name']
-  #  price = request.form['Price']
-   # des = request.form['Des']    # Description
-    #ingre = request.form['Ing']  # Ingredients
-   # cal = request.form['Cal']    # calories
-  #  type = request.form['Type']
-  #  form_data = MenuItem(name, price, des, type)
-  #  db.session.add(form_data)   # add Item into db
-#    db.session.commit()
