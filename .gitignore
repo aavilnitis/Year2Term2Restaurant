@@ -1,3 +1,7 @@
 .DS_Store
 public/__pycache__/
+customer/__pycache__/
+waiter/__pycache__/
+signup/__pycache__/
+packages/__pycache__/
 instance/database.db
