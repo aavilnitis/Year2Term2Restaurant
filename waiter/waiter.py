@@ -25,9 +25,21 @@ def menu():
     return render_template('waiter-menu.html', items=menu_items)
 
 
-@waiter.route('/confirm-new-item')
+@waiter.route('/confirm-new-item', methods = ['GET', 'POST'])
 def confirm_new_item():
-    return render_template('waiter-home.html')
+    if request.method == 'GET':
+        id = request.form.get('ID')
+        name = str(request.form.get('name'))
+        price = request.form.get('price')
+        description = str(request.form.get('description'))
+        ingredients = str(request.form.get('ingredients'))
+        calories = request.form.get('calories')
+        type = request.form.get('type')
+        
+        menuItem = MenuItem(name, price, description, type)
+        db.session.add(menuItem)
+        db.session.commit()
+    return redirect(url_for("waiter.menu"))
 
 
 # Route to add item into menu
