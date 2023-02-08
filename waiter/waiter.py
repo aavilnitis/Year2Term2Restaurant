@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for
+import functools
 from packages.models import MenuItem, Order, db, Ingredient
 from sqlalchemy.sql import text
 
@@ -16,11 +17,25 @@ def namesToArray(ingredient_names):
         if ingredient:
             ingredients.append(ingredient)
     return ingredients
+
+def waiter_required(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if session.get('user') != 'waiter':
+            if session.get('user') == 'customer':
+                return redirect(url_for('customer.home'))
+            else: 
+                return "something went wrong"
+        return func(*args, **kwargs)
+    return wrapper
+
 @waiter.route('/')
+@waiter_required
 def home():
     return render_template('waiter-home.html')
 
 @waiter.route('view-orders')
+@waiter_required
 def view_orders():
     orders = Order.query.all()
     menu_items = MenuItem.query.all()
@@ -28,12 +43,14 @@ def view_orders():
 
 
 @waiter.route('/menu')
+@waiter_required
 def menu():
     menu_items = MenuItem.query.all()
     return render_template('waiter-menu.html', items=menu_items)
 
 
 @waiter.route('/add-item', methods=['GET', 'POST'])
+@waiter_required
 def add_item():
     if request.method == 'POST':
         name = request.form.get('name')
@@ -59,6 +76,7 @@ def add_item():
 
 
 @waiter.route('/cancel_order/<int:order_id>', methods=['POST'])
+@waiter_required
 def cancel_order(order_id):
     order = Order.query.get(order_id)
     if order:
@@ -74,6 +92,7 @@ def cancel_order(order_id):
 
 
 @waiter.route('/confirm_order/<int:order_id>', methods=['POST'])
+@waiter_required
 def confirm_order(order_id):
     order = Order.query.get(order_id)
     order.status = "complete"
