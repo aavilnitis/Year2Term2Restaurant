@@ -116,6 +116,7 @@ def confirm_cart():
                 order_menu_item = OrderMenuItem(order_id = order.id, menu_item_id = menu_item.id, quantity = 1)
                 db.session.add(order_menu_item)
                 order_total += menu_item.price
+        order_total = round(order_total,2)
         order.order_total = order_total        
         session['cart'] = []
         db.session.commit()
