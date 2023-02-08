@@ -25,7 +25,7 @@
                 {% endfor %}
             {% endfor %}
         </td>
-        <td>{{ item.order_total }}</td>
+        <td>£{{ item.order_total }}</td>
         <td>{{ item.status }}</td>
         <td>
           <form action="{{ url_for('waiter.cancel_order', order_id=item.id) }}" method="post">
