@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for
+from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for, flash
 from packages.models import MenuItem, Order, OrderMenuItem, db
+import functools
 from sqlalchemy.sql import text
 
 # register customer_view as a Flask Blueprint
@@ -17,9 +18,21 @@ def populate_menu():
         for line in lines:
             db.session.execute(text(line))
             db.session.commit()
+            
+def customer_required(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if session.get('user') != 'customer':
+            if session.get('user') == 'waiter':
+                return redirect(url_for('waiter.home'))
+            else: 
+                return "something went wrong"
+        return func(*args, **kwargs)
+    return wrapper
 
 # Flask home route
 @customer.route('/')
+@customer_required
 def home():
     if 'user' in session:
         if session['user'] == 'customer':
@@ -32,8 +45,9 @@ def home():
 
 # Flask route to view all menu items that have been added to the database
 @customer.route('/menu')
+@customer_required
 def menu():
-    if MenuItem.query.filter_by(name = "Cheeseburger").first() == None:
+    if MenuItem.query.first() == None:
         populate_menu()
     menu_items = MenuItem.query.all()
     return render_template("menu.html", menu_items=menu_items)
@@ -41,6 +55,7 @@ def menu():
 # Flask route to add an item to the cart and redirect the customer to the cart page
 # This route isn't accessed manually, but instead from pressing "Add to cart" button in menu page
 @customer.route('/add-to-cart/', methods=["POST"])
+@customer_required
 def addToCart():
     if 'cart' in session:
         cart = session['cart']
@@ -56,6 +71,7 @@ def addToCart():
 
 # Flask route to view all items that have been added to the cart
 @customer.route('/cart')
+@customer_required
 def cart():
     if 'cart' in session:
         cart = session['cart']
@@ -72,6 +88,7 @@ def cart():
 # Flask route to remove an item from the cart and redirect the customer back to the cart page
 # This route isn't accessed manually, but instead from pressing "remove" button in cart
 @customer.route('/remove_from_cart/<int:id>', methods=['POST', 'GET'])
+@customer_required
 def remove_from_cart(id):
     cart_items = session['cart']
     if id in cart_items:
@@ -81,6 +98,7 @@ def remove_from_cart(id):
 
 # Flask route to confirm an order and "send it to the restaurant"
 @customer.route('/confirm_cart', methods=['POST', 'GET'])
+@customer_required
 def confirm_cart():
     cart_ids = session['cart']
     if len(cart_ids) > 0:
@@ -101,19 +119,22 @@ def confirm_cart():
         order.order_total = order_total        
         session['cart'] = []
         db.session.commit()
-        return redirect(url_for("customer.view_all_orders"))
+        flash('Order sent to restaurant', category='success')
+        return redirect(url_for("customer.home"))
     else:
         return redirect(url_for("customer.cart"))
 
 
 # Flask route to load all menu items from DB and display in a list - DEBUGGING PURPOSES
 @customer.route('/view-all-items')
+@customer_required
 def view_all_items():
     menu_items = MenuItem.query.all()
     return render_template('view-all-items.html', items = menu_items)
 
 # Flask route to load all orders from DB and display in a list - DEBUGGING PURPOSES
 @customer.route('/view-all-orders')
+@customer_required
 def view_all_orders():
     orders = Order.query.all()
     menu_items = MenuItem.query.all()
