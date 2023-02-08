@@ -3,9 +3,9 @@ from packages.models import User
 from packages.extensions import db
 import bcrypt
 
-login = Blueprint("Login",__name__,static_folder="static",template_folder="templates")
+login_view = Blueprint("login_view",__name__,static_folder="static",template_folder="templates")
 
-@login.route('/', methods=['GET', 'POST'])
+@login_view.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # Get the entered username and password
