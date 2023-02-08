@@ -5,6 +5,12 @@ from sqlalchemy.sql import text
 # register customer_view as a Flask Blueprint
 waiter = Blueprint("waiter", __name__, static_folder="static", template_folder="templates")
 
+def populate_menu():
+    with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            db.session.execute(text(line))
+            db.session.commit()
 
 @waiter.route('/')
 def home():
@@ -13,39 +19,32 @@ def home():
 
 @waiter.route('/menu')
 def menu():
+    if MenuItem.query.filter_by(name = "Cheeseburger").first() == None:
+        populate_menu()
     menu_items = MenuItem.query.all()
     return render_template('waiter-menu.html', items=menu_items)
 
 
-# Flask route to cancel an order
-# Delete the order from the database
-@waiter.route('/cancel_order/<int:order_id>', methods=['POST'])
-def cancel_order(order_id):
-    order = Order.query.get(order_id)
-    db.delete(order)
-    db.commit()
-    return redirect(url_for('orders'))
+@waiter.route('/confirm-new-item', methods = ['GET', 'POST'])
+def confirm_new_item():
+    if request.method == 'GET':
+        id = request.form.get('ID')
+        name = str(request.form.get('name'))
+        price = request.form.get('price')
+        description = str(request.form.get('description'))
+        ingredients = str(request.form.get('ingredients'))
+        calories = request.form.get('calories')
+        type = request.form.get('type')
+        
+        menuItem = MenuItem(name, price, description, type)
+        db.session.add(menuItem)
+        db.session.commit()
+    return redirect(url_for("waiter.menu"))
 
-# Flask route to confirm order 
-# Update the status of the order
-@waiter.route('/confirm_order/<int:order_id>', methods=['POST'])
-def confirm_order(order_id):
-    order = Order.query.get(order_id)
-    order.status = "complete"
-    db.session.commit()
-    return redirect(url_for('orders'))
 
 # Route to add item into menu
-@waiter.route('/add_item.html')
+@waiter.route('/add-item')
 def additem():
-    name = request.form['Name']
-    price = request.form['Price']
-    des = request.form['Des']    # Description
-    ingre = request.form['Ing']  # Ingredients
-    cal = request.form['Cal']    # calories
-    type = request.form['Type']
-    form_data = MenuItem(name, price, des, type)
-    db.session.add(form_data)   # add Item into db
-    db.session.commit()
     return render_template('add_item.html')
+
 
