@@ -23,10 +23,12 @@ class MenuItem(db.Model):
     calories = db.Column(db.Integer)
     type = db.Column(db.Enum('food', 'drink', name='MenuItem_type'), nullable = False)
 
-    def __init__(self, name, price, description, type):
+    def __init__(self, name, price, description, ingredients, calories, type):
         self.name = name
         self.price = price
         self.description = description
+        self.ingredients = ingredients
+        self.calories = calories
         self.type = type
 
 class Order(db.Model):
