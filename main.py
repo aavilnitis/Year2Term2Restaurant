@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os
 from packages.extensions import db
@@ -6,6 +6,7 @@ from packages.models import MenuItem
 from customer.customer import customer
 from waiter.waiter import waiter
 from signup.signup import signup
+from login.login import login_view
 
 #if os.path.exists("instance/database.db"):
 #    print('is database')
@@ -16,9 +17,15 @@ app.config['SECRET_KEY'] = 'secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db.init_app(app)
 
-app.register_blueprint(customer, url_prefix="/")
+app.register_blueprint(customer, url_prefix="/customer")
 app.register_blueprint(waiter, url_prefix="/waiter")
 app.register_blueprint(signup, url_prefix="/signup")
+app.register_blueprint(login_view, url_prefix="/login")
+
+
+@app.route('/')
+def home():
+    return redirect(url_for("login_view.login"))
 
 with app.app_context():
     db.create_all()
