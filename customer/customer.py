@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for
+from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for, flash
 from packages.models import MenuItem, Order, OrderMenuItem, db
 import functools
 from sqlalchemy.sql import text
@@ -47,7 +47,7 @@ def home():
 @customer.route('/menu')
 @customer_required
 def menu():
-    if MenuItem.query.filter_by(name = "Cheeseburger").first() == None:
+    if MenuItem.query.first() == None:
         populate_menu()
     menu_items = MenuItem.query.all()
     return render_template("menu.html", menu_items=menu_items)
@@ -119,7 +119,8 @@ def confirm_cart():
         order.order_total = order_total        
         session['cart'] = []
         db.session.commit()
-        return redirect(url_for("customer.view_all_orders"))
+        flash('Order sent to restaurant', category='success')
+        return redirect(url_for("customer.home"))
     else:
         return redirect(url_for("customer.cart"))
 

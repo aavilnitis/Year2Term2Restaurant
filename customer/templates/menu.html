@@ -20,7 +20,7 @@
                 </ul>
               </div>              
               <p class="card-text">Calories: {{ item.calories }}</p>
-              <form action="/add-to-cart" method="post">
+              <form action="{{url_for('customer.addToCart')}}" method="post">
                 <input type="hidden" name="item_id" value="{{item.id}}">
                 <button class="btn btn-primary">Add to order</button>
               </form>

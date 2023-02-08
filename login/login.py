@@ -21,9 +21,11 @@ def login():
                 session['user'] = found_user.user_type
                 return redirect(url_for('home'))
             else:
-                return "incorrect pw"
+                flash('Incorrect password', category='error')
+                return redirect(url_for('login_view.login'))
         else:
-            return "wtf"
+            flash('User not found', category='error')
+            return redirect(url_for('login_view.login'))
         
         
     return render_template("login.html")

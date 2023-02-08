@@ -9,9 +9,9 @@ from signup.signup import signup
 from login.login import login_view
 import bcrypt
 
-#if os.path.exists("instance/database.db"):
-#    print('is database')
-#    os.remove("instance/database.db")
+if os.path.exists("instance/database.db"):
+    print('is database')
+    os.remove("instance/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
@@ -26,6 +26,12 @@ app.register_blueprint(login_view, url_prefix="/login")
 
 @app.route('/', methods = ['POST', 'GET'])
 def home():
+    if not User.query.filter_by(username='waiter').first():
+        username = 'waiter'
+        passw = 'waiter'
+        db.session.add(User(username, bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter'))
+        db.session.commit()
+        
     if 'user' in session:
         if session['user'] == 'customer':
             return redirect(url_for('customer.home'))

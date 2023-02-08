@@ -18,6 +18,14 @@ def namesToArray(ingredient_names):
             ingredients.append(ingredient)
     return ingredients
 
+# Populates the database with premade SQL inserts
+def populate_menu():
+    with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            db.session.execute(text(line))
+            db.session.commit()
+
 def waiter_required(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -45,8 +53,20 @@ def view_orders():
 @waiter.route('/menu')
 @waiter_required
 def menu():
+    if MenuItem.query.first() == None:
+        populate_menu()
     menu_items = MenuItem.query.all()
-    return render_template('waiter-menu.html', items=menu_items)
+    return render_template('waiter-menu.html', menu_items=menu_items)
+
+@waiter.route('/remove-item/<int:item_id>', methods = ['POST'])
+@waiter_required
+def remove_item(item_id):
+    item = MenuItem.query.get(item_id)
+    if item:
+        db.session.delete(item)
+        db.session.commit() 
+    return redirect(url_for('waiter.menu'))
+    
 
 
 @waiter.route('/add-item', methods=['GET', 'POST'])
@@ -68,7 +88,7 @@ def add_item():
         menu_item = MenuItem(name = name, price = price, description = description, ingredients = ingredients, calories = calories, type = type)
         db.session.add(menu_item)
         db.session.commit()
-        return menu_item.name
+        return redirect(url_for('waiter.menu'))
     return render_template('add_item.html')
 
 # Flask route to cancel an order
