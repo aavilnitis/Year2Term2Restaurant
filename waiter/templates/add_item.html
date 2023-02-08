@@ -1,46 +1,37 @@
-{% extends "base.html" %}
-{% block title %}add_item{% endblock %}
-{% block content %}
-<div class="container">
-  <h2>add-item</h2>
-  <form method="post">
-      <div class="add-item form">
-          <label for="ID">ID:</label>
-          <input type="number" class="form-control" id="ID" placeholder="Enter ID" name="ID">
-      </div>
-      <div class="add-item form">
+{% extends "base.html" %} {% block title %}add_item{% endblock %} {% block
+content %}
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form method="post">
+        <div class="form-group">
           <label for="name">Name:</label>
-          <input type="text" class="form-control" id="name" placeholder="Enter name" name="name">
-       </div>
-
-       <div class="add-item form">
-        <label for="price"> Price:</label>
-        <input type="number" class="form-control" id="price" placeholder="Enter  price" name="price">
-       </div>
-
-       <div class="add-item form">
-        <label for="description">Description:</label>
-        <input type="text" class="form-control" id="description" placeholder="Enter description" name="description">
-       </div>
-
-       <div class="add-item form">
-        <label for="ingredients">Ingredients:</label>
-        <input type="text" class="form-control" id="ingredients" placeholder="Enter ingredients" name="ingredients">
-       </div>
-
-       <div class="add-item form">
-        <label for="calories">Calories:</label>
-        <input type="number" class="form-control" id="calories" placeholder="Enter calories" name="calories">
-       </div>
-
-       <div class="add-item form">
-        <label for="type">Type:</label>
-        <input type="text" class="form-control" id="type" placeholder="Enter type" name="type">
-       </div>
-  </form>
-
-  <button type="submit"  onclick="window.location.href = '/waiter/confirm-new-item'">Submit</button>
-
-</div> 
-
+          <input type="text" class="form-control" id="name" placeholder="Enter name" name="name"/>
+        </div>
+        <div class="form-group">
+          <label for="price"> Price:</label>
+          <input type="number" class="form-control" id="price" placeholder="Enter  price" name="price"/>
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <input type="text" class="form-control" id="description" placeholder="Enter description" name="description"/>
+        </div>
+        <div class="form-group">
+          <label for="ingredients">Ingredients:</label>
+          <input type="text" class="form-control" id="ingredients" placeholder="Enter ingredients" name="ingredients"/>
+        </div>
+        <div class="form-group">
+          <label for="calories">Calories:</label>
+          <input type="number" class="form-control" id="calories" placeholder="Enter calories" name="calories"/>
+        </div>
+        <div class="form-group">
+          <label for="type">Type:</label>
+          <select class="form-control" id="type" name="type">
+            <option value="" disabled selected>Select</option>
+            <option value="drink">Drink</option>
+            <option value="food">Food</option>
+          </select>
+        </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>  
 {%endblock%}
