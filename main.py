@@ -7,9 +7,9 @@ from customer.customer import customer
 from waiter.waiter import waiter
 from signup.signup import signup
 
-if os.path.exists("instance/database.db"):
-    print('is database')
-    os.remove("instance/database.db")
+#if os.path.exists("instance/database.db"):
+#    print('is database')
+#    os.remove("instance/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'

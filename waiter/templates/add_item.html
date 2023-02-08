@@ -1,33 +1,37 @@
-{% extends "base.html" %}
-{% block title %}add_item{% endblock %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form>
-<label for="Name">Name:</label><br>
-  <input type="text" id="Name" name="Name"><br>
-  <label for="Price">ID:</label><br>
-  <input type="text" id="ID" name="ID"><br>
-
-  <label for="Price">Price:</label><br>
-  <input type="text" id="Price" name="Price"><br>
-
-  <label for="Description">Description:</label><br>
-  <input type="text" id="Des" name="Description"><br>
-
-  <label for="Ingredients">Ingredients:</label><br>
-  <input type="text" id="Ing" name="Ingredients"><br>
-
-  <label for="Calories">Calories:</label><br>
-  <input type="text" id="Cal" name="Calories"><br>
-
-   <label for="Type">Type:</label><br>
-  <input type="text" id="Type" name="Type"><br>
-</form>
-</body>
-</html>
+{% extends "base.html" %} {% block title %}add_item{% endblock %} {% block
+content %}
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form method="post">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" placeholder="Enter name" name="name"/>
+        </div>
+        <div class="form-group">
+          <label for="price"> Price:</label>
+          <input type="number" class="form-control" id="price" placeholder="Enter  price" name="price"/>
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <input type="text" class="form-control" id="description" placeholder="Enter description" name="description"/>
+        </div>
+        <div class="form-group">
+          <label for="ingredients">Ingredients:</label>
+          <input type="text" class="form-control" id="ingredients" placeholder="Enter ingredients" name="ingredients"/>
+        </div>
+        <div class="form-group">
+          <label for="calories">Calories:</label>
+          <input type="number" class="form-control" id="calories" placeholder="Enter calories" name="calories"/>
+        </div>
+        <div class="form-group">
+          <label for="type">Type:</label>
+          <select class="form-control" id="type" name="type">
+            <option value="" disabled selected>Select</option>
+            <option value="drink">Drink</option>
+            <option value="food">Food</option>
+          </select>
+        </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>  
+{%endblock%}
