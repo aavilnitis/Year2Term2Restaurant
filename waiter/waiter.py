@@ -34,3 +34,18 @@ def confirm_order(order_id):
     order.status = "complete"
     db.session.commit()
     return redirect(url_for('orders'))
+
+# Route to add item into menu
+@waiter.route('/add_item.html')
+def additem():
+    name = request.form['Name']
+    price = request.form['Price']
+    des = request.form['Des']    # Description
+    ingre = request.form['Ing']  # Ingredients
+    cal = request.form['Cal']    # calories
+    type = request.form['Type']
+    form_data = MenuItem(name, price, des, type)
+    db.session.add(form_data)   # add Item into db
+    db.session.commit()
+    return render_template('add_item.html')
+
