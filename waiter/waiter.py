@@ -20,6 +20,12 @@ def namesToArray(ingredient_names):
 def home():
     return render_template('waiter-home.html')
 
+@waiter.route('view-orders')
+def view_orders():
+    orders = Order.query.all()
+    menu_items = MenuItem.query.all()
+    return render_template('waiter-view-order.html', orders = orders, menu_items = menu_items)
+
 
 @waiter.route('/menu')
 def menu():
@@ -55,9 +61,13 @@ def add_item():
 @waiter.route('/cancel_order/<int:order_id>', methods=['POST'])
 def cancel_order(order_id):
     order = Order.query.get(order_id)
-    db.delete(order)
-    db.commit()
-    return redirect(url_for('orders'))
+    if order:
+        for menu_item in order.order_menu_items:
+            db.session.delete(menu_item)
+        db.session.delete(order)
+        db.session.commit() 
+    return redirect(url_for('waiter.view_orders'))
+
 
 # Flask route to confirm order
 # Update the status of the order
@@ -68,4 +78,4 @@ def confirm_order(order_id):
     order = Order.query.get(order_id)
     order.status = "complete"
     db.session.commit()
-    return redirect(url_for('orders'))
+    return redirect(url_for('waiter.view_orders'))

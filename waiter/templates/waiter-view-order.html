@@ -1,26 +1,44 @@
 {% extends "base.html" %} {% block title %}Display all Orders{% endblock %} 
 
 {% block content %}
-<h3>View all Orders</h3>
-<ul>
-    {% for item in items %}
-        <li>Order: {{item.id}}</li>
-        <ol>
-            {% for order_menu_item in item.order_menu_items %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Menu Items</th>
+      <th>Order Total</th>
+      <th>Order Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in orders %}
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>
+          {% for order_menu_item in item.order_menu_items %}
                 {% for menu_item in menu_items %}
                     {% if order_menu_item.menu_item_id == menu_item.id %}
-                        <li>{{menu_item.name}} - Quantity: {{order_menu_item.quantity}}</li>
+                        {{menu_item.name}} - Quantity: {{order_menu_item.quantity}}
+                        <br />
                     {% endif %}
                 {% endfor %}
             {% endfor %}
-        </ol>
-        <ol>Order Total: {{item.order_total}}</ol>
+        </td>
+        <td>{{ item.order_total }}</td>
+        <td>{{ item.status }}</td>
+        <td>
+          <form action="{{ url_for('waiter.cancel_order', order_id=item.id) }}" method="post">
+            <button type="submit" class="btn btn-danger"> Cancel Order </button>
+          </form>
+          <form action="{{ url_for('waiter.confirm_order', order_id=item.id) }}" method="post">
+            <button type="submit" class="btn btn-success"> Confirm Order </button>
+          </form>
+        </td>
+      </tr>
     {% endfor %}
-</ul>
-  <form action="{{ url_for('cancel_order', order_id=order.id) }}" method="post">
-    <button type="submit" class="btn btn-danger"> Cancel Order </button>
-  </form>
-  <form action="{{ url_for('confirm_order', order_id=order.id) }}" method="post">
-    <button type="submit" class="btn btn-success"> Confirm Order </button>
-  </form>
+  </tbody>
+</table>
+
 {%endblock%}
+
