@@ -4,7 +4,15 @@
 <h3>View all Menu Items</h3>
 <ul>
     {% for item in items %}
-        <li>{{ item.name }}</li>
+        <li>{{ item.name }}
+         <div TYPE="remove"
+                onclick="remove(this)"
+        >remove</div>
+        </li>
     {% endfor %}
 </ul>
 {%endblock%}
+
+<function>
+
+</function>
