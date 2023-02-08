@@ -41,10 +41,28 @@ def confirm_new_item():
         db.session.commit()
     return redirect(url_for("waiter.menu"))
 
+# Flask route to cancel an order
+# Delete the order from the database
+@waiter.route('/cancel_order/<int:order_id>', methods=['POST'])
+def cancel_order(order_id):
+    order = Order.query.get(order_id)
+    db.delete(order)
+    db.commit()
+    return redirect(url_for('orders'))
+
+# Flask route to confirm order 
+# Update the status of the order
+@waiter.route('/confirm_order/<int:order_id>', methods=['POST'])
+def confirm_order(order_id):
+    order = Order.query.get(order_id)
+    order.status = "complete"
+    db.session.commit()
+    return redirect(url_for('orders'))
 
 # Route to add item into menu
 @waiter.route('/add-item')
 def additem():
     return render_template('add_item.html')
+
 
 
