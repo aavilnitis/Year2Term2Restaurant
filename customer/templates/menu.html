@@ -3,6 +3,10 @@
 {% block content %}
   <div class="container">
     <h1 class="text-center mb-5">Menu</h1>
+    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#allergens">Show More </button>
+  <div id="allergens" class="collapse">
+    <p> List of allergens: gluten, peanuts, soy, etc. </p>
+  </div>
     <div class="row">
       {% for item in menu_items %}
         <div class="col-md-4">
@@ -11,6 +15,8 @@
               <h5 class="card-title text-success">{{ item.name }}</h5>
               <h6 class="card-subtitle mb-2 text-muted">{{ item.price }}</h6>
               <p class="card-text">{{ item.description }}</p>
+              <p class="card-text">Ingredients: {{ item.ingredients }}</p>
+              <p class="card-text">Calories: {{ item.calories }}</p>
               <form action="/add-to-cart" method="post">
                 <input type="hidden" name="item_id" value="{{item.id}}">
                 <button class="btn btn-primary">Add to order</button>
