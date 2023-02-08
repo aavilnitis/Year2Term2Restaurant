@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Order Confirmation{% endblock %}
+
+{% block content %}
+<h3>This is the Order you placed</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+      {% for menu_item in menu_items %}
+        {% if item.menu_item_id == menu_item.id %}
+          <tr>
+            <td>{{ menu_item.name }}</td>
+            <td>{{ item.quantity }}</td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </tbody>
+</table>
+<h4 class="text-center">Order Total: {{ order.order_total }}</h4>
+{% endblock %}

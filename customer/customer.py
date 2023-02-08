@@ -121,7 +121,7 @@ def confirm_cart():
         session['cart'] = []
         db.session.commit()
         flash('Order sent to restaurant', category='success')
-        return redirect(url_for("customer.home"))
+        return redirect(url_for("customer.show_order", order_id=order.id))
     else:
         return redirect(url_for("customer.cart"))
 
@@ -140,3 +140,11 @@ def view_all_orders():
     orders = Order.query.all()
     menu_items = MenuItem.query.all()
     return render_template('view-all-orders.html', items = orders, menu_items = menu_items)
+
+@customer.route('/order/<int:order_id>')
+@customer_required
+def show_order(order_id):
+    order = Order.query.filter_by(id=order_id).first()
+    ordered_items = OrderMenuItem.query.filter_by(order_id=order.id).all()
+    menu_items = MenuItem.query.all()
+    return render_template("order-confirmation.html", order = order, items=ordered_items, menu_items = menu_items)
