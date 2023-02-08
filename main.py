@@ -2,11 +2,12 @@ from flask import Flask, render_template, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import os
 from packages.extensions import db
-from packages.models import MenuItem
+from packages.models import MenuItem, User
 from customer.customer import customer
 from waiter.waiter import waiter
 from signup.signup import signup
 from login.login import login_view
+import bcrypt
 
 #if os.path.exists("instance/database.db"):
 #    print('is database')
@@ -34,6 +35,11 @@ def home():
             return "smth went wrong"
     else:
         return redirect(url_for("login_view.login"))
+    
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('home'))
 
 with app.app_context():
     db.create_all()
