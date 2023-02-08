@@ -9,7 +9,13 @@ waiter = Blueprint("waiter", __name__, static_folder="static",
 def split_string(input_string):
     return [word.strip() for word in input_string.split(',')]
 
-
+def namesToArray(ingredient_names):
+    ingredients = []
+    for ingredient_name in ingredient_names:
+        ingredient = Ingredient.query.filter_by(name=ingredient_name).first()
+        if ingredient:
+            ingredients.append(ingredient)
+    return ingredients
 @waiter.route('/')
 def home():
     return render_template('waiter-home.html')
@@ -27,15 +33,19 @@ def add_item():
         name = request.form.get('name')
         price = request.form.get('price')
         description = request.form.get('description')
-        ingredients = split_string(request.form.get('ingredients'))
-        for ingredient in ingredients:
-            if Ingredient.query.filter_by(name=ingredient).first() == None:
-                db.session.add(Ingredient(ingredient))
+        ingredient_names = split_string(request.form.get('ingredients'))
+        for ingredient_name in ingredient_names:
+            if Ingredient.query.filter_by(name=ingredient_name).first() == None:
+                db.session.add(Ingredient(name = ingredient_name))
                 db.session.commit()
+        ingredients = namesToArray(ingredient_names)
         calories = request.form.get('calories')
         type = request.form.get('type')
-
-        return type
+        
+        menu_item = MenuItem(name = name, price = price, description = description, ingredients = ingredients, calories = calories, type = type)
+        db.session.add(menu_item)
+        db.session.commit()
+        return menu_item.name
     return render_template('add_item.html')
 
 # Flask route to cancel an order
