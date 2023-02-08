@@ -5,3 +5,4 @@ waiter/__pycache__/
 signup/__pycache__/
 packages/__pycache__/
 instance/database.db
+login/__pycache__/
