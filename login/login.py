@@ -13,14 +13,18 @@ def login():
         password = request.form['password'].encode('utf-8')
 
         # Fetch the user from the database based on the entered username
-        user = User.query.filter_by(username=username).first()
+        found_user = User.query.filter_by(username=username).first()
 
         # If the user exists, check the entered password against the hashed password in the database
-        if user and bcrypt.check_password_hash(password, user.password.encode('utf-8')):
-            return redirect(url_for('home')) #return to home.html 
+        if found_user:
+            if bcrypt.checkpw(password, found_user.password):
+                session['user'] = found_user.user_type
+                return redirect(url_for('home'))
+            else:
+                return "incorrect pw"
         else:
-            # Incorrect credentials. Perhaps lock after some tries?
-            return render_template('login.html', error='Invalid username or password') 
-
-    return render_template('login.html')
+            return "wtf"
+        
+        
+    return render_template("login.html")
     

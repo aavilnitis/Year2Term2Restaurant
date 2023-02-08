@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import os
 from packages.extensions import db
@@ -23,9 +23,17 @@ app.register_blueprint(signup, url_prefix="/signup")
 app.register_blueprint(login_view, url_prefix="/login")
 
 
-@app.route('/')
+@app.route('/', methods = ['POST', 'GET'])
 def home():
-    return redirect(url_for("login_view.login"))
+    if 'user' in session:
+        if session['user'] == 'customer':
+            return redirect(url_for('customer.home'))
+        elif session['user'] == 'waiter':
+            return redirect(url_for('waiter.home'))
+        else:
+            return "smth went wrong"
+    else:
+        return redirect(url_for("login_view.login"))
 
 with app.app_context():
     db.create_all()
