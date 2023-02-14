@@ -63,8 +63,13 @@ class User(db.Model):
     username = db.Column(db.String(100), unique = True, nullable = False)
     password = db.Column(db.String(1000), nullable = False)
     user_type = db.Column(db.Enum('customer', 'waiter', name='user_type'), nullable = False)
+    table_number = db.Column(db.Integer)
 
-    def __init__(self, username, password, user_type):
+    def __init__(self, username, password, user_type, table_number = None):
         self.username = username
         self.password = password
         self.user_type = user_type
+        if user_type == 'customer':
+            self.table_number = table_number
+        else:
+            self.table_number = None
