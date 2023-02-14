@@ -85,3 +85,5 @@ class Notification(db.Model):
         if User.query.filter_by(id = user_id, user_type = 'customer').first() and table_number is not None:
             self.user_id = user_id
             self.table_number = table_number
+        else:
+            raise ValueError("It seems you have forgotten to enter table number or you are not logged in as a customer.")
