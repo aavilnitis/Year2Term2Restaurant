@@ -22,7 +22,7 @@ class MenuItem(db.Model):
     description = db.Column(db.String(300))
     ingredients = db.relationship("Ingredient", secondary=menu_item_ingredient, lazy="dynamic")
     calories = db.Column(db.Integer)
-    type = db.Column(db.Enum('food', 'drink', name='MenuItem_type'), nullable = False)
+    type = db.Column(db.Enum('starters', 'mains', 'sides', 'desserts', 'drinks', name='MenuItem_type'), nullable = False)
 
     def __init__(self, name, price, description, ingredients, calories, type):
         self.name = name
