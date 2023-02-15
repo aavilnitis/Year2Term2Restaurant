@@ -27,8 +27,9 @@ content %}
           <label for="type">Type:</label>
           <select class="form-control" id="type" name="type">
             <option value="" disabled selected>Select</option>
-            <option value="drink">Drink</option>
-            <option value="food">Food</option>
+            {% for type in types %}
+              <option value="{{ type[0] }}">{{ type[0] }}</option>
+            {% endfor %}
           </select>
         </div>
       <button type="submit" class="btn btn-primary">Submit</button>

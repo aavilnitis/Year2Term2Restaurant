@@ -89,7 +89,8 @@ def add_item():
         db.session.add(menu_item)
         db.session.commit()
         return redirect(url_for('waiter.menu'))
-    return render_template('add_item.html')
+    types = db.session.query(MenuItem.type).distinct()
+    return render_template('add_item.html', types = types)
 
 # Flask route to cancel an order
 # Delete the order from the database
