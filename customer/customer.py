@@ -56,9 +56,12 @@ def menu():
 @customer.route('/filtered-menu', methods = ['POST'])
 @customer_required
 def filtered_menu():
-    selected_category = request.form.get('category')
-    menu_items = MenuItem.query.filter_by(type=selected_category).all()
-        
+    selected_categories = request.form.getlist('category')
+    menu_items = []
+    for category in selected_categories:
+        category_items = MenuItem.query.filter_by(type=category).all()
+        if category_items:
+            menu_items.extend(category_items)
     return render_template("menu.html", menu_items=menu_items)
 
 # Flask route to add an item to the cart and redirect the customer to the cart page
