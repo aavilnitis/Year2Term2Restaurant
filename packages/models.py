@@ -16,21 +16,24 @@ menu_item_ingredient = db.Table("menu_item_ingredient",
 
 class MenuItem(db.Model):
     __tablename__ = "menu_items"
-    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    name = db.Column(db.String(100), nullable = False)
-    price = db.Column(db.Float, nullable = False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
     description = db.Column(db.String(300))
     ingredients = db.relationship("Ingredient", secondary=menu_item_ingredient, lazy="dynamic")
     calories = db.Column(db.Integer)
-    type = db.Column(db.Enum('starters', 'mains', 'sides', 'desserts', 'drinks', name='MenuItem_type'), nullable = False)
+    type = db.Column(db.Enum('starters', 'mains', 'sides', 'desserts', 'drinks', name='MenuItem_type'), nullable=False)
+    picture = db.Column(db.String(200), nullable=True)
 
-    def __init__(self, name, price, description, ingredients, calories, type):
+    def __init__(self, name, price, description, ingredients, calories, type, picture=None):
         self.name = name
         self.price = price
         self.description = description
         self.ingredients = ingredients
         self.calories = calories
         self.type = type
+        self.picture = picture
+
 
 class Order(db.Model):
     __tablename__ = "orders"
