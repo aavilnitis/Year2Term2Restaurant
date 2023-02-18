@@ -7,33 +7,33 @@
 <h1 class="text-center mb-5">Menu</h1>
   <div class = "menu-page">
 
+    
     <div class = "filter">
-      <form action="/customer/filtered-menu" method="post">
+      <form action="/process-form" method="post">
         <div class="form-check">
-          <input type="radio" class="form-check-input" id="starters" name="category" value="starters">
+          <input type="checkbox" class="form-check-input" id="starters" name="category" value="starters">
           <label class="form-check-label" for="starters">Starters</label>
         </div>
         <div class="form-check">
-          <input type="radio" class="form-check-input" id="mains" name="category" value="mains">
+          <input type="checkbox" class="form-check-input" id="mains" name="category" value="mains">
           <label class="form-check-label" for="mains">Mains</label>
         </div>
         <div class="form-check">
-          <input type="radio" class="form-check-input" id="sides" name="category" value="sides">
+          <input type="checkbox" class="form-check-input" id="sides" name="category" value="sides">
           <label class="form-check-label" for="sides">Sides</label>
         </div>
         <div class="form-check">
-          <input type="radio" class="form-check-input" id="desserts" name="category" value="desserts">
+          <input type="checkbox" class="form-check-input" id="desserts" name="category" value="desserts">
           <label class="form-check-label" for="desserts">Desserts</label>
         </div>
         <div class="form-check">
-          <input type="radio" class="form-check-input" id="drinks" name="category" value="drinks">
+          <input type="checkbox" class="form-check-input" id="drinks" name="category" value="drinks">
           <label class="form-check-label" for="drinks">Drinks</label>
         </div>
-        <button type="submit" class="btn btn-primary">Filter</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
       </form>
-      
-      
     </div>
+
 
     <div class = "menu">
     <div class="row">
