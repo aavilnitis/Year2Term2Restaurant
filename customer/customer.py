@@ -52,6 +52,15 @@ def menu():
     menu_items = MenuItem.query.all()
     return render_template("menu.html", menu_items=menu_items)
 
+# Flask route to view all menu items that have been added to the database
+@customer.route('/filtered-menu', methods = ['POST'])
+@customer_required
+def filtered_menu():
+    selected_category = request.form.get('category')
+    menu_items = MenuItem.query.filter_by(type=selected_category).all()
+        
+    return render_template("menu.html", menu_items=menu_items)
+
 # Flask route to add an item to the cart and redirect the customer to the cart page
 # This route isn't accessed manually, but instead from pressing "Add to cart" button in menu page
 @customer.route('/add-to-cart/', methods=["POST"])
