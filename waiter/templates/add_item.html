@@ -1,38 +1,54 @@
 {% extends "base.html" %} {% block title %}add_item{% endblock %} {% block
-content %}
-  <div class="container">
-    <h2>Add new item</h2>
-    <form method="post">
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" class="form-control" id="name" placeholder="Enter name" name="name"/>
-        </div>
-        <div class="form-group">
-          <label for="price"> Price:</label>
-          <input type="number" class="form-control" id="price" placeholder="Enter  price" name="price"/>
-        </div>
-        <div class="form-group">
-          <label for="description">Description:</label>
-          <input type="text" class="form-control" id="description" placeholder="Enter description" name="description"/>
-        </div>
-        <div class="form-group">
-          <label for="ingredients">Ingredients:</label>
-          <input type="text" class="form-control" id="ingredients" placeholder="Enter ingredients" name="ingredients"/>
-        </div>
-        <div class="form-group">
-          <label for="calories">Calories:</label>
-          <input type="number" class="form-control" id="calories" placeholder="Enter calories" name="calories"/>
-        </div>
-        <div class="form-group">
-          <label for="type">Type:</label>
-          <select class="form-control" id="type" name="type">
-            <option value="" disabled selected>Select</option>
-            {% for type in types %}
-              <option value="{{ type[0] }}">{{ type[0] }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-  </div>  
-{%endblock%}
+  content %}
+  <script src="https://kit.fontawesome.com/95bf5595ab.js" crossorigin="anonymous"></script>
+  <style>
+    .container{
+      background-color: #9ACD32;
+      font-family:garamond;
+    }
+    .newitemdiv{
+      background-color: white;
+      margin-left: -15px;
+      margin-right: -15px;
+      padding-left: 487px;
+    }
+    .fa-duotone{
+      color: #677189;
+    }
+  </style>
+    <div class="container">
+      <div class="newitemdiv"><h1><b>Add new item <i class="fa-duotone fa-plus"></i></b></h1></div>
+      <form method="post">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter name" name="name"/>
+          </div>
+          <div class="form-group">
+            <label for="price"> Price:</label>
+            <input type="number" class="form-control" id="price" placeholder="Enter  price" name="price"/>
+          </div>
+          <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" class="form-control" id="description" placeholder="Enter description" name="description"/>
+          </div>
+          <div class="form-group">
+            <label for="ingredients">Ingredients:</label>
+            <input type="text" class="form-control" id="ingredients" placeholder="Enter ingredients" name="ingredients"/>
+          </div>
+          <div class="form-group">
+            <label for="calories">Calories:</label>
+            <input type="number" class="form-control" id="calories" placeholder="Enter calories" name="calories"/>
+          </div>
+          <div class="form-group">
+            <label for="type">Type:</label>
+            <select class="form-control" id="type" name="type">
+              <option value="" disabled selected>Select</option>
+              {% for type in types %}
+                <option value="{{ type[0] }}">{{ type[0] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        <button type="submit" class="btn btn-primary">Submit <i class="fa-solid fa-paper-plane-top"></i></button>
+      </form>
+    </div>  
+  {%endblock%}
