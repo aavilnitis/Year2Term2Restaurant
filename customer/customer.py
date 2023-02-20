@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for, flash
-from packages.models import MenuItem, Order, OrderMenuItem, db
+from packages.models import MenuItem, Order, OrderMenuItem, User, db
 import functools
 from sqlalchemy.sql import text
 
@@ -160,3 +160,18 @@ def show_order(order_id):
     ordered_items = OrderMenuItem.query.filter_by(order_id=order.id).all()
     menu_items = MenuItem.query.all()
     return render_template("order-confirmation.html", order = order, items=ordered_items, menu_items = menu_items)
+
+@customer.route('/table-number', methods=['GET', 'POST'])
+@customer_required
+def table_number():
+    if 'user' not in session: # make sure user is logged in
+        return "Could not add table number"
+    if request.method == 'POST':
+        user = User.query.get(session['user_id'])
+        table_number = request.form['table-number']
+        user.table_number = table_number
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('table-number.html')
+
+
