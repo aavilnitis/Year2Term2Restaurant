@@ -165,12 +165,12 @@ def show_order(order_id):
 @customer_required
 def table_number():
     if 'user' not in session: # make sure user is logged in
-        return "Could not add table number"
+        return "Could not add table number, are you logged in?"
     if request.method == 'POST':
         user = User.query.get(session['user_id'])
         table_number = request.form['table-number']
         user.table_number = table_number
-        db.session.commit()
+        db.session.commit() #add table number to User table in DB
         return redirect(url_for('home'))
     return render_template('table-number.html')
 

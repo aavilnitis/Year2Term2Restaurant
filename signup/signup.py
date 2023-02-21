@@ -23,7 +23,8 @@ def sign_up():
         db.session.commit()
         flash('User created succesfully', category='success')
         session['user'] = 'customer'
-        return redirect(url_for("customer.home"))
+        session['user_id'] = user.id
+        return redirect(url_for("customer.table_number"))
     return render_template("signup.html")
 
 
