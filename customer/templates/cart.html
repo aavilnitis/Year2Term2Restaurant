@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %} Shopping Cart {% endblock %}
-
 {% block content %}
+<link rel="stylesheet" href="./static/css/cart.css">
+<script src="https://kit.fontawesome.com/33bfa2902a.js" crossorigin="anonymous"></script>
   <div class="container">
-    <h1 class="text-center my-4">Shopping Cart</h1>
+    <div class="shopping-cart"><h1 class="text-center my-4">Shopping Cart</h1></div>
     <div class="row">
       {% for item in cart_items %}
         <div class="col-md-4">
@@ -21,7 +22,7 @@
       {% endfor %}
     </div>
     <div class="text-center my-4">
-      <a href="{{ url_for('customer.confirm_cart') }}" class="btn btn-primary">Confirm Order</a>
+      <a href="{{ url_for('customer.confirm_cart') }}" class="btn btn-primary">Confirm order <i class="fa-solid fa-square-check"></i></a>
     </div>
   </div>
 {% endblock %}

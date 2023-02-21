@@ -1,0 +1,13 @@
+body{
+    color: white;
+    background-image: url("https://source.unsplash.com/53SEwmFQLqU");
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.container{
+    font-family: garamond;
+    width: 720px;
+    margin-top: -2%;
+}

@@ -4,15 +4,47 @@
     margin: auto;
     display: flex;
     justify-content: center;
+    font-family: garamond;
 }
 .filter{
+   
     display: flex;
     align-items: center;
     width: 20%;
-    height: 30vh;
+    height: 26vh;
     margin-right: 20px;
+    margin-left: -22px;
 }
 .menu{
     width:80%;
+}
+.menu1{
+    padding-top: 8px;
+    height: 10vh;
+    width: 100%;
+    background: linear-gradient(
+        to right,
+            black,
+            #fcfc1e
+    );
+    font-family: garamond;
+    color: #cbd4ce;
+}
+.form-check{
+    color: #fcfc1e;
+}
+.card-subtitle{
+    
+}
+.text-success{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+}
+body{
+    background-image: url("https://source.unsplash.com/21tOEaJPM_o");
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
   

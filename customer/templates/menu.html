@@ -1,10 +1,9 @@
-
-
 {% extends "base.html" %}
 {% block title %}Menu{% endblock %}
 {% block content %}
+<script src="https://kit.fontawesome.com/33bfa2902a.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="./static/css/customer-style.css">
-<h1 class="text-center mb-5">Menu</h1>
+<div class="menu1"><h1 class="text-center mb-5">Menu <i class="fa-solid fa-book-open"></i></h1></div>
   <div class = "menu-page">
 
 
@@ -30,45 +29,42 @@
           <input type="checkbox" class="form-check-input" id="drinks" name="category" value="drinks">
           <label class="form-check-label" for="drinks">Drinks</label>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit <i class="fa-solid fa-paper-plane"></i></button>
       </form>
     </div>
 
 
     <div class = "menu">
-      <div class="row">
-        {% for item in menu_items %}
-          <div class="col-md-4">
-            <div class="card mb-3">
-              <img class="card-img-top" src="{{ item.picture }}" alt="{{ item.name }}">
-              <div class="card-body">
-                <h5 class="card-title text-success">{{ item.name }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted" >{{ item.price }}</h6>
-                <i  data-toggle="collapse" data-target="#ingredients-{{ item.id }}" style="cursor:pointer; text-decoration:none">
-                  <i class="fa fa-angle-down"></i> Show more
-                </i>
-                <div id="ingredients-{{ item.id }}" class="collapse">
-                  <p class="card-text">{{ item.description }}</p>
-                  <p class="card-text">Calories: {{ item.calories }}</p>
-                  <p class="card-text">Ingredients:</p>
-                  <ul>
-                    {% for ingredient in item.ingredients %}
-                      <li>{{ ingredient.name }}</li>
-                    {% endfor %}
-                  </ul>
-                </div>
-                <form action="{{url_for('customer.addToCart')}}" method="post">
-                  <input type="hidden" name="item_id" value="{{item.id}}">
-                  <button class="btn btn-primary">Add to order</button>
-                </form>
-              </div>
+    <div class="row">
+      {% for item in menu_items %}
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h6 class="card-subtitle" style="text-decoration:underline">Type: {{ item.type }}</h6><br>
+              <h5 class="card-title text-success">{{ item.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted" >{{ item.price }}</h6>
+              <p class="card-text">{{ item.description }}</p>
+
+              <h5 class="card-title text-primary" data-toggle="collapse" data-target="#ingredients-{{ item.id }}" style="cursor:pointer; text-decoration:none">Show more:</h5>
+              <div id="ingredients-{{ item.id }}" class="collapse">
+                <p class="card-text">Calories: {{ item.calories }}</p>
+                <p class="card-text">Ingredients:</p>
+                <ul>
+                  {% for ingredient in item.ingredients %}
+                    <li>{{ ingredient.name }}</li>
+                  {% endfor %}
+                </ul>
+              </div>              
+              
+              <form action="{{url_for('customer.addToCart')}}" method="post">
+                <input type="hidden" name="item_id" value="{{item.id}}">
+                <button class="btn btn-primary">Add to order <i class="fa-duotone fa-plus"></i></button>
+              </form>
             </div>
           </div>
-        {% endfor %}
-      </div>
-      
-      
+        </div>
+      {% endfor %}
+    </div>
   </div>
 </div>
 {% endblock %}
-
