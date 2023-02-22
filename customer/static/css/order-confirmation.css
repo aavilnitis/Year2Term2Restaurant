@@ -2,12 +2,16 @@ body{
     background-image: url("https://source.unsplash.com/5xXKOWWUu7I");
 }
 .table{
-    color: #f2f0f0;
+    color: #e6e5e3;
 }
 .heading{
-   color: #e8e3e3;
+    padding-top: 1vh;
+    height: 7vh;
+   color: #989393;
+   background-color: #d4cfcf;
    padding-left: 0vw;
    padding-left: 37vw;
+   font-family: garamond;
 }
 .text-center{
     color: #989393;

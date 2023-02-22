@@ -1,3 +1,12 @@
 body{
     background-image: url("https://source.unsplash.com/poI7DelFiVA");
 }
+.container{
+    color: white;
+}
+.help-button{
+    color: white;
+    font-family: garamond;
+    background-color: #989393;
+    width: 100%;
+}
