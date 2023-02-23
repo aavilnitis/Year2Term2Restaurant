@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for
 import functools
-from packages.models import MenuItem, Order, db, Ingredient
+from packages.models import MenuItem, Order, db, Ingredient, Notification, User
 from sqlalchemy.sql import text
 
 # register customer_view as a Flask Blueprint
@@ -40,14 +40,41 @@ def waiter_required(func):
 @waiter.route('/')
 @waiter_required
 def home():
-    return render_template('waiter-home.html')
+    notifications = Notification.query.all()
+    if notifications:
+        return render_template('waiter-home.html', notifications = notifications, help_needed = True)
+    else:
+        return render_template('waiter-home.html', help_needed = False)
+    
+@waiter.route('/remove-notification/<int:notif_id>', methods = ['POST'])
+@waiter_required
+def remove_notification(notif_id):
+    notification = Notification.query.filter_by(id = notif_id).first()
+    db.session.delete(notification)
+    db.session.commit()
+    return redirect(url_for('waiter.home'))
 
+@waiter.route('view-notifications')
+@waiter_required
+def view_notifications():
+    notifications = Notification.query.all()
+    return render_template('waiter-view-notifications.html', notifications = notifications)
+
+@waiter.route('/customer_helped/<int:notification_id>', methods=['POST'])
+@waiter_required
+def customer_helped(notification_id):
+    notification = Notification.query.get(notification_id)
+    notification.status = "helped"
+    db.session.commit()
+    return redirect(url_for('waiter.view_notifications'))
+    
 @waiter.route('view-orders')
 @waiter_required
 def view_orders():
     orders = Order.query.all()
     menu_items = MenuItem.query.all()
-    return render_template('waiter-view-order.html', orders = orders, menu_items = menu_items)
+    users = User.query.all()
+    return render_template('waiter-view-order.html', orders = orders, menu_items = menu_items, users = users)
 
 
 @waiter.route('/menu')

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Order Tracking</h1>
+        <div class="row">
+            {% for order in orders %}
+                <div class="col-md-6">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Order: {{ order.id }}</h4>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in items[order.id] %}
+                                        {% for menu_item in menu_items %}
+                                            {% if item.menu_item_id == menu_item.id %}
+                                                <tr>
+                                                    <td>{{ menu_item.name }}</td>
+                                                    <td>{{ item.quantity }}</td>
+                                                    <td>{{ order.status }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

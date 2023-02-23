@@ -24,6 +24,7 @@ class MenuItem(db.Model):
     calories = db.Column(db.Integer)
     type = db.Column(db.Enum('starters', 'mains', 'sides', 'desserts', 'drinks', name='MenuItem_type'), nullable=False)
     picture = db.Column(db.String(200), nullable=True)
+    featured = db.Column(db.Boolean, default=False, nullable=True)
 
     def __init__(self, name, price, description, ingredients, calories, type, picture=None):
         self.name = name
@@ -38,12 +39,14 @@ class MenuItem(db.Model):
 class Order(db.Model):
     __tablename__ = "orders"
     id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     order_menu_items = db.relationship("OrderMenuItem", backref = "order", lazy = "dynamic")
     order_total = db.Column(db.Float, nullable = False, default = 0)
     status = db.Column(db.Enum('complete', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
     time_placed = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     
-    def __init__(self, order_menu_items, order_total = 0, status = 'incomplete', time_placed = None):
+    def __init__(self, user_id, order_menu_items, order_total = 0, status = 'incomplete', time_placed = None):
+        self.user_id = user_id
         self.order_menu_items = order_menu_items
         self.order_total = order_total
         self.status = status
@@ -85,8 +88,10 @@ class Notification(db.Model):
     status = db.Column(db.Enum('helped', 'not_helped', name = 'notification_status'), nullable=False, default='not_helped')
 
     def __init__(self, user_id, table_number):
-        if User.query.filter_by(id = user_id, user_type = 'customer').first() and table_number is not None:
-            self.user_id = user_id
-            self.table_number = table_number
-        else:
-            raise ValueError("It seems you have forgotten to enter table number or you are not logged in as a customer.")
+        self.user_id = user_id
+        self.table_number = table_number
+        #if User.query.filter_by(id = user_id, user_type = 'customer').first() and table_number is not None:
+        #    self.user_id = user_id
+        #    self.table_number = table_number
+        #else:
+        #    raise ValueError("It seems you have forgotten to enter table number or you are not logged in as a customer.")

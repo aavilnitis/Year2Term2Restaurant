@@ -5,9 +5,12 @@
   <thead>
     <tr>
       <th>Order ID</th>
+      <th>User ID</th>
+      <th>Table number</th>
       <th>Menu Items</th>
       <th>Order Total</th>
       <th>Order Status</th>
+      <th>Time Placed</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -15,6 +18,14 @@
     {% for item in orders %}
       <tr>
         <td>{{ item.id }}</td>
+        <td>{{ item.user_id }}</td>
+        <td>
+          {% for user in users %}
+            {% if user.id == item.user_id %}
+              {{ user.table_number }}
+            {% endif %}
+          {% endfor %}
+        </td>        
         <td>
           {% for order_menu_item in item.order_menu_items %}
                 {% for menu_item in menu_items %}
@@ -27,6 +38,7 @@
         </td>
         <td>£{{ item.order_total }}</td>
         <td>{{ item.status }}</td>
+        <td>{{ item.time_placed.strftime('%Y-%m-%d %H:%M:%S') }}</td>
         <td>
           <form action="{{ url_for('waiter.cancel_order', order_id=item.id) }}" method="post">
             <button type="submit" class="btn btn-danger"> Cancel Order </button>
