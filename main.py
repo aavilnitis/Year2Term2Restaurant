@@ -9,9 +9,9 @@ from signup.signup import signup
 from login.login import login_view
 import bcrypt
 
-#if os.path.exists("instance/database.db"):
-#    print('is database')
-#    os.remove("instance/database.db")
+if os.path.exists("instance/database.db"):
+    print('is database')
+    os.remove("instance/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
