@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for
 import functools
-from packages.models import MenuItem, Order, db, Ingredient, Notification
+from packages.models import MenuItem, Order, db, Ingredient, Notification, User
 from sqlalchemy.sql import text
 
 # register customer_view as a Flask Blueprint
@@ -73,7 +73,8 @@ def customer_helped(notification_id):
 def view_orders():
     orders = Order.query.all()
     menu_items = MenuItem.query.all()
-    return render_template('waiter-view-order.html', orders = orders, menu_items = menu_items)
+    users = User.query.all()
+    return render_template('waiter-view-order.html', orders = orders, menu_items = menu_items, users = users)
 
 
 @waiter.route('/menu')
