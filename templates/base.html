@@ -40,7 +40,8 @@
         <div class="navbar-nav">
           <a class="nav-item nav-link" id="home" href="{{url_for('waiter.home')}}">Home</a>
           <a class="nav-item nav-link" id="menu" href="{{url_for('waiter.menu')}}">Menu</a>
-          <a class="nav-item nav-link" id="cart" href="{{url_for('waiter.view_orders')}}">Orders</a>
+          <a class="nav-item nav-link" id="orders" href="{{url_for('waiter.view_orders')}}">Orders</a>
+          <a class="nav-item nav-link" id="notifications" href="{{url_for('waiter.view_notifications')}}">Notifications</a>
           <a class="nav-item nav-link" id="logout" href="{{url_for('logout')}}">Logout</a>
         </div>
         {% endif %}
