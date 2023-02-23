@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for
 import functools
-from packages.models import MenuItem, Order, db, Ingredient
+from packages.models import MenuItem, Order, db, Ingredient, Notification
 from sqlalchemy.sql import text
 
 # register customer_view as a Flask Blueprint
@@ -40,7 +40,19 @@ def waiter_required(func):
 @waiter.route('/')
 @waiter_required
 def home():
-    return render_template('waiter-home.html')
+    notifications = Notification.query.all()
+    if notifications:
+        return render_template('waiter-home.html', notifications = notifications, help_needed = True)
+    else:
+        return render_template('waiter-home.html', help_needed = False)
+    
+@waiter.route('/remove-notification/<int:notif_id>', methods = ['POST'])
+@waiter_required
+def remove_notification(notif_id):
+    notification = Notification.query.filter_by(id = notif_id).first()
+    db.session.delete(notification)
+    db.session.commit()
+    return redirect(url_for('waiter.home'))
 
 @waiter.route('view-orders')
 @waiter_required
