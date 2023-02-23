@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for, flash
-from packages.models import MenuItem, Order, OrderMenuItem, db
+from packages.models import MenuItem, Order, OrderMenuItem, User, db
 import functools
 from sqlalchemy.sql import text
 
@@ -161,20 +161,17 @@ def show_order(order_id):
     menu_items = MenuItem.query.all()
     return render_template("order-confirmation.html", order = order, items=ordered_items, menu_items = menu_items)
 
-
-@customer.route('/notify', methods=['POST'])
+@customer.route('/table-number', methods=['GET', 'POST'])
 @customer_required
-def notify():
-    customer_id = session.get('customer_id')
-    table_number = session.get('table_number')
-    if customer_id and table_number:
-        db.session.execute(
-            text("INSERT INTO notifications (customer_id, table_number) VALUES (:customer_id, :table_number)"),
-            {"customer_id": customer_id, "table_number": table_number}
-        )
-        db.session.commit()
-        flash('Notification sent to waiter', category='success')
-        return redirect(url_for('customer.home'))
-    else:
-        flash('Error sending notification', category='error')
-        return redirect(url_for('customer.home'))
+def table_number():
+    if 'user' not in session: # make sure user is logged in
+        return "Could not add table number, are you logged in?"
+    if request.method == 'POST':
+        user = User.query.get(session['user_id'])
+        table_number = request.form['table-number']
+        user.table_number = table_number
+        db.session.commit() #add table number to User table in DB
+        return redirect(url_for('home'))
+    return render_template('table-number.html')
+
+

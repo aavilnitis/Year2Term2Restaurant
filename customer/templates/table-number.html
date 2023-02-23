@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h1 class="text-center mb-4">Enter Table Number</h1>
+        <form action="{{ url_for('customer.table_number') }}" method="POST">
+          <div class="form-group">
+            <label for="table-number">Table Number:</label>
+            <input type="number" class="form-control" id="table-number" name="table-number" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Confirm</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
