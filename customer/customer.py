@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for, flash
-from packages.models import MenuItem, Order, OrderMenuItem, User, db
+from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, db
 import functools
 from sqlalchemy.sql import text
 
@@ -170,6 +170,7 @@ def table_number():
         user = User.query.get(session['user_id'])
         table_number = request.form['table-number']
         user.table_number = table_number
+        session['table_number'] = table_number
         db.session.commit() #add table number to User table in DB
         return redirect(url_for('home'))
     return render_template('table-number.html')
@@ -177,13 +178,12 @@ def table_number():
 @customer.route('/notify', methods=['POST'])
 @customer_required
 def notify():
-    customer_id = session.get('customer_id')
+    customer_id = session.get('user_id')
     table_number = session.get('table_number')
+    print(customer_id)
     if customer_id and table_number:
-        db.session.execute(
-            text("INSERT INTO notifications (customer_id, table_number) VALUES (:customer_id, :table_number)"),
-            {"customer_id": customer_id, "table_number": table_number}
-        )
+        notification = Notification(customer_id, table_number)
+        db.session.add(notification)
         db.session.commit()
         flash('Notification sent to waiter', category='success')
         return redirect(url_for('customer.home'))

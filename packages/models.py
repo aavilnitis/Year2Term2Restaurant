@@ -85,8 +85,10 @@ class Notification(db.Model):
     status = db.Column(db.Enum('helped', 'not_helped', name = 'notification_status'), nullable=False, default='not_helped')
 
     def __init__(self, user_id, table_number):
-        if User.query.filter_by(id = user_id, user_type = 'customer').first() and table_number is not None:
-            self.user_id = user_id
-            self.table_number = table_number
-        else:
-            raise ValueError("It seems you have forgotten to enter table number or you are not logged in as a customer.")
+        self.user_id = user_id
+        self.table_number = table_number
+        #if User.query.filter_by(id = user_id, user_type = 'customer').first() and table_number is not None:
+        #    self.user_id = user_id
+        #    self.table_number = table_number
+        #else:
+        #    raise ValueError("It seems you have forgotten to enter table number or you are not logged in as a customer.")
