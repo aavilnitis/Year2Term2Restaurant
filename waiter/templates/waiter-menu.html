@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Menu{% endblock %}
 {% block content %}
+<link rel="stylesheet" href="./static/style/waiter-menu.css">
+<script src="https://kit.fontawesome.com/95bf5595ab.js" crossorigin="anonymous"></script>
   <div class="container">
-    <h1 class="text-center mb-5">Menu</h1>
+    <div class="menudiv"><h1 class="text-center mb-5">Menu</h1></div>
     <div class="row">
       {% for item in menu_items %}
         <div class="col-md-4">
@@ -32,10 +34,9 @@
     </div>
     <div style="margin-top: 20px; text-align: center;">
         <form action="{{url_for('waiter.add_item')}}">
-            <button class="btn btn-success">Add new item</button>
+            <button class="btn btn-success">Add new item <i class="fa-duotone fa-plus"></i></button>
         </form>
     </div>
     
   </div>
 {% endblock %}
-
