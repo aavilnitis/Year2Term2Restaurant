@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-
+<link rel="stylesheet" href="./static/style/waiter-home.css">
+  <div class = "waiter-home">
   <h1 style="font-size: 300%">Restaurant 26</h1>
-  <p style="font-size: 150%">
+  <h3>
     Hello Waiter!
-  </p>
+  </h3  >
 
   {% if help_needed %}
     {% for notification in notifications %}
@@ -56,4 +57,5 @@
   }
   refreshPage();
 </script>
+</div>
 {%endblock%}

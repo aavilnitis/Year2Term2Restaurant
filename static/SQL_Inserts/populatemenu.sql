@@ -162,7 +162,7 @@ INSERT INTO menu_item_ingredient (menu_item_id, ingredient_id) VALUES (15, 4);
 INSERT INTO menu_item_ingredient (menu_item_id, ingredient_id) VALUES (15, 5);
 
 --Inserting Lemonade and Ingredients
-INSERT INTO menu_items (name, price, description, calories, type, picture) VALUES ('Lemonade', 2.99, 'Tart and sweet homemade lemonade.', 21, 'drinks', 'https://divascancook.com/wp-content/uploads/2022/03/best-hot-pink-lemonade-recipe.jpgb28b29a1cde43269a18dae3531b3459.jpg');
+INSERT INTO menu_items (name, price, description, calories, type, picture) VALUES ('Lemonade', 2.99, 'Tart and sweet homemade lemonade.', 21, 'drinks', 'https://images-gmi-pmc.edge-generalmills.com/c813ac67-2d4c-494c-8dbc-fc0ffaeb403a.jpg');
 INSERT INTO menu_item_ingredient (menu_item_id, ingredient_id) VALUES (16, 2);
 INSERT INTO menu_item_ingredient (menu_item_id, ingredient_id) VALUES (16, 6);
 INSERT INTO menu_item_ingredient (menu_item_id, ingredient_id) VALUES (16, 7);

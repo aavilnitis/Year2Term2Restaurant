@@ -1,41 +1,46 @@
 {% extends "base.html" %}
 {% block title %}Menu{% endblock %}
 {% block content %}
+<link rel="stylesheet" href="./static/style/waiter-menu.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://kit.fontawesome.com/95bf5595ab.js" crossorigin="anonymous"></script>
   <div class="container">
-    <h1 class="text-center mb-5">Menu</h1>
-    <div class="row">
-      {% for item in menu_items %}
-        <div class="col-md-4">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h6 class="card-subtitle" style="text-decoration:underline">Type: {{ item.type }}</h6><br>
-              <h5 class="card-title text-success">{{ item.name }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ item.price }}</h6>
-              <p class="card-text">{{ item.description }}</p>
-              <h5 class="card-title text-primary" data-toggle="collapse" data-target="#ingredients-{{ item.id }}" style="cursor:pointer; text-decoration:underline">See Ingredients:</h5>
-              <div id="ingredients-{{ item.id }}" class="collapse">
-                <ul>
-                  {% for ingredient in item.ingredients %}
-                    <li>{{ ingredient.name }}</li>
-                  {% endfor %}
-                </ul>
-              </div>              
-              <p class="card-text">Calories: {{ item.calories }}</p>
-              <form action="{{ url_for('waiter.remove_item', item_id=item.id) }}" method="post">
-                <input type="hidden" name="item_id" value="{{item.id}}">
-                <button class="btn btn-danger">Remove item</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-    <div style="margin-top: 20px; text-align: center;">
+    <div class = "menu">
+      <div class = "menu-header">
+      <h1>View and Edit Restaurant menu</h1>
+      <div style="margin-top: 5px; margin-left: 3%; text-align: center;">
         <form action="{{url_for('waiter.add_item')}}">
-            <button class="btn btn-success">Add new item</button>
+            <button class="btn btn-success">Add new item    <i class="fa-solid fa-plus" style="margin-left: 5px;"></i></button>
         </form>
     </div>
-    
+      </div>
+    <div class="row">
+      <div class="cards">
+      {% for item in menu_items %}
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <!-- Replace this line with a span font awesome icon -->
+            <a href="{{ url_for('waiter.remove_item', item_id=item.id) }}" class="cross-icon"><span class="fa fa-times"></span></a>
+            <h6 class="card-subtitle" style="text-decoration:underline">Type: {{ item.type }}</h6><br>
+            <h5 class="card-title text-success">{{ item.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ item.price }}</h6>
+            <p class="card-text">{{ item.description }}</p>
+            <h5 class="card-title text-primary" data-toggle="collapse" data-target="#ingredients-{{ item.id }}" style="cursor:pointer; text-decoration:underline">See Ingredients:</h5>
+            <div id="ingredients-{{ item.id }}" class="collapse">
+              <ul>
+                {% for ingredient in item.ingredients %}
+                <li>{{ ingredient.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <p class="card-text">Calories: {{ item.calories }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    </div>
+  </div>
   </div>
 {% endblock %}
-

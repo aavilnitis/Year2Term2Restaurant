@@ -1,0 +1,10 @@
+.view-orders{
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    color: #1b1b1b;
+}
+.table-striped{
+    color: #1b1b1b;
+    font-family: garamond;
+}
