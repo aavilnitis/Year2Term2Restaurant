@@ -8,6 +8,7 @@
       <th>Menu Items</th>
       <th>Order Total</th>
       <th>Order Status</th>
+      <th>Time Placed</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -27,6 +28,7 @@
         </td>
         <td>£{{ item.order_total }}</td>
         <td>{{ item.status }}</td>
+        <td>{{ item.time_placed.strftime('%Y-%m-%d %H:%M:%S') }}</td>
         <td>
           <form action="{{ url_for('waiter.cancel_order', order_id=item.id) }}" method="post">
             <button type="submit" class="btn btn-danger"> Cancel Order </button>
