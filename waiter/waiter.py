@@ -54,6 +54,20 @@ def remove_notification(notif_id):
     db.session.commit()
     return redirect(url_for('waiter.home'))
 
+@waiter.route('view-notifications')
+@waiter_required
+def view_notifications():
+    notifications = Notification.query.all()
+    return render_template('waiter-view-notifications.html', notifications = notifications)
+
+@waiter.route('/customer_helped/<int:notification_id>', methods=['POST'])
+@waiter_required
+def customer_helped(notification_id):
+    notification = Notification.query.get(notification_id)
+    notification.status = "helped"
+    db.session.commit()
+    return redirect(url_for('waiter.view_notifications'))
+    
 @waiter.route('view-orders')
 @waiter_required
 def view_orders():
