@@ -85,7 +85,7 @@ def menu():
     menu_items = MenuItem.query.all()
     return render_template('waiter-menu.html', menu_items=menu_items)
 
-@waiter.route('/remove-item/<int:item_id>', methods = ['POST'])
+@waiter.route('/remove-item/<int:item_id>', methods = ['GET','POST'])
 @waiter_required
 def remove_item(item_id):
     item = MenuItem.query.get(item_id)
