@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for, flash
-from packages.models import MenuItem, Order, OrderMenuItem, db
+from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, db
 import functools
 from sqlalchemy.sql import text
 
@@ -36,7 +36,8 @@ def customer_required(func):
 def home():
     if 'user' in session:
         if session['user'] == 'customer':
-            return render_template("home.html")
+            menu_items = MenuItem.query.filter_by(featured = True).all()
+            return render_template("home.html", menu_items = menu_items)
         else:
             return redirect(url_for("login.login"))
     else:
@@ -50,6 +51,13 @@ def menu():
     if MenuItem.query.first() == None:
         populate_menu()
     menu_items = MenuItem.query.all()
+    return render_template("menu.html", menu_items=menu_items)
+
+# Flask route to view all menu items that have been added to the database
+@customer.route('/featured')
+@customer_required
+def featured():
+    menu_items = MenuItem.query.filter_by(featured = True).all()
     return render_template("menu.html", menu_items=menu_items)
 
 # Flask route to view all menu items that have been added to the database
@@ -113,8 +121,9 @@ def remove_from_cart(id):
 @customer_required
 def confirm_cart():
     cart_ids = session['cart']
+    user_id = session.get('user_id')
     if len(cart_ids) > 0:
-        order = Order([])
+        order = Order(user_id=user_id, order_menu_items=[])
         order_total = 0
         db.session.add(order)
         db.session.flush()
@@ -128,6 +137,7 @@ def confirm_cart():
                 order_menu_item = OrderMenuItem(order_id = order.id, menu_item_id = menu_item.id, quantity = 1)
                 db.session.add(order_menu_item)
                 order_total += menu_item.price
+            order.order_menu_items.append(order_menu_item)
         order_total = round(order_total,2)
         order.order_total = order_total        
         session['cart'] = []
@@ -160,3 +170,45 @@ def show_order(order_id):
     ordered_items = OrderMenuItem.query.filter_by(order_id=order.id).all()
     menu_items = MenuItem.query.all()
     return render_template("order-confirmation.html", order = order, items=ordered_items, menu_items = menu_items)
+
+@customer.route('/table-number', methods=['GET', 'POST'])
+@customer_required
+def table_number():
+    if 'user' not in session: # make sure user is logged in
+        return "Could not add table number, are you logged in?"
+    if request.method == 'POST':
+        user = User.query.get(session['user_id'])
+        table_number = request.form['table-number']
+        user.table_number = table_number
+        session['table_number'] = table_number
+        db.session.commit() #add table number to User table in DB
+        return redirect(url_for('home'))
+    return render_template('table-number.html')
+
+@customer.route('/notify', methods=['GET','POST'])
+@customer_required
+def notify():
+    customer_id = session.get('user_id')
+    table_number = session.get('table_number')
+    print(customer_id)
+    if customer_id and table_number:
+        notification = Notification(customer_id, table_number)
+        db.session.add(notification)
+        db.session.commit()
+        flash('Notification sent to waiter', category='success')
+        return redirect(url_for('customer.home'))
+    else:
+        flash('Error sending notification', category='error')
+        return redirect(url_for('customer.home'))
+
+@customer.route('/orders')
+@customer_required
+def show_orders():
+    user_id = session.get('user_id')
+    orders = Order.query.filter_by(user_id=user_id).all()
+    ordered_items = {}
+    for order in orders:
+        ordered_items[order.id] = OrderMenuItem.query.filter_by(order_id=order.id).all()
+    menu_items = MenuItem.query.all()
+    return render_template("order-tracking.html", orders=orders, items=ordered_items, menu_items=menu_items)
+

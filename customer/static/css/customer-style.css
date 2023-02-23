@@ -5,6 +5,9 @@
     display: flex;
     justify-content: center;
 }
+
+.card-img-top { width: 100%; height: 200px; object-fit: cover; object-position: center; }
+
 .filter{
     display: flex;
     align-items: center;
@@ -15,3 +18,30 @@
 .menu{
     width:80%;
 }
+
+.featured{
+    display: flex;
+    width: 70%;
+    margin: auto;
+}
+.jumbotron{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.customer-home{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.featured-items-heading{
+    padding-bottom: 2%;
+}
+
+.alert{
+    margin-bottom: 0;
+}
+  
