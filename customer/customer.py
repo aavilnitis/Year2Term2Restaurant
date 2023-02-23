@@ -36,7 +36,8 @@ def customer_required(func):
 def home():
     if 'user' in session:
         if session['user'] == 'customer':
-            return render_template("home.html")
+            menu_items = MenuItem.query.filter_by(featured = True).all()
+            return render_template("home.html", menu_items = menu_items)
         else:
             return redirect(url_for("login.login"))
     else:
@@ -50,6 +51,13 @@ def menu():
     if MenuItem.query.first() == None:
         populate_menu()
     menu_items = MenuItem.query.all()
+    return render_template("menu.html", menu_items=menu_items)
+
+# Flask route to view all menu items that have been added to the database
+@customer.route('/featured')
+@customer_required
+def featured():
+    menu_items = MenuItem.query.filter_by(featured = True).all()
     return render_template("menu.html", menu_items=menu_items)
 
 # Flask route to view all menu items that have been added to the database
@@ -175,7 +183,7 @@ def table_number():
         return redirect(url_for('home'))
     return render_template('table-number.html')
 
-@customer.route('/notify', methods=['POST'])
+@customer.route('/notify', methods=['GET','POST'])
 @customer_required
 def notify():
     customer_id = session.get('user_id')

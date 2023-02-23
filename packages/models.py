@@ -24,6 +24,7 @@ class MenuItem(db.Model):
     calories = db.Column(db.Integer)
     type = db.Column(db.Enum('starters', 'mains', 'sides', 'desserts', 'drinks', name='MenuItem_type'), nullable=False)
     picture = db.Column(db.String(200), nullable=True)
+    featured = db.Column(db.Boolean, default=False, nullable=True)
 
     def __init__(self, name, price, description, ingredients, calories, type, picture=None):
         self.name = name
