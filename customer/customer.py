@@ -121,8 +121,9 @@ def remove_from_cart(id):
 @customer_required
 def confirm_cart():
     cart_ids = session['cart']
+    user_id = session.get('user_id')
     if len(cart_ids) > 0:
-        order = Order([])
+        order = Order(user_id=user_id, order_menu_items=[])
         order_total = 0
         db.session.add(order)
         db.session.flush()
@@ -136,6 +137,7 @@ def confirm_cart():
                 order_menu_item = OrderMenuItem(order_id = order.id, menu_item_id = menu_item.id, quantity = 1)
                 db.session.add(order_menu_item)
                 order_total += menu_item.price
+            order.order_menu_items.append(order_menu_item)
         order_total = round(order_total,2)
         order.order_total = order_total        
         session['cart'] = []
@@ -199,5 +201,14 @@ def notify():
         flash('Error sending notification', category='error')
         return redirect(url_for('customer.home'))
 
-
+@customer.route('/orders')
+@customer_required
+def show_orders():
+    user_id = session.get('user_id')
+    orders = Order.query.filter_by(user_id=user_id).all()
+    ordered_items = {}
+    for order in orders:
+        ordered_items[order.id] = OrderMenuItem.query.filter_by(order_id=order.id).all()
+    menu_items = MenuItem.query.all()
+    return render_template("order-tracking.html", orders=orders, items=ordered_items, menu_items=menu_items)
 

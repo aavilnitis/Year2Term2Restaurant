@@ -39,12 +39,14 @@ class MenuItem(db.Model):
 class Order(db.Model):
     __tablename__ = "orders"
     id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     order_menu_items = db.relationship("OrderMenuItem", backref = "order", lazy = "dynamic")
     order_total = db.Column(db.Float, nullable = False, default = 0)
     status = db.Column(db.Enum('complete', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
     time_placed = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     
-    def __init__(self, order_menu_items, order_total = 0, status = 'incomplete', time_placed = None):
+    def __init__(self, user_id, order_menu_items, order_total = 0, status = 'incomplete', time_placed = None):
+        self.user_id = user_id
         self.order_menu_items = order_menu_items
         self.order_total = order_total
         self.status = status
