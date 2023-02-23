@@ -174,4 +174,22 @@ def table_number():
         return redirect(url_for('home'))
     return render_template('table-number.html')
 
+@customer.route('/notify', methods=['POST'])
+@customer_required
+def notify():
+    customer_id = session.get('customer_id')
+    table_number = session.get('table_number')
+    if customer_id and table_number:
+        db.session.execute(
+            text("INSERT INTO notifications (customer_id, table_number) VALUES (:customer_id, :table_number)"),
+            {"customer_id": customer_id, "table_number": table_number}
+        )
+        db.session.commit()
+        flash('Notification sent to waiter', category='success')
+        return redirect(url_for('customer.home'))
+    else:
+        flash('Error sending notification', category='error')
+        return redirect(url_for('customer.home'))
+
+
 
