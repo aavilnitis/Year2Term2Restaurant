@@ -8,6 +8,7 @@ from waiter.waiter import waiter
 from signup.signup import signup
 from login.login import login_view
 from kitchen.kitchen import kitchen
+from admin.admin import admin
 import bcrypt
 
 if os.path.exists("instance/database.db"):
@@ -24,6 +25,7 @@ app.register_blueprint(waiter, url_prefix="/waiter")
 app.register_blueprint(signup, url_prefix="/signup")
 app.register_blueprint(login_view, url_prefix="/login")
 app.register_blueprint(kitchen, url_prefix="/kitchen")
+app.register_blueprint(admin, url_prefix="/admin")
 
 
 @app.route('/', methods = ['POST', 'GET'])
