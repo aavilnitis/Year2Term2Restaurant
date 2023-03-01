@@ -17,6 +17,7 @@
                                         <th>Name</th>
                                         <th>Quantity</th>
                                         <th>Status</th>
+                                        <th>Delivery Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -27,6 +28,7 @@
                                                     <td>{{ menu_item.name }}</td>
                                                     <td>{{ item.quantity }}</td>
                                                     <td>{{ order.status }}</td>
+                                                    <td>{{ order.delivery_status }}</td>
                                                 </tr>
                                             {% endif %}
                                         {% endfor %}
