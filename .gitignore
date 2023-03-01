@@ -6,3 +6,5 @@ signup/__pycache__/
 packages/__pycache__/
 instance/database.db
 login/__pycache__/
+admin/__pycache__/
+kitchen/__pycache__/
