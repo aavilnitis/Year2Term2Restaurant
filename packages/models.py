@@ -43,13 +43,15 @@ class Order(db.Model):
     order_menu_items = db.relationship("OrderMenuItem", backref = "order", lazy = "dynamic")
     order_total = db.Column(db.Float, nullable = False, default = 0)
     status = db.Column(db.Enum('complete', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
+    payment_status = db.Column(db.Enum('paid', 'unpaid', name='payment_status'), nullable = False, default = 'unpaid')
     time_placed = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     
-    def __init__(self, user_id, order_menu_items, order_total = 0, status = 'incomplete', time_placed = None):
+    def __init__(self, user_id, order_menu_items, order_total = 0, status = 'incomplete', payment_status = 'unpaid', time_placed = None):
         self.user_id = user_id
         self.order_menu_items = order_menu_items
         self.order_total = order_total
         self.status = status
+        self.payment_status = payment_status
         if time_placed is not None:
             self.time_placed = time_placed
         else:
