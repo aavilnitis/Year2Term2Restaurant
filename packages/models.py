@@ -47,12 +47,13 @@ class Order(db.Model):
     delivery_status = db.Column(db.Enum('waiting', 'preparing', 'ready', 'on the way', 'delivered', name='delivery_status'), nullable = False, default = 'waiting')
     time_placed = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     
-    def __init__(self, user_id, order_menu_items, order_total = 0, status = 'incomplete', payment_status = 'unpaid', time_placed = None):
+    def __init__(self, user_id, order_menu_items, order_total = 0, status = 'incomplete', payment_status = 'unpaid', delivery_status = 'waiting', time_placed = None):
         self.user_id = user_id
         self.order_menu_items = order_menu_items
         self.order_total = order_total
         self.status = status
         self.payment_status = payment_status
+        self.delivery_status = delivery_status
         if time_placed is not None:
             self.time_placed = time_placed
         else:
