@@ -72,7 +72,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     username = db.Column(db.String(100), unique = True, nullable = False)
     password = db.Column(db.String(1000), nullable = False)
-    user_type = db.Column(db.Enum('customer', 'waiter', name='user_type'), nullable = False)
+    user_type = db.Column(db.Enum('customer', 'waiter', 'kitchen_staff', name='user_type'), nullable = False)
     table_number = db.Column(db.Integer)
 
     def __init__(self, username, password, user_type, table_number = None):
