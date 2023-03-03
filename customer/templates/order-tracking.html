@@ -8,7 +8,10 @@
                 <div class="col-md-6">
                     <div class="card mb-4 shadow-sm">
                         <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">Order: {{ order.id }} - Total Price: £{{ order.order_total}}</h4>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4>Order: {{ order.id }}</h4>
+                                <h4>Total Price: £{{ order.order_total}}</h4>
+                            </div>
                         </div>
                         <div class="card-body">
                             <table class="table">
@@ -17,8 +20,6 @@
                                         <th>Name</th>
                                         <th>Quantity</th>
                                         <th>Item Total Price</th>
-                                        <th>Status</th>
-                                        <th>Delivery Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -29,14 +30,18 @@
                                                     <td>{{ menu_item.name }}</td>
                                                     <td>{{ item.quantity }}</td>
                                                     <td>£{{ item.item_price }}</td>
-                                                    <td>{{ order.status }}</td>
-                                                    <td>{{ order.delivery_status }}</td>
                                                 </tr>
                                             {% endif %}
                                         {% endfor %}
                                     {% endfor %}
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4>Status: {{ order.status }}</h4>
+                                <h4>Delivery Status: {{ order.delivery_status }}</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -51,6 +56,6 @@
           }, 10000);
         }
         refreshPage();
-      </script>
+    </script>
 
 {% endblock %}
