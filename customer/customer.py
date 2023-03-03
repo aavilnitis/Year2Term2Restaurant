@@ -132,12 +132,13 @@ def confirm_cart():
             order_menu_item = OrderMenuItem.query.filter_by(order_id = order.id, menu_item_id = menu_item.id).first()
             if order_menu_item:
                 order_menu_item.quantity += 1
+                order_total += menu_item.price
             else:
                 order_menu_item = OrderMenuItem(order_id=order.id, menu_item_id=menu_item.id, quantity=1)
                 db.session.add(order_menu_item)
+                order_total += menu_item.price
             item_total = order_menu_item.quantity * menu_item.price
             order_menu_item.item_price = item_total
-            order_total += item_total
             order.order_menu_items.append(order_menu_item)
         order_total = round(order_total, 2)
         order.order_total = order_total        
