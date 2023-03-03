@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %}Display all Notifications{% endblock %} 
+
+{% block content %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>User ID</th>
+      <th>Table Number</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for notification in notifications %}
+      <tr>
+        <td>{{ notification.id }}</td>
+        <td>{{ notification.user_id }}</td>
+        <td>{{ notification.table_number }}</td>
+        <td>{{ notification.status}}</td>
+        <td>
+          <form action="{{ url_for('kitchen.order_complete', notification_id=notification.id) }}" method="post">
+            <button type="submit" class="btn btn-success"> Order Complete </button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{%endblock%}
