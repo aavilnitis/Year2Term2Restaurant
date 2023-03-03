@@ -41,4 +41,14 @@
             {% endfor %}
         </div>
     </div>
+
+    <script>
+        function refreshPage() {
+          setTimeout(() => {
+            window.location.reload();
+          }, 10000);
+        }
+        refreshPage();
+      </script>
+
 {% endblock %}
