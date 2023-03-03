@@ -77,17 +77,19 @@ def filtered_menu():
 @customer.route('/add-to-cart/', methods=["POST"])
 @customer_required
 def addToCart():
+    item_id = int(request.form.get("item_id"))
     if 'cart' in session:
         cart = session['cart']
-        cart.append(int(request.form.get("item_id")))
+        cart.append(item_id)
         session['cart'] = cart
-        return redirect(url_for("customer.cart"))
     else: 
         create_cart()
         cart = session['cart']
-        cart.append(int(request.form.get("item_id")))
+        cart.append(item_id)
         session['cart'] = cart
-        return redirect(url_for("customer.cart"))
+    menu_item = MenuItem.query.get(item_id)
+    flash(f"{menu_item.name} has been added to your cart", "success")
+    return redirect(url_for("customer.menu"))
 
 # Flask route to view all items that have been added to the cart
 @customer.route('/cart')
