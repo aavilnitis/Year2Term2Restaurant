@@ -131,14 +131,15 @@ def confirm_cart():
             menu_item = MenuItem.query.filter_by(id = cart_id).first()
             order_menu_item = OrderMenuItem.query.filter_by(order_id = order.id, menu_item_id = menu_item.id).first()
             if order_menu_item:
-                order_menu_item.quantity +=1
-                order_total += menu_item.price
+                order_menu_item.quantity += 1
             else:
-                order_menu_item = OrderMenuItem(order_id = order.id, menu_item_id = menu_item.id, quantity = 1)
+                order_menu_item = OrderMenuItem(order_id=order.id, menu_item_id=menu_item.id, quantity=1)
                 db.session.add(order_menu_item)
-                order_total += menu_item.price
+            item_total = order_menu_item.quantity * menu_item.price
+            order_menu_item.item_price = item_total
+            order_total += item_total
             order.order_menu_items.append(order_menu_item)
-        order_total = round(order_total,2)
+        order_total = round(order_total, 2)
         order.order_total = order_total        
         session['cart'] = []
         db.session.commit()
@@ -146,7 +147,6 @@ def confirm_cart():
         return redirect(url_for("customer.show_order", order_id=order.id))
     else:
         return redirect(url_for("customer.cart"))
-
 
 # Flask route to load all menu items from DB and display in a list - DEBUGGING PURPOSES
 @customer.route('/view-all-items')
