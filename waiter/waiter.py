@@ -41,10 +41,17 @@ def waiter_required(func):
 @waiter_required
 def home():
     notifications = Notification.query.all()
+    waiter = User.query.filter_by(username = session['username']).first()
+    if waiter:
+        table_start = waiter.table_number_start
+        table_end = waiter.table_number_end
+    else:
+        table_start = 0
+        table_end = 0
     if notifications:
         return render_template('waiter-home.html', notifications = notifications, help_needed = True)
     else:
-        return render_template('waiter-home.html', help_needed = False)
+        return render_template('waiter-home.html', help_needed = False, table_start = table_start, table_end = table_end)
     
 @waiter.route('/remove-notification/<int:notif_id>', methods = ['POST'])
 @waiter_required

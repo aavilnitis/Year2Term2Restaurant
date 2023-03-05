@@ -30,11 +30,17 @@ app.register_blueprint(admin, url_prefix="/admin")
 
 @app.route('/', methods = ['POST', 'GET'])
 def home():
-    if not User.query.filter_by(username='waiter').first():
-        username = 'waiter'
-        passw = 'waiter'
-        db.session.add(User(username, bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter'))
+    if not User.query.filter_by(username='waiter1').first() or not User.query.filter_by(username='waiter2').first() or not User.query.filter_by(username='waiter3').first():
+        password = 'waiter'
+        waiter1 = User('waiter1', bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 1, 10)
+        waiter2 = User('waiter2', bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 11, 20)
+        waiter3 = User('waiter3', bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 21, 30)
+        db.session.add(waiter1)
+        db.session.add(waiter2)
+        db.session.add(waiter3)
         db.session.commit()
+        
+        
         
     if 'user' in session:
         if session['user'] == 'customer':
