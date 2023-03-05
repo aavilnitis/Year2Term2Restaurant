@@ -98,6 +98,7 @@ class Notification(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     table_number = db.Column(db.Integer, db.ForeignKey('users.table_number'))
+    message = db.Column(db.String(1000), nullable=True)
     status = db.Column(db.Enum('helped', 'not_helped', name = 'notification_status'), nullable=False, default='not_helped')
 
     def __init__(self, user_id, table_number):
