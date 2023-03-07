@@ -20,5 +20,19 @@ def kitchenstaff_required(func):
 @kitchen.route('/')
 @kitchenstaff_required
 def home():
-    return render_template("kitchen-home.html")
+    orders = Order.query.filter_by(status = 'incomplete').all()
+    return render_template("kitchen-home.html", orders = orders)
+
+@kitchen.route('/order/ready', methods = ['POST'])
+@kitchenstaff_required 
+def order_ready():
+    order_id = request.form.get(order_id)
+    order = Order.query.get(order_id)
+    if order:
+        order.delivery_status = 'ready'
+        db.session.commit()
+    else:
+        return jsonify({'message': 'Order not found.'})
+    
+
 

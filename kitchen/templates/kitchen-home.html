@@ -1,5 +1,31 @@
 {% extends "base.html" %}
 {% block title %}Kitchen Staff Home{% endblock %}
 {% block content %}
-    <h1>Kitchen Staff Home</h1>
+<body>
+    <h1>Incomplete Orders</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>User ID</th>
+                <th>Status</th>
+                <th>Mark as Ready</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.user_id }}</td>
+                    <td>{{ order.delivery_status }}</td>
+                    <td>
+                        <form action="{{ url_for('kitchen.order_ready') }}" method="POST">
+                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                            <button type="submit">Mark as Ready</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
