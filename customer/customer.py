@@ -71,7 +71,7 @@ def filtered_menu():
         if category_items:
             menu_items.extend(category_items)
     return render_template("menu.html", menu_items=menu_items)
-
+ 
 # Flask route to add an item to the cart and redirect the customer to the cart page
 # This route isn't accessed manually, but instead from pressing "Add to cart" button in menu page
 @customer.route('/add-to-cart/', methods=["POST"])
