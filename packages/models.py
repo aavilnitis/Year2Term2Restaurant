@@ -65,6 +65,7 @@ class OrderMenuItem(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable = False)
     menu_item_id = db.Column(db.Integer, db.ForeignKey("menu_items.id"), nullable = False)
     quantity = db.Column(db.Integer, nullable = False, default = 1)
+    item_price = db.Column(db.Float, nullable = False, default = 0)
 
 
 class User(db.Model):
@@ -74,8 +75,10 @@ class User(db.Model):
     password = db.Column(db.String(1000), nullable = False)
     user_type = db.Column(db.Enum('customer', 'waiter', 'kitchen_staff', name='user_type'), nullable = False)
     table_number = db.Column(db.Integer)
+    table_number_start = db.Column(db.Integer)
+    table_number_end = db.Column(db.Integer)
 
-    def __init__(self, username, password, user_type, table_number = None):
+    def __init__(self, username, password, user_type, table_number = None, table_number_start = None, table_number_end = None):
         self.username = username
         self.password = password
         self.user_type = user_type
@@ -83,6 +86,12 @@ class User(db.Model):
             self.table_number = table_number
         else:
             self.table_number = None
+        if user_type == 'waiter':
+            self.table_number_start = table_number_start
+            self.table_number_end = table_number_end
+        else:
+            self.table_number_start = None
+            self.table_number_end = None
 
 class Notification(db.Model):
     __tablename__ = "notifications"
