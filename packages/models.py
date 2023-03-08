@@ -100,9 +100,12 @@ class Notification(db.Model):
     table_number = db.Column(db.Integer, db.ForeignKey('users.table_number'))
     status = db.Column(db.Enum('helped', 'not_helped', name = 'notification_status'), nullable=False, default='not_helped')
 
-    def __init__(self, user_id, table_number):
+    def __init__(self, user_id, table_number, message = None, notification_type = None):
         self.user_id = user_id
         self.table_number = table_number
+        self.message = message
+        self.notification_type = notification_type
+
         #if User.query.filter_by(id = user_id, user_type = 'customer').first() and table_number is not None:
         #    self.user_id = user_id
         #    self.table_number = table_number
