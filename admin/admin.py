@@ -10,3 +10,8 @@ admin = Blueprint("admin", __name__, static_folder="static", template_folder="te
 def home():
     return render_template("admin-home.html")
 
+
+@admin.route('/add-waiter')
+def add_waiter():
+    users = User.query.filter_by(user_type='customer').all()
+    return render_template("add-waiter.html", users=users)
