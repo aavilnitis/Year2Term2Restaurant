@@ -15,9 +15,9 @@ def home():
     waiter = User.query.get(session['user_id'])
     notifications = Notification.query.filter(Notification.table_number >= waiter.table_number_start, Notification.table_number <= waiter.table_number_end).all()
     if notifications:
-        return render_template('waiter-home.html', notifications = notifications, help_needed = True)
+        return render_template('waiter-home.html', notifications = notifications, waiter = waiter)
     else:
-        return render_template('waiter-home.html', help_needed = False)
+        return render_template('waiter-home.html', notifications = None, waiter = waiter)
 
 
 
