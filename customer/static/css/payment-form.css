@@ -1,0 +1,41 @@
+body{
+    background-image: url("https://source.unsplash.com/liTBV5RQdbQ");
+}
+.payment-form {
+	max-width: 400px;
+	margin: 0 auto;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+.payment-form h1 {
+	text-align: center;
+    font-family: garamond;
+}
+.payment-form form {
+	display: flex;
+	flex-direction: column;
+}
+.payment-form label {
+	margin-bottom: 10px;
+}
+.payment-form input {
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 16px;
+}
+.payment-form button {
+	padding: 10px;
+	background-color: #008CBA;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+}
+.payment-form button:hover {
+	background-color: #006B9F;
+}
+
