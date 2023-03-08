@@ -1,5 +1,5 @@
 from flask import session, url_for, redirect
-from packages.models import Ingredient, MenuItem, db
+from packages.models import Ingredient, MenuItem, Order, db
 import functools
 from sqlalchemy import text
 
@@ -42,3 +42,8 @@ def add_item(name, price, description, ingredient_names, calories, type, picture
     menu_item = MenuItem(name = name, price = price, description = description, ingredients = ingredients, calories = calories, type = type, picture=picture)
     db.session.add(menu_item)
     db.session.commit()  
+    
+def change_delivery(order_id, status):
+    order = Order.query.get(order_id)
+    order.delivery_status = status
+    db.session.commit()

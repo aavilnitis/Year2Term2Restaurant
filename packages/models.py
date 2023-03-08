@@ -44,7 +44,7 @@ class Order(db.Model):
     order_total = db.Column(db.Float, nullable = False, default = 0)
     status = db.Column(db.Enum('confirmed', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
     payment_status = db.Column(db.Enum('paid', 'unpaid', name='payment_status'), nullable = False, default = 'unpaid')
-    delivery_status = db.Column(db.Enum('waiting', 'preparing', 'ready', 'on the way', 'delivered', name='delivery_status'), nullable = False, default = 'waiting')
+    delivery_status = db.Column(db.Enum('waiting', 'preparing', 'ready', 'otw', 'delivered', name='delivery_status'), nullable = False, default = 'waiting')
     time_placed = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     
     def __init__(self, user_id, order_menu_items, order_total = 0, status = 'incomplete', payment_status = 'unpaid', delivery_status = 'waiting', time_placed = None):
