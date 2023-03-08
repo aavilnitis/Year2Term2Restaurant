@@ -145,14 +145,14 @@ def table_number():
         return redirect(url_for('home'))
     return render_template('table-number.html')
 
-@customer.route('/notify', methods=['GET','POST'])
+@customer.route('/help-needed', methods=['GET','POST'])
 @customer_required
-def notify():
+def help_needed():
     customer_id = session.get('user_id')
     table_number = session.get('table_number')
     print(customer_id)
     if customer_id and table_number:
-        notification = Notification(customer_id, table_number)
+        notification = Notification(user_id=customer_id,table_number=table_number,notification_type='help', message = None)
         db.session.add(notification)
         db.session.commit()
         flash('Notification sent to waiter', category='success')
@@ -160,6 +160,7 @@ def notify():
     else:
         flash('Error sending notification', category='error')
         return redirect(url_for('customer.home'))
+
 
 
 
