@@ -9,10 +9,17 @@ signup = Blueprint("signup", __name__, static_folder="static", template_folder="
 @signup.route('/', methods = ['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
+        users = User.query.filter_by(user_type='customer').all()
+        usernames = []
+        for user in users:
+            usernames.append(user.username)
         username = request.form.get('username')
         password = request.form.get('password')
         if len(username) < 5:
             flash('Username must be longer than 5 characters!', category='error')
+            return redirect(url_for('signup.sign_up'))
+        if username in usernames:
+            flash('Username already taken!', category='error')
             return redirect(url_for('signup.sign_up'))
         if len(password) < 5:
             flash('Password must be longer than 5 characters!', category='error')
