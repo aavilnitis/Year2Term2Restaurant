@@ -19,20 +19,6 @@ def populate_menu():
             db.session.execute(text(line))
             db.session.commit()
             
-def notification(message = "Needs help at table "):
-    customer_id = session.get('user_id')
-    table_number = session.get('table_number')
-    if customer_id and table_number:
-        notification = Notification(customer_id, table_number)
-        notification.message = message
-        db.session.add(notification)
-        db.session.commit()
-        flash('Notification sent to waiter', category='success')
-        return redirect(url_for('customer.home'))
-    else:
-        flash('Error sending notification', category='error')
-        return redirect(url_for('customer.home'))
-            
 def customer_required(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -199,19 +185,17 @@ def table_number():
         user.table_number = table_number
         session['table_number'] = table_number
         db.session.commit() #add table number to User table in DB
-        message = ": Is a new customer at table "
-        notification(message)
+        return redirect(url_for('home'))
     return render_template('table-number.html')
 
 @customer.route('/notify', methods=['GET','POST'])
 @customer_required
-def notify(message = "Needs help at table"):
+def notify():
     customer_id = session.get('user_id')
     table_number = session.get('table_number')
     print(customer_id)
     if customer_id and table_number:
         notification = Notification(customer_id, table_number)
-        notification.message = message
         db.session.add(notification)
         db.session.commit()
         flash('Notification sent to waiter', category='success')

@@ -5,8 +5,8 @@
   <div class = "waiter-home">
   <h1 style="font-size: 300%">Restaurant 26</h1>
   <h3>
-    Hello Waiter! Your table range today is: {{table_start}} - {{table_end}}
-  </h3>
+    Hello Waiter!
+  </h3  >
 
   {% if help_needed %}
     {% for notification in notifications %}
@@ -15,7 +15,7 @@
           <input type="hidden" name="notif_id" value="{{notification.id}}">
           <button class="closebtn">x</button>
         </form>
-        <strong>Client (ID: {{notification.user_id}}) {{notification.message}} {{notification.table_number}}!</strong> 
+        <strong>Client (ID: {{notification.user_id}}) needs help at table {{notification.table_number}}!</strong> 
       </div>
     {% endfor %}
     

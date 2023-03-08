@@ -18,9 +18,9 @@ def login():
         # If the user exists, check the entered password against the hashed password in the database
         if found_user:
             if bcrypt.checkpw(password, found_user.password):
-                session['user_id'] = found_user.id
                 session['user'] = found_user.user_type
-                session['username'] = found_user.username
+                session['user_id'] = found_user.id
+                print(found_user.id)
                 return redirect(url_for('customer.table_number'))
             else:
                 flash('Incorrect password', category='error')
