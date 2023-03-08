@@ -1,5 +1,5 @@
 from flask import session, url_for, redirect, flash
-from packages.models import Notification, db
+from packages.models import Notification, User, db
 import functools
 from sqlalchemy import text
 
@@ -35,3 +35,18 @@ def notification(type):
             flash("Waiter has been notified!", category='success')
     else:
         flash("Something went wrong!", category = "error")
+        
+def check_tables():
+    customers = User.query.filter_by(user_type='customer')
+    taken_tables = []
+    if customers:
+        for customer in customers:
+            taken_tables.append(customer.table_number)
+        print(taken_tables)
+    else:
+        taken_tables = []
+    free_tables = []
+    for i in range(50):
+        if not (i+1) in taken_tables:
+            free_tables.append((i+1))
+    return free_tables

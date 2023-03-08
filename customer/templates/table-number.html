@@ -10,7 +10,7 @@
             <label for="table-number">Table Number:</label>
             <select class="form-control" id="table-number" name="table-number" required>
               <option value="">Select a table</option>
-              {% for table_number in range(1, 33) %}
+              {% for table_number in free_tables %}
                 <option value="{{ table_number }}">{{ table_number }}</option>
               {% endfor %}
             </select>

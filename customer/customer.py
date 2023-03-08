@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, session, jsonif
 from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, db
 import functools
 from sqlalchemy.sql import text
-from .static.functions.customer_functions import populate_menu, customer_required, notification
+from .static.functions.customer_functions import populate_menu, customer_required, notification, check_tables
 from .static.functions.customer_cart_functions import create_cart, add_to_cart, remove_from_cart, confirm_cart
 
 # register customer_view as a Flask Blueprint
@@ -137,6 +137,7 @@ def table_number():
     if 'user' not in session: # make sure user is logged in
         return "Could not add table number, are you logged in?"
     if request.method == 'POST':
+        
         user = User.query.get(session['user_id'])
         table_number = request.form['table-number']
         user.table_number = table_number
@@ -144,7 +145,10 @@ def table_number():
         db.session.commit() #add table number to User table in DB
         notification('table')
         return redirect(url_for('home'))
-    return render_template('table-number.html')
+    
+    return render_template('table-number.html', free_tables = check_tables())
+
+
 
 @customer.route('/help-needed', methods=['GET','POST'])
 @customer_required
