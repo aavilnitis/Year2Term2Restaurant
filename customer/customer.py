@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, session, jsonif
 from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, db
 import functools
 from sqlalchemy.sql import text
-from .static.functions.customer_functions import populate_menu, customer_required
+from .static.functions.customer_functions import populate_menu, customer_required, notification
 from .static.functions.customer_cart_functions import create_cart, add_to_cart, remove_from_cart, confirm_cart
 
 # register customer_view as a Flask Blueprint
@@ -148,18 +148,8 @@ def table_number():
 @customer.route('/help-needed', methods=['GET','POST'])
 @customer_required
 def help_needed():
-    customer_id = session.get('user_id')
-    table_number = session.get('table_number')
-    print(customer_id)
-    if customer_id and table_number:
-        notification = Notification(user_id=customer_id,table_number=table_number,notification_type='help', message = None)
-        db.session.add(notification)
-        db.session.commit()
-        flash('Notification sent to waiter', category='success')
-        return redirect(url_for('customer.home'))
-    else:
-        flash('Error sending notification', category='error')
-        return redirect(url_for('customer.home'))
+    notification('help')
+    return redirect(url_for('customer.home'))
 
 
 

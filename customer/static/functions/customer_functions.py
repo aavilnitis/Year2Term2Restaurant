@@ -1,5 +1,5 @@
-from flask import session, url_for, redirect
-from packages.models import db
+from flask import session, url_for, redirect, flash
+from packages.models import Notification, db
 import functools
 from sqlalchemy import text
 
@@ -21,3 +21,17 @@ def customer_required(func):
                 return "something went wrong"
         return func(*args, **kwargs)
     return wrapper
+
+def notification(type):
+    user_id = session['user_id']
+    table = session['table_number']
+    if user_id and table:
+        notif = Notification(user_id, table, type)
+        db.session.add(notif)
+        db.session.commit()
+        if type == 'table':
+            flash("Waiter has been informed about your table selection!", category='success')
+        else:
+            flash("Waiter has been notified!", category='success')
+    else:
+        flash("Something went wrong!", category = "error")

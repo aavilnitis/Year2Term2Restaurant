@@ -15,7 +15,7 @@
           <input type="hidden" name="notif_id" value="{{notification.id}}">
           <button class="closebtn">x</button>
         </form>
-        <strong>Client (ID: {{notification.user_id}}) needs help at table {{notification.table_number}}!</strong> 
+        <strong>{{notification.message}}</strong> 
       </div>
     {% endfor %}
     
