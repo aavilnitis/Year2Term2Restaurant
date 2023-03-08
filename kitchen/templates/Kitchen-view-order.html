@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% block title %}Display all Orders{% endblock %} 
+
+{% block content %}
+<link rel="stylesheet" href="./static/style/waiter-view-order.css">
+<div class = "view-orders">
+<div class="orders">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>User ID</th>
+      <th>Table number</th>
+      <th>Menu Items</th>
+      <th>Order Total</th>
+      <th>Order Status</th>
+      <th>Payment Staus</th>
+      <th>Time Placed</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in orders %}
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.user_id }}</td>
+        <td>
+          {% for user in users %}
+            {% if user.id == item.user_id %}
+              {{ user.table_number }}
+            {% endif %}
+          {% endfor %}
+        </td>        
+        <td>
+          <ul>
+            {% for order_menu_item in item.order_menu_items %}
+              {% for menu_item in menu_items %}
+                {% if order_menu_item.menu_item_id == menu_item.id %}
+                  <li>
+                    {{menu_item.name}} - Quantity: {{order_menu_item.quantity}}
+                    <br> Item Price: £{{order_menu_item.item_price}}
+                  </li>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </td>
+        
+      
+        <td>£{{ item.order_total }}</td>
+        <td>{{ item.status }}</td>
+        <td>{{ item.payment_status }}</td>
+        <td>{{ item.time_placed.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td>
+          <form action="{{ url_for('waiter.cancel_order', order_id=item.id) }}" method="post">
+            <button type="submit" class="btn btn-danger"> Cancel Order </button>
+          </form>
+          <form action="{{ url_for('waiter.confirm_order', order_id=item.id) }}" method="post">
+            <button type="submit" class="btn btn-success"> Confirm Order </button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+{%endblock%}
+
+
+
+
+
