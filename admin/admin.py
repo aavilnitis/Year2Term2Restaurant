@@ -11,17 +11,25 @@ def home():
     return render_template("admin-home.html")
 
 
-@admin.route('/add-waiter')
+@admin.route('/add-waiter', methods=['GET', 'POST'])
 def add_waiter():
     users = User.query.filter_by(user_type='customer').all()
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        table_number_start = request.form.get('table_number_start')
+        table_number_end = request.form.get('table_number_end')
+        waiter = User(username = username, password = password, user_type = 'waiter', table_number_start = table_number_start, table_number_end = table_number_end)
+        db.session.add(waiter)
+        db.session.commit()
+        return redirect(url_for('admin.home'))
     return render_template("add-waiter.html", users=users)
-@admin.route('/kitchen')
 
+@admin.route('/kitchen')
 def kitchen():
     return render_template("kitchen.html")
 
-@admin.route('/addkitchen', methods=['GET', 'POST'])
-
+@admin.route('/kitchen', methods=['GET', 'POST'])
 def add_kitchen():
     if request.method == 'POST':
         username = request.form.get('username')
