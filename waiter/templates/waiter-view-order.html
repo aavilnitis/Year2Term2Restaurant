@@ -50,12 +50,12 @@
         <td>{{ item.status }}</td>
         <td>{{ item.payment_status }}</td>
         <td>{{ item.time_placed.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-        <td>
+        <td class="button-cell">
           <form action="{{ url_for('waiter.cancel_order', order_id=item.id) }}" method="post">
-            <button type="submit" class="btn btn-danger"> Cancel Order </button>
+            <button type="submit" class="btn btn-danger order-button"> Cancel Order </button>
           </form>
           <form action="{{ url_for('waiter.confirm_order', order_id=item.id) }}" method="post">
-            <button type="submit" class="btn btn-success"> Confirm Order </button>
+            <button type="submit" class="btn btn-success order-button"> Confirm Order </button>
           </form>
         </td>
       </tr>
@@ -64,6 +64,14 @@
 </table>
 </div>
 </div>
+
+<style>
+  .button-cell {
+      height: 100%;
+      display: flex;
+      align-items: center;
+  }
+</style>
 {%endblock%}
 
 

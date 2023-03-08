@@ -88,7 +88,7 @@ def view_orders():
 @waiter_required
 def confirm_order(order_id):
     order = Order.query.get(order_id)
-    order.status = "complete"
+    order.status = "confirmed"
     db.session.commit()
     return redirect(url_for('waiter.view_orders'))
 
