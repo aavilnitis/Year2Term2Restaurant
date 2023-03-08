@@ -1,16 +1,15 @@
-body{
-    background-image: url("https://source.unsplash.com/liTBV5RQdbQ");
-}
+
 .payment-form {
 	max-width: 400px;
 	margin: 0 auto;
 	padding: 20px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
+	margin-top: 5%;
+	margin-bottom: 5%;
 }
 .payment-form h1 {
 	text-align: center;
-    font-family: garamond;
 }
 .payment-form form {
 	display: flex;

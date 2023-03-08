@@ -2,33 +2,10 @@ from flask import Blueprint, render_template, request, redirect, session, jsonif
 from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, db
 import functools
 from sqlalchemy.sql import text
+from .static.functions.customer_functions import create_cart, populate_menu, customer_required
 
 # register customer_view as a Flask Blueprint
 customer = Blueprint("customer", __name__, static_folder="static", template_folder="templates")
-
-
-# Creates an empty array as a session directory
-def create_cart():
-    session['cart'] = []
-
-# Populates the database with premade SQL inserts
-def populate_menu():
-    with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
-        lines = f.readlines()
-        for line in lines:
-            db.session.execute(text(line))
-            db.session.commit()
-            
-def customer_required(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        if session.get('user') != 'customer':
-            if session.get('user') == 'waiter':
-                return redirect(url_for('waiter.home'))
-            else: 
-                return "something went wrong"
-        return func(*args, **kwargs)
-    return wrapper
 
 # Flask home route
 @customer.route('/')
@@ -73,9 +50,11 @@ def filtered_menu():
     return render_template("menu.html", menu_items=menu_items)
 
 #Flask route for payment button
-@customer.route("/pay-now")
+@customer.route('/pay-now')
+@customer_required
 def pay_now():
     return render_template('payment-form.html')
+
   
 # Flask route to add an item to the cart and redirect the customer to the cart page
 # This route isn't accessed manually, but instead from pressing "Add to cart" button in menu page
@@ -156,6 +135,8 @@ def confirm_cart():
     else:
         return redirect(url_for("customer.cart"))
 
+
+
 # Flask route to load all menu items from DB and display in a list - DEBUGGING PURPOSES
 @customer.route('/view-all-items')
 @customer_required
@@ -178,6 +159,8 @@ def show_order(order_id):
     ordered_items = OrderMenuItem.query.filter_by(order_id=order.id).all()
     menu_items = MenuItem.query.all()
     return render_template("order-confirmation.html", order = order, items=ordered_items, menu_items = menu_items)
+
+
 
 @customer.route('/table-number', methods=['GET', 'POST'])
 @customer_required
