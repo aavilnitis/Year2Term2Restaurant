@@ -3,10 +3,6 @@ from packages.models import db
 import functools
 from sqlalchemy import text
 
-# Creates an empty array as a session directory
-def create_cart():
-    session['cart'] = []
-
 # Populates the database with premade SQL inserts
 def populate_menu():
     with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
