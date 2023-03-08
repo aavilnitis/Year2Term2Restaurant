@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %} Add kitchen Staff {% endblock %}
+{% block content %} 
+<div class="container mt-5">
+    <h1 class="text-center">Add kitchen Staff</h1>
+    <form method="POST" class="form-group">
+        <label for="username">Username:</label>
+        <input type="username" id="username" name="username" required class="form-control">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required class="form-control">
+        <centre>
+            <button type="submit" class="btn btn-primary mt-3" onclick="">Add</button>
+        </centre>
+    </form>
+</div>
+{% endblock %}
