@@ -142,6 +142,7 @@ def table_number():
         user.table_number = table_number
         session['table_number'] = table_number
         db.session.commit() #add table number to User table in DB
+        notification('table')
         return redirect(url_for('home'))
     return render_template('table-number.html')
 
