@@ -15,3 +15,19 @@ def home():
 def add_waiter():
     users = User.query.filter_by(user_type='customer').all()
     return render_template("add-waiter.html", users=users)
+@admin.route('/kitchen')
+
+def kitchen():
+    return render_template("kitchen.html")
+
+@admin.route('/addkitchen', methods=['GET', 'POST'])
+
+def add_kitchen():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        kitchen = User(username,password,'kitchen_staff')
+        db.session.add(kitchen)
+        db.session.commit()
+        return render_template('admin-home.html')
+    return render_template('kitchen.html')
