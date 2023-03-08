@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for
 import functools
 from packages.models import MenuItem, Order, db, Ingredient, Notification, User
-from sqlalchemy.sql import text
+from sqlalchemy.sql import text, and_
 from .static.functions.waiter_functions import split_string, populate_menu, waiter_required, add_item
 
 # register customer_view as a Flask Blueprint
@@ -12,7 +12,8 @@ waiter = Blueprint("waiter", __name__, static_folder="static",
 @waiter.route('/')
 @waiter_required
 def home():
-    notifications = Notification.query.all()
+    waiter = User.query.get(session['user_id'])
+    notifications = Notification.query.filter(Notification.table_number >= waiter.table_number_start, Notification.table_number <= waiter.table_number_end).all()
     if notifications:
         return render_template('waiter-home.html', notifications = notifications, help_needed = True)
     else:
@@ -60,7 +61,8 @@ def removeItem(item_id):
 @waiter.route('view-notifications')
 @waiter_required
 def view_notifications():
-    notifications = Notification.query.all()
+    waiter = User.query.get(session['user_id'])
+    notifications = Notification.query.filter(Notification.table_number >= waiter.table_number_start, Notification.table_number <= waiter.table_number_end).all()
     return render_template('waiter-view-notifications.html', notifications = notifications)
 
 @waiter.route('/remove-notification/<int:notif_id>', methods = ['POST'])
