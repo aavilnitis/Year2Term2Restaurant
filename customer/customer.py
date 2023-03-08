@@ -215,3 +215,15 @@ def show_orders():
     menu_items = MenuItem.query.all()
     return render_template("order-tracking.html", orders=orders, items=ordered_items, menu_items=menu_items)
 
+@customer.route('/process_payment', methods=['POST'])
+@customer_required
+def process_payment():
+    card_number = request.form['card_number']
+    name_on_card = request.form['name_on_card']
+    expiration_date = request.form['expiration_date']
+    csv = request.form['csv']
+
+    if len(card_number) == 16 and len(name_on_card) > 0 and len(expiration_date) == 5 and len(csv) == 3:
+        return redirect('/order_confirmation')
+    else:
+        return render_template('payment_error.html')
