@@ -166,21 +166,21 @@ def notify():
 # PAYMENT FORM AND PROCESSING
 
 #Flask route for payment button
-@customer.route('/pay-now')
+@customer.route('/pay-now/<int:order_id>', methods=['GET','POST'])
 @customer_required
-def pay_now():
+def pay_now(order_id):
+    if request.method == 'POST':
+        card_number = request.form['cn']
+        name_on_card = request.form['name-on-card']
+        expiration_date = request.form['expiry-date']
+        csv = request.form['cvv']
+        if len(card_number) == 16 and len(name_on_card) > 0 and len(expiration_date) == 5 and len(csv) == 3:
+            order = Order.query.get(order_id)
+            order.payment_status = 'paid'
+            db.session.commit()
+            return redirect(url_for('customer.show_orders'))
+        else:
+            return render_template('payment_error.html')
     return render_template('payment-form.html')
 
-@customer.route('/process_payment', methods=['POST'])
-@customer_required
-def process_payment():
-    card_number = request.form['card_number']
-    name_on_card = request.form['name_on_card']
-    expiration_date = request.form['expiration_date']
-    csv = request.form['csv']
-
-    if len(card_number) == 16 and len(name_on_card) > 0 and len(expiration_date) == 5 and len(csv) == 3:
-        return redirect('/order_confirmation')
-    else:
-        return render_template('payment_error.html')
 

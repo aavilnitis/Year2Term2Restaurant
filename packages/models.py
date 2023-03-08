@@ -42,7 +42,7 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     order_menu_items = db.relationship("OrderMenuItem", backref = "order", lazy = "dynamic")
     order_total = db.Column(db.Float, nullable = False, default = 0)
-    status = db.Column(db.Enum('complete', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
+    status = db.Column(db.Enum('confirmed', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
     payment_status = db.Column(db.Enum('paid', 'unpaid', name='payment_status'), nullable = False, default = 'unpaid')
     delivery_status = db.Column(db.Enum('waiting', 'preparing', 'ready', 'on the way', 'delivered', name='delivery_status'), nullable = False, default = 'waiting')
     time_placed = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())

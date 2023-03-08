@@ -43,18 +43,22 @@
                                 <h4>Status: {{ order.status }}</h4>
                                 <h4>Delivery Status: {{ order.delivery_status }}</h4>
                             </div>
+                            {% if order.payment_status == 'unpaid'%}
+                            <form action="{{url_for('customer.pay_now', order_id = order.id)}}">
+                                <button class="btn btn-success">Pay Now<i class="fa-regular fa-credit-card" style="margin-left: 10px;"></i></button>
+                            </form>
+                            {% else %}
+                                <button class="btn btn-success" disabled>Order paid</button>
+                            {% endif %}
                         </div>
+                        
                     </div>
+                    
                 </div>
             {% endfor %}
         </div>
     </div>
-    
-    <div style="margin-top: 5px; margin-left: 3%; text-align: center;">
-        <form action="{{url_for('customer.pay_now')}}">
-            <button class="btn btn-success">Pay Now    <i class="fa-regular fa-credit-card"></i></button>
-        </form>
-    </div>
+
 
     <script>
         function refreshPage() {
