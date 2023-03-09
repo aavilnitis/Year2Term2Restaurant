@@ -8,13 +8,13 @@ def add_to_cart(item_id):
     user_id = session.get('user_id')
     item_id = int(request.form.get("item_id"))
     menu_item = MenuItem.query.get(item_id)
-    cart_item = CartItem.query.filter_by(menu_item_id=item_id).first()
+    cart_item = CartItem.query.filter_by(user_id=user_id, menu_item_id=item_id).first()
     
     if cart_item:
         cart_item.quantity += 1
         cart_item.item_price += menu_item.price
     else:
-        cart_item = CartItem(user_id=user_id,menu_item_id=item_id, quantity=1, item_price=menu_item.price)
+        cart_item = CartItem(user_id=user_id, menu_item_id=item_id, quantity=1, item_price=menu_item.price)
         db.session.add(cart_item)
     
     db.session.commit()
@@ -22,10 +22,17 @@ def add_to_cart(item_id):
 
 
 def remove_from_cart(id):
-    cart_items = session['cart']
-    if id in cart_items:
-        cart_items.remove(id)
-    session["cart"] = cart_items
+    user_id = session.get('user_id')
+    menu_item = MenuItem.query.get(id)
+    cart_item = CartItem.query.filter_by(user_id=user_id, menu_item_id=id).first()
+
+    if cart_item.quantity > 1:
+        cart_item.quantity -= 1
+        cart_item.item_price -= menu_item.price
+    else:
+        db.session.delete(cart_item)
+    db.session.commit()
+    flash(f"1 x{menu_item.name} has been removed from your cart", "success")
 
 
 def confirm_cart(cart_ids):
