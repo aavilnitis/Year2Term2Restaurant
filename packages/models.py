@@ -42,9 +42,9 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     order_menu_items = db.relationship("OrderMenuItem", backref = "order", lazy = "dynamic")
     order_total = db.Column(db.Float, nullable = False, default = 0)
-    status = db.Column(db.Enum('complete', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
+    status = db.Column(db.Enum('confirmed', 'incomplete', name='order_status'), nullable = False, default = 'incomplete')
     payment_status = db.Column(db.Enum('paid', 'unpaid', name='payment_status'), nullable = False, default = 'unpaid')
-    delivery_status = db.Column(db.Enum('waiting', 'preparing', 'ready', 'on the way', 'delivered', name='delivery_status'), nullable = False, default = 'waiting')
+    delivery_status = db.Column(db.Enum('waiting', 'preparing', 'ready', 'otw', 'delivered', name='delivery_status'), nullable = False, default = 'waiting')
     time_placed = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     
     def __init__(self, user_id, order_menu_items, order_total = 0, status = 'incomplete', payment_status = 'unpaid', delivery_status = 'waiting', time_placed = None):
@@ -99,10 +99,18 @@ class Notification(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     table_number = db.Column(db.Integer, db.ForeignKey('users.table_number'))
     status = db.Column(db.Enum('helped', 'not_helped', name = 'notification_status'), nullable=False, default='not_helped')
+    message = db.Column(db.String(1000), nullable = True)
+    notification_type = db.Column(db.Enum('help', 'table', name = 'notification_status'), nullable=True, default='not_helped')
 
-    def __init__(self, user_id, table_number):
+    def __init__(self, user_id, table_number, notification_type = None):
         self.user_id = user_id
         self.table_number = table_number
+        self.notification_type = notification_type
+        if self.notification_type == 'help':
+            self.message = "Client (ID: " + str(self.user_id) + ")" + " needs help at table: " + str(self.table_number)
+        elif self.notification_type == 'table':
+            self.message = "Client (ID: " + str(self.user_id) + ")" + " has set registered at table: " + str(self.table_number)
+            
         #if User.query.filter_by(id = user_id, user_type = 'customer').first() and table_number is not None:
         #    self.user_id = user_id
         #    self.table_number = table_number

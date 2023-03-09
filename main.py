@@ -11,9 +11,9 @@ from kitchen.kitchen import kitchen
 from admin.admin import admin
 import bcrypt
 
-if os.path.exists("instance/database.db"):
-    print('is database')
-    os.remove("instance/database.db")
+#if os.path.exists("instance/database.db"):
+#    print('is database')
+#    os.remove("instance/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
@@ -30,10 +30,16 @@ app.register_blueprint(admin, url_prefix="/admin")
 
 @app.route('/', methods = ['POST', 'GET'])
 def home():
-    if not User.query.filter_by(username='waiter').first():
-        username = 'waiter'
+    if not User.query.filter_by(username='waiter1').first():
         passw = 'waiter'
-        db.session.add(User(username, bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter'))
+        waiter = User('waiter', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 1, 10)
+        waiter1 = User('waiter1', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 11, 20)
+        waiter2 = User('waiter2', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 21, 30)
+        waiter3 = User('waiter3', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 31, 40)
+        db.session.add(waiter)
+        db.session.add(waiter1)
+        db.session.add(waiter2)
+        db.session.add(waiter3)
         db.session.commit()
         
     if 'user' in session:
@@ -45,6 +51,7 @@ def home():
             return "smth went wrong"
     else:
         return redirect(url_for("login_view.login"))
+
     
 @app.route('/logout')
 def logout():
