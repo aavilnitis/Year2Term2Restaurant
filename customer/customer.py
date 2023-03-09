@@ -3,7 +3,7 @@ from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, 
 import functools
 from sqlalchemy.sql import text
 from .static.functions.customer_functions import populate_menu, customer_required, notification, check_tables
-from .static.functions.customer_cart_functions import create_cart, add_to_cart, remove_from_cart, confirm_cart
+from .static.functions.customer_cart_functions import add_to_cart, remove_from_cart, confirm_cart
 
 # register customer_view as a Flask Blueprint
 customer = Blueprint("customer", __name__, static_folder="static", template_folder="templates")
@@ -90,9 +90,10 @@ def removeFromCart(id):
 @customer.route('/confirm_cart', methods=['POST', 'GET'])
 @customer_required
 def confirmCart():
-    cart_ids = session['cart']
-    if len(cart_ids) > 0:
-        order_id = confirm_cart(cart_ids)
+    user_id = session.get('user_id')
+    cart_items = CartItem.query.filter_by(user_id=user_id).all()
+    if len(cart_items) > 0:
+        order_id = confirm_cart(cart_items)
         return redirect(url_for("customer.show_order", order_id=order_id))
     else:
         return redirect(url_for("customer.cart"))

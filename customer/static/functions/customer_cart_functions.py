@@ -1,9 +1,6 @@
 from flask import session, request, flash
 from packages.models import MenuItem, Order, OrderMenuItem, CartItem, db
 
-def create_cart():
-    session['cart'] = []
-
 def add_to_cart(item_id):
     user_id = session.get('user_id')
     item_id = int(request.form.get("item_id"))
@@ -35,28 +32,20 @@ def remove_from_cart(id):
     flash(f"1 x{menu_item.name} has been removed from your cart", "success")
 
 
-def confirm_cart(cart_ids):
+def confirm_cart(cart_items):
     user_id = session.get('user_id')
     order = Order(user_id=user_id, order_menu_items=[])
     order_total = 0
     db.session.add(order)
     db.session.flush()
-    for cart_id in cart_ids:
-        menu_item = MenuItem.query.filter_by(id = cart_id).first()
-        order_menu_item = OrderMenuItem.query.filter_by(order_id = order.id, menu_item_id = menu_item.id).first()
-        if order_menu_item:
-            order_menu_item.quantity += 1
-            order_total += menu_item.price
-        else:
-            order_menu_item = OrderMenuItem(order_id=order.id, menu_item_id=menu_item.id, quantity=1)
-            db.session.add(order_menu_item)
-            order_total += menu_item.price
-        item_total = order_menu_item.quantity * menu_item.price
-        order_menu_item.item_price = item_total
+    for cart_item in cart_items:
+        menu_item = MenuItem.query.filter_by(id = cart_item.menu_item_id).first()
+        order_menu_item = OrderMenuItem(order_id=order.id, menu_item_id=menu_item.id, quantity=cart_item.quantity, item_price = cart_item.item_price)
+        order_total += order_menu_item.item_price
+        db.session.add(order_menu_item)
         order.order_menu_items.append(order_menu_item)
     order_total = round(order_total, 2)
     order.order_total = order_total        
-    session['cart'] = []
     db.session.commit()
     flash('Order sent to restaurant', category='success')
     return order.id
