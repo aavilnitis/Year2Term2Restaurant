@@ -46,6 +46,16 @@ def home():
     else:
         return render_template('admin-home.html', help_needed = False)
     
+@admin.route('add-new-staff', methods=['GET', 'POST'])
+def add_new_staff():
+    if request.method == 'POST':
+        staff_type = request.form['staff_type']
+        if staff_type == 'Kitchen Staff':
+            return redirect(url_for('admin.kitchen'))
+        elif staff_type == 'Waiter':
+            return redirect(url_for('admin.add_waiter'))
+    return render_template('add-new-staff.html')
+    
 @admin.route('/remove-notification/<int:notif_id>', methods = ['POST'])
 def remove_notification(notif_id):
     notification = Notification.query.filter_by(id = notif_id).first()
