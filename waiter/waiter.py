@@ -87,9 +87,21 @@ def removeNotificationPage(notif_id):
 @waiter.route('view-orders')
 @waiter_required
 def viewOrders():
-    orders = Order.query.all()
+    waiter = User.query.get(session['user_id'])
+
+    
+    users = User.query.filter(User.table_number >= waiter.table_number_start, User.table_number <= waiter.table_number_end).all()
+    user_ids = []
+    for user in users:
+        user_ids.append(user.id)
+    
+    orders = []
+    all_orders = Order.query.all()
+    for order in all_orders:
+        if order.user_id in user_ids:
+            orders.append(order)
     menu_items = MenuItem.query.all()
-    users = User.query.all()
+    
     return render_template('waiter-view-order.html', orders = orders, menu_items = menu_items, users = users)
 
 # Flask route to confirm order
