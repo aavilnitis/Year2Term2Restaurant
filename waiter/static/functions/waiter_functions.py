@@ -30,7 +30,7 @@ def waiter_required(func):
                 return redirect(url_for('customer.home'))
             if session.get('user') == 'admin':
                 return redirect(url_for('admin.home'))
-            if session.get('user') == 'kitchen':
+            if session.get('user') == 'kitchen_staff':
                 return redirect(url_for('kitchen.home'))
             else: 
                 return "something went wrong"
