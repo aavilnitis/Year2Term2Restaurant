@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Shopping Cart {% endblock %}
+{% block content %}  
+<div class="container mt-5">    
+    <h1 class="text-center">Add New Staff</h1>    
+    <form method="post" class="form-group">      
+        <label for="staff_type">Staff Type:</label>     
+         <select id="staff_type" name="staff_type" class="form-control">           
+             <option value="Kitchen Staff">Kitchen Staff</option>            
+             <option value="Waiter">Waiter</option>      
+            </select>    
+        </br>      
+        <center>      
+            <button type="submit" class="btn btn-primary mt-3">Add</button>      
+        </center>    
+    </form>  
+</div>
+{% endblock %}
