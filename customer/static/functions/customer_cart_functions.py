@@ -1,5 +1,5 @@
 from flask import session, request, flash
-from packages.models import MenuItem, Order, OrderMenuItem, CartItem, db
+from packages.models import MenuItem, Order, Notification, OrderMenuItem, CartItem, db
 
 def add_to_cart(item_id, quantity):
     user_id = session.get('user_id')
@@ -33,6 +33,7 @@ def remove_from_cart(id):
 
 def confirm_cart(cart_items):
     user_id = session.get('user_id')
+    table_number = session.get('table_number')
     order = Order(user_id=user_id, order_menu_items=[])
     order_total = 0
     db.session.add(order)
@@ -48,7 +49,9 @@ def confirm_cart(cart_items):
 
     for cart_item in cart_items:
         db.session.delete(cart_item)     
-
+        
+    notif = Notification(user_id, table_number, 'new-order')
+    db.session.add(notif)
     db.session.commit()
     flash('Order sent to restaurant', category='success')
     return order.id
