@@ -17,6 +17,10 @@ def customer_required(func):
         if session.get('user') != 'customer':
             if session.get('user') == 'waiter':
                 return redirect(url_for('waiter.home'))
+            if session.get('user') == 'admin':
+                return redirect(url_for('admin.home'))
+            if session.get('user') == 'kitchen':
+                return redirect(url_for('kitchen.home'))
             else: 
                 return "something went wrong"
         return func(*args, **kwargs)

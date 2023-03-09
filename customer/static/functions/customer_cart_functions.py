@@ -1,21 +1,23 @@
 from flask import session, request, flash
-from packages.models import MenuItem, Order, OrderMenuItem, db
+from packages.models import MenuItem, Order, OrderMenuItem, CartItem, db
 
 def create_cart():
     session['cart'] = []
 
 def add_to_cart(item_id):
+    user_id = session.get('user_id')
     item_id = int(request.form.get("item_id"))
-    if 'cart' in session:
-        cart = session['cart']
-        cart.append(item_id)
-        session['cart'] = cart
-    else: 
-        create_cart()
-        cart = session['cart']
-        cart.append(item_id)
-        session['cart'] = cart
     menu_item = MenuItem.query.get(item_id)
+    cart_item = CartItem.query.filter_by(menu_item_id=item_id).first()
+    
+    if cart_item:
+        cart_item.quantity += 1
+        cart_item.item_price += menu_item.price
+    else:
+        cart_item = CartItem(user_id=user_id,menu_item_id=item_id, quantity=1, item_price=menu_item.price)
+        db.session.add(cart_item)
+    
+    db.session.commit()
     flash(f"{menu_item.name} has been added to your cart", "success")
 
 

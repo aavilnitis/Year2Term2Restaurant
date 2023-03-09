@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for, flash
-from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, db
+from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, CartItem, db
 import functools
 from sqlalchemy.sql import text
 from .static.functions.customer_functions import populate_menu, customer_required, notification, check_tables
@@ -73,17 +73,10 @@ def addToCart():
 @customer.route('/cart')
 @customer_required
 def cart():
-    if 'cart' in session:
-        cart = session['cart']
-        cart_items = []
-        for id in cart:
-            cart_item = MenuItem.query.filter_by(id=id).first()
-            if cart_item:
-                cart_items.append(cart_item)
-        return render_template("cart.html", cart_items = cart_items)
-    else:
-        create_cart()
-        return redirect(url_for("customer.cart"))
+    user_id = session.get('user_id')
+    cart_items = CartItem.query.filter_by(user_id=user_id).all()
+    menu_items = MenuItem.query.all()
+    return render_template("cart.html", cart_items = cart_items, menu_items = menu_items)
 
 # Flask route to remove an item from the cart and redirect the customer back to the cart page
 # This route isn't accessed manually, but instead from pressing "remove" button in cart

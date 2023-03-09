@@ -67,6 +67,13 @@ class OrderMenuItem(db.Model):
     quantity = db.Column(db.Integer, nullable = False, default = 1)
     item_price = db.Column(db.Float, nullable = False, default = 0)
 
+class CartItem(db.Model):
+    __tablename__ = "cart_item"
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    menu_item_id = db.Column(db.Integer, db.ForeignKey("menu_items.id"), nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    quantity = db.Column(db.Integer, nullable = False, default = 1)
+    item_price = db.Column(db.Float, nullable = False, default = 0)
 
 class User(db.Model):
     __tablename__ = "users"
