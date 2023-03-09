@@ -1,8 +1,6 @@
-from flask import Flask, render_template, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
-import os
+from flask import Flask, redirect, url_for, session
 from packages.extensions import db
-from packages.models import MenuItem, User
+from packages.models import User
 from customer.customer import customer
 from waiter.waiter import waiter
 from signup.signup import signup
@@ -54,6 +52,7 @@ def home():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
+    session.clear()
     return redirect(url_for('home'))
 
 with app.app_context():

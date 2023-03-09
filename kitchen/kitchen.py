@@ -54,7 +54,6 @@ def removeNotificationPage(notif_id):
 # ORDERS
 @kitchen.route('view-orders')
 def viewOrders():
-    return "something"
     orders = Order.query.all()
     menu_items = MenuItem.query.all()
     users = User.query.all()
