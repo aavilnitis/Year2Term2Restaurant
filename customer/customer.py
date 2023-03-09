@@ -66,7 +66,8 @@ def filtered_menu():
 @customer_required
 def addToCart():
     item_id = int(request.form.get("item_id"))
-    add_to_cart(item_id)
+    quantity = int(request.form.get("quantity"))
+    add_to_cart(item_id, quantity)
     return redirect(url_for("customer.menu"))
 
 # Flask route to view all items that have been added to the cart

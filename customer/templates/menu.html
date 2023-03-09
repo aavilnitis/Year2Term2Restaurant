@@ -59,6 +59,10 @@
                 </div>
                 <form action="{{url_for('customer.addToCart')}}" method="post">
                   <input type="hidden" name="item_id" value="{{item.id}}">
+                  <div class="form-group">
+                    <label for="quantity-{{ item.id }}">Quantity:</label>
+                    <input type="number" class="form-control" id="quantity-{{ item.id }}" name="quantity" min="1" value="1">
+                  </div>
                   <button class="btn btn-primary">Add to order</button>
                 </form>
               </div>

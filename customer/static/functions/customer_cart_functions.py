@@ -1,17 +1,16 @@
 from flask import session, request, flash
 from packages.models import MenuItem, Order, OrderMenuItem, CartItem, db
 
-def add_to_cart(item_id):
+def add_to_cart(item_id, quantity):
     user_id = session.get('user_id')
-    item_id = int(request.form.get("item_id"))
     menu_item = MenuItem.query.get(item_id)
     cart_item = CartItem.query.filter_by(user_id=user_id, menu_item_id=item_id).first()
     
     if cart_item:
-        cart_item.quantity += 1
-        cart_item.item_price += menu_item.price
+        cart_item.quantity += quantity
+        cart_item.item_price += (quantity * menu_item.price)
     else:
-        cart_item = CartItem(user_id=user_id, menu_item_id=item_id, quantity=1, item_price=menu_item.price)
+        cart_item = CartItem(user_id=user_id, menu_item_id=item_id, quantity=quantity, item_price=(quantity * menu_item.price))
         db.session.add(cart_item)
     
     db.session.commit()
@@ -49,7 +48,7 @@ def confirm_cart(cart_items):
 
     for cart_item in cart_items:
         db.session.delete(cart_item)     
-        
+
     db.session.commit()
     flash('Order sent to restaurant', category='success')
     return order.id
