@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %} Shopping Cart {% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="text-center">Add Waiter</h1>
+    <form method="post" class="form-group">
+      <label for="username">Username:</label>
+      <input type="username" id="username" name="username" required class="form-control">
+    </br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required class="form-control">
+    
+    </br>
+      <label for="table_number_start">Table Number Start:</label>
+      <select id="table_number_start" name="table_number_start" class="form-control">
+        {% for user in users %}
+          {% if user.user_type == 'customer' and user.table_number is not none %}
+            <option value="{{ user.table_number }}">{{ user.table_number }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </br>
+    <label for="table_number_end">Table Number End:</label>
+    <select id="table_number_end" name="table_number_end" class="form-control">
+      {% for user in users %}
+        {% if user.user_type == 'customer' and user.table_number is not none %}
+          <option value="{{ user.table_number }}">{{ user.table_number }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+
+      <center>
+      <button type="submit" class="btn btn-primary mt-3">Add</button>
+      </center>
+
+    </form>
+
+  </div>
+{% endblock %}
