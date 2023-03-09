@@ -45,7 +45,11 @@ def confirm_cart(cart_items):
         db.session.add(order_menu_item)
         order.order_menu_items.append(order_menu_item)
     order_total = round(order_total, 2)
-    order.order_total = order_total        
+    order.order_total = order_total   
+
+    for cart_item in cart_items:
+        db.session.delete(cart_item)     
+        
     db.session.commit()
     flash('Order sent to restaurant', category='success')
     return order.id
