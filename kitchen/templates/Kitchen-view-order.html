@@ -50,6 +50,10 @@
           {% else %}
             {% if item.delivery_status == 'waiting' %}
               <form action="{{ url_for('kitchen.changeDelivery', order_id=item.id, status = 'preparing') }}" method="post">
+                <button type="submit" class="btn btn-success order-button"> Preparing! </button>
+              </form>
+            {% elif item.delivery_status == 'preparing' %}
+              <form action="{{ url_for('kitchen.changeDelivery', order_id=item.id, status = 'ready') }}" method="post">
                 <button type="submit" class="btn btn-success order-button"> Ready! </button>
               </form>
             {% else %}
