@@ -107,7 +107,7 @@ class Notification(db.Model):
     table_number = db.Column(db.Integer, db.ForeignKey('users.table_number'))
     status = db.Column(db.Enum('helped', 'not_helped', name = 'notification_status'), nullable=False, default='not_helped')
     message = db.Column(db.String(1000), nullable = True)
-    notification_type = db.Column(db.Enum('help', 'table', name = 'notification_status'), nullable=True, default='not_helped')
+    notification_type = db.Column(db.Enum('help', 'table', 'new-order', name = 'notification_status'), nullable=True, default='not_helped')
 
     def __init__(self, user_id, table_number, notification_type = None):
         self.user_id = user_id
@@ -117,6 +117,8 @@ class Notification(db.Model):
             self.message = "Client (ID: " + str(self.user_id) + ")" + " needs help at table: " + str(self.table_number)
         elif self.notification_type == 'table':
             self.message = "Client (ID: " + str(self.user_id) + ")" + " has set registered at table: " + str(self.table_number)
+        elif self.notification_type == 'new-order':
+            self.message = "Client (ID: " + str(self.user_id) + ")" + " placed a new order at table: " + str(self.table_number)
             
         #if User.query.filter_by(id = user_id, user_type = 'customer').first() and table_number is not None:
         #    self.user_id = user_id
