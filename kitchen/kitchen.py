@@ -31,7 +31,7 @@ def removeNotification(notif_id):
     notification = Notification.query.filter_by(id = notif_id).first()
     db.session.delete(notification)
     db.session.commit()
-    return redirect(url_for('waiter.home'))
+    return redirect(url_for('kitchen.home'))
 
 @kitchen.route('/remove-notification-page/<int:notif_id>', methods = ['POST'])
 @kitchenstaff_required
@@ -39,7 +39,7 @@ def removeNotificationPage(notif_id):
     notification = Notification.query.filter_by(id = notif_id).first()
     db.session.delete(notification)
     db.session.commit()
-    return redirect(url_for('waiter.viewNotifications'))
+    return redirect(url_for('kitchen.viewNotifications'))
 
 
 
