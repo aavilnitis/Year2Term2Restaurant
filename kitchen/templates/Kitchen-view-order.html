@@ -8,12 +8,10 @@
   <thead>
     <tr>
       <th>Order ID</th>
-      <th>User ID</th>
       <th>Table number</th>
       <th>Menu Items</th>
-      <th>Order Total</th>
       <th>Order Status</th>
-      <th>Payment Staus</th>
+      <th>Delivery status</th>
       <th>Time Placed</th>
       <th>Actions</th>
     </tr>
@@ -22,7 +20,6 @@
     {% for item in orders %}
       <tr>
         <td>{{ item.id }}</td>
-        <td>{{ item.user_id }}</td>
         <td>
           {% for user in users %}
             {% if user.id == item.user_id %}
@@ -31,7 +28,7 @@
           {% endfor %}
         </td>        
         <td>
-          <ul>
+          <ol>
             {% for order_menu_item in item.order_menu_items %}
               {% for menu_item in menu_items %}
                 {% if order_menu_item.menu_item_id == menu_item.id %}
@@ -42,16 +39,23 @@
                 {% endif %}
               {% endfor %}
             {% endfor %}
-          </ul>
+          </ol>
         </td>
-        
-      
-        <td>£{{ item.order_total }}</td>
         <td>{{ item.status }}</td>
-        <td>{{ item.payment_status }}</td>
+        <td>{{item.delivery_status}}</td>
         <td>{{ item.time_placed.strftime('%Y-%m-%d %H:%M:%S') }}</td>
         <td class="button-cell">
-          Actions
+          {% if item.status == 'incomplete' %}
+            <p>Wait for order status to update</p>
+          {% else %}
+            {% if item.delivery_status == 'waiting' %}
+              <form action="{{ url_for('kitchen.changeDelivery', order_id=item.id, status = 'preparing') }}" method="post">
+                <button type="submit" class="btn btn-success order-button"> Ready! </button>
+              </form>
+            {% else %}
+              <p>Order Complete!</p>
+            {% endif %}
+          {% endif %}
         </td>
       </tr>
     {% endfor %}
@@ -61,11 +65,14 @@
 </div>
 
 <style>
-  .button-cell {
-      height: 100%;
-      display: flex;
-      align-items: center;
+  ol {
+    padding: 0;
+    margin: 0;
   }
+
+ol li{
+        margin-left: 0;
+}
 </style>
 {%endblock%}
 

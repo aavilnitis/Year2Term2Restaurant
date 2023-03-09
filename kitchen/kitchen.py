@@ -83,7 +83,7 @@ def cancelOrder(order_id):
 @kitchenstaff_required
 def changeDelivery(order_id, status):
     change_delivery(order_id, status)
-    return redirect(url_for('waiter.viewOrders'))
+    return redirect(url_for('kitchen.viewOrders'))
     
 
 
