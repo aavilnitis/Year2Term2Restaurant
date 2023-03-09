@@ -17,21 +17,19 @@
         <td>{{ notification.id }}</td>
         <td>{{ notification.user_id }}</td>
         <td>{{ notification.table_number }}</td>
-        <td>{{ notification.notification_type }}</td>
         <td>{{ notification.message }}</td>
-        <td>{{ notification.status}}</td>
         <td>
           
             {% if notification.notification_type == 'help'%}
             <form action="{{ url_for('waiter.removeNotificationPage', notif_id=notification.id) }}" method="post">
               <button type="submit" class="btn btn-success"> Customer has been helped </button>
             </form>
-            {% endif %}
-            {% if notification.notification_type == 'table'%}
+            {% else %}
               <form action="{{ url_for('waiter.removeNotificationPage', notif_id=notification.id) }}" method="post">
                 <button type="submit" class="btn btn-success"> Dismiss notification </button>
               </form>
             {% endif %}
+
           
         </td>
       </tr>
