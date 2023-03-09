@@ -10,3 +10,5 @@ admin/__pycache__/
 kitchen/__pycache__/
 customer/static/functions/__pycache__/
 waiter/static/functions/__pycache__/
+kitchen/static/functions/__pycache__/
+admin/static/functions/__pycache__/
