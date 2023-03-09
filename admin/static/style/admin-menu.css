@@ -24,6 +24,7 @@ body{
   .col-md-4 {
     display: flex;
     flex-direction: column;
+    min-width: 25vw;
   }
 
   .cards {
