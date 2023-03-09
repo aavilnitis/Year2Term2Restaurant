@@ -43,6 +43,15 @@
             <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}">Logout</a>
           </div>
         {% endif %}
+        {% if session['user'] == 'admin' %}
+          <div class="navbar-nav w-100">
+            <a class="nav-item nav-link" id="home" href="{{url_for('admin.home')}}">Home</a>
+            <a class="nav-item nav-link" id="menu" href="{{url_for('admin.menu')}}">Menu</a>
+            <a class="nav-item nav-link" id="cart" href="{{url_for('admin.viewOrders')}}">Orders</a>
+            <a class="nav-item nav-link" id="notifications" href="{{url_for('admin.viewNotifications')}}">Notifications</a>
+            <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}">Logout</a>
+          </div>
+        {% endif %}
       </div>
     </nav>
     

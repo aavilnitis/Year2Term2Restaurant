@@ -25,21 +25,15 @@ app.register_blueprint(waiter, url_prefix="/waiter")
 app.register_blueprint(signup, url_prefix="/signup")
 app.register_blueprint(login_view, url_prefix="/login")
 app.register_blueprint(kitchen, url_prefix="/kitchen")
-app.register_blueprint(admin, url_prefix="/admin")
+app.register_blueprint(admin, url_prefix="/manager")
 
 
 @app.route('/', methods = ['POST', 'GET'])
 def home():
-    if not User.query.filter_by(username='waiter1').first():
-        passw = 'waiter'
-        waiter = User('waiter', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 1, 10)
-        waiter1 = User('waiter1', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 11, 20)
-        waiter2 = User('waiter2', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 21, 30)
-        waiter3 = User('waiter3', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 31, 40)
-        db.session.add(waiter)
-        db.session.add(waiter1)
-        db.session.add(waiter2)
-        db.session.add(waiter3)
+    if not User.query.filter_by(username='admin').first():
+        passw = 'admin'
+        admin = User('admin', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'admin')
+        db.session.add(admin)
         db.session.commit()
         
     if 'user' in session:
@@ -47,6 +41,10 @@ def home():
             return redirect(url_for('customer.home'))
         elif session['user'] == 'waiter':
             return redirect(url_for('waiter.home'))
+        elif session['user'] == 'admin':
+            return redirect(url_for('admin.home'))
+        elif session['user'] == 'kitchen_staff':
+            return redirect(url_for('kitchen.home'))
         else:
             return "smth went wrong"
     else:

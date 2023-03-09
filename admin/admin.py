@@ -3,53 +3,55 @@ from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, 
 import functools
 from sqlalchemy.sql import text
 import bcrypt
-
-from waiter.waiter import namesToArray, split_string
+from waiter.static.functions.waiter_functions import names_to_array, split_string, populate_menu
 
 # register customer_view as a Flask Blueprint
 admin = Blueprint("admin", __name__, static_folder="static", template_folder="templates")
 
-
-def split_string(input_string):
-    return [word.strip() for word in input_string.split(',')]
-
-def namesToArray(ingredient_names):
-    ingredients = []
-    for ingredient_name in ingredient_names:
-        ingredient = Ingredient.query.filter_by(name=ingredient_name).first()
-        if ingredient:
-            ingredients.append(ingredient)
-    return ingredients
-
-# Populates the database with premade SQL inserts
-def populate_menu():
-    with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
-        lines = f.readlines()
-        for line in lines:
-            db.session.execute(text(line))
-            db.session.commit()
-
-def waiter_required(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        if session.get('user') != 'waiter': # Consider changing to 'admin' once 
-            if session.get('user') == 'customer':
-                return redirect(url_for('customer.home'))
-            else: 
-                return "something went wrong"
-        return func(*args, **kwargs)
-    return wrapper
+def checkClearedNotifs():
+    if 'cleared_notifs' not in session:
+        session['cleared_notifs'] = []
+    notifications = []
+    notifications_database = Notification.query.all()
+    cleared_notifs = session['cleared_notifs']
+    for notification in notifications_database:
+        if notification.id not in cleared_notifs:
+            notifications.append(notification)
+    return notifications
+    
 
 @admin.route('/')
 def home():
-    notifications = Notification.query.all()
-    if notifications:
-        return render_template('admin-home.html', notifications = notifications, help_needed = True)
+    notifications = checkClearedNotifs()
+    if len(notifications) > 0:
+        return render_template('admin-home.html', notifications = notifications)
     else:
-        return render_template('admin-home.html', help_needed = False)
+        return render_template('admin-home.html')
+    
+    
+@admin.route('view-notifications')
+def viewNotifications():
+    notifications = checkClearedNotifs()
+    return render_template('admin-view-notifications.html', notifications = notifications)
+
+@admin.route('/remove-notification-page/<int:notif_id>', methods = ['POST'])
+def removeNotificationPage(notif_id):
+    cleared_notifs = session['cleared_notifs']
+    cleared_notifs.append(notif_id)
+    session['cleared_notifs'] = cleared_notifs
+    return redirect(url_for('admin.viewNotifications'))
+
+@admin.route('/remove-notification/<int:notif_id>', methods = ['POST'])
+def removeNotification(notif_id):
+    cleared_notifs = session['cleared_notifs']
+    cleared_notifs.append(notif_id)
+    session['cleared_notifs'] = cleared_notifs
+    return redirect(url_for('admin.home'))
+    
+
     
 @admin.route('add-new-staff', methods=['GET', 'POST'])
-def add_new_staff():
+def addNewKitchen():
     if request.method == 'POST':
         staff_type = request.form['staff_type']
         if staff_type == 'Kitchen Staff':
@@ -57,28 +59,11 @@ def add_new_staff():
         elif staff_type == 'Waiter':
             return redirect(url_for('admin.add_waiter'))
     return render_template('add-new-staff.html')
-    
-@admin.route('/remove-notification/<int:notif_id>', methods = ['POST'])
-def remove_notification(notif_id):
-    notification = Notification.query.filter_by(id = notif_id).first()
-    db.session.delete(notification)
-    db.session.commit()
-    return redirect(url_for('admin.home'))
 
-@admin.route('view-notifications')
-def view_notifications():
-    notifications = Notification.query.all()
-    return render_template('waiter-view-notifications.html', notifications = notifications)
 
-@admin.route('/customer_helped/<int:notification_id>', methods=['POST'])
-def customer_helped(notification_id):
-    notification = Notification.query.get(notification_id)
-    notification.status = "helped"
-    db.session.commit()
-    return redirect(url_for('admin.view_notifications'))
     
 @admin.route('view-orders')
-def view_orders():
+def viewOrders():
     orders = Order.query.all()
     menu_items = MenuItem.query.all()
     users = User.query.all()
@@ -92,37 +77,37 @@ def menu():
     menu_items = MenuItem.query.all()
     return render_template('waiter-menu.html', menu_items=menu_items)
 
-@admin.route('/remove-item/<int:item_id>', methods = ['GET','POST'])
-def remove_item(item_id):
-    item = MenuItem.query.get(item_id)
-    if item:
-        db.session.delete(item)
-        db.session.commit() 
-    return redirect(url_for('admin.menu'))
+# @admin.route('/remove-item/<int:item_id>', methods = ['GET','POST'])
+# def remove_item(item_id):
+#     item = MenuItem.query.get(item_id)
+#     if item:
+#         db.session.delete(item)
+#         db.session.commit() 
+#     return redirect(url_for('admin.menu'))
     
 
 
-@admin.route('/add-item', methods=['GET', 'POST'])
-def add_item():
-    if request.method == 'POST':
-        name = request.form.get('name')
-        price = request.form.get('price')
-        description = request.form.get('description')
-        ingredient_names = split_string(request.form.get('ingredients'))
-        for ingredient_name in ingredient_names:
-            if Ingredient.query.filter_by(name=ingredient_name).first() == None:
-                db.session.add(Ingredient(name = ingredient_name))
-                db.session.commit()
-        ingredients = namesToArray(ingredient_names)
-        calories = request.form.get('calories')
-        type = request.form.get('type')
+# @admin.route('/add-item', methods=['GET', 'POST'])
+# def add_item():
+#     if request.method == 'POST':
+#         name = request.form.get('name')
+#         price = request.form.get('price')
+#         description = request.form.get('description')
+#         ingredient_names = split_string(request.form.get('ingredients'))
+#         for ingredient_name in ingredient_names:
+#             if Ingredient.query.filter_by(name=ingredient_name).first() == None:
+#                 db.session.add(Ingredient(name = ingredient_name))
+#                 db.session.commit()
+#         ingredients = names_to_array(ingredient_names)
+#         calories = request.form.get('calories')
+#         type = request.form.get('type')
         
-        menu_item = MenuItem(name = name, price = price, description = description, ingredients = ingredients, calories = calories, type = type)
-        db.session.add(menu_item)
-        db.session.commit()
-        return redirect(url_for('admin.menu'))
-    types = db.session.query(MenuItem.type).distinct()
-    return render_template('add_item.html', types = types)
+#         menu_item = MenuItem(name = name, price = price, description = description, ingredients = ingredients, calories = calories, type = type)
+#         db.session.add(menu_item)
+#         db.session.commit()
+#         return redirect(url_for('admin.menu'))
+#     types = db.session.query(MenuItem.type).distinct()
+#     return render_template('add_item.html', types = types)
 
 # Flask route to cancel an order
 # Delete the order from the database
@@ -192,7 +177,7 @@ def add_item():
             if Ingredient.query.filter_by(name=ingredient_name).first() == None:
                 db.session.add(Ingredient(name = ingredient_name))
                 db.session.commit()
-                ingredients = namesToArray(ingredient_names)
+                ingredients = names_to_array(ingredient_names)
                 calories = request.form.get('calories')
                 type = request.form.get('type')
                 menu_item = MenuItem(name = name, price = price, 
