@@ -50,13 +50,31 @@
         <td>{{ item.status }}</td>
         <td>{{ item.payment_status }}</td>
         <td>{{ item.time_placed.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-        <td>
-          <form action="{{ url_for('waiter.cancel_order', order_id=item.id) }}" method="post">
-            <button type="submit" class="btn btn-danger"> Cancel Order </button>
+        <td class="button-cell">
+          {% if item.status == 'incomplete'%}
+          <form action="{{ url_for('waiter.cancelOrder', order_id=item.id) }}" method="post">
+            <button type="submit" class="btn btn-danger order-button"> Cancel Order </button>
           </form>
-          <form action="{{ url_for('waiter.confirm_order', order_id=item.id) }}" method="post">
-            <button type="submit" class="btn btn-success"> Confirm Order </button>
+          <form action="{{ url_for('waiter.confirmOrder', order_id=item.id) }}" method="post">
+            <button type="submit" class="btn btn-success order-button"> Confirm Order </button>
           </form>
+          {% endif %}
+          {% if item.status == 'confirmed'%}
+            {% if item.delivery_status == 'ready'%}
+              <form action="{{ url_for('waiter.changeDelivery', order_id=item.id, status = 'otw') }}" method="post">
+                <button type="submit" class="btn btn-success order-button"> On the Way! </button>
+              </form>
+            {% elif item.delivery_status == 'otw'%}
+              <form action="{{ url_for('waiter.changeDelivery', order_id=item.id, status = 'delivered') }}" method="post">
+                <button type="submit" class="btn btn-success order-button"> Delivered </button>
+              </form>
+            {% elif item.delivery_status == 'delivered'%}
+              <p>Order Complete</p>
+            {% else %}
+              <p>Wait for Delivery <br> status to update</p>
+            {% endif %}
+
+          {% endif %}
         </td>
       </tr>
     {% endfor %}
@@ -64,9 +82,14 @@
 </table>
 </div>
 </div>
+
+<style>
+  .button-cell {
+      height: 100%;
+      display: flex;
+      align-items: center;
+  }
+</style>
 {%endblock%}
-
-
-
 
 
