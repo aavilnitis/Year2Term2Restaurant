@@ -100,7 +100,7 @@ def removeItem(item_id):
 
 # ADD WAITER/KITCHEN
 @admin.route('add-new-staff', methods=['GET', 'POST'])
-def addNewKitchen():
+def addNewStaff():
     if request.method == 'POST':
         user_type = request.form.get('user_type')
         username = request.form.get('username')
