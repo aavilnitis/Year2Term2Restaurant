@@ -1,18 +1,75 @@
 {% extends "base.html" %}
 {% block title %} Shopping Cart {% endblock %}
-{% block content %}  
-<div class="container mt-5">    
-    <h1 class="text-center">Add New Staff</h1>    
-    <form method="post" class="form-group">      
-        <label for="staff_type">Staff Type:</label>     
-         <select id="staff_type" name="staff_type" class="form-control">           
-             <option value="Kitchen Staff">Kitchen Staff</option>            
-             <option value="Waiter">Waiter</option>      
-            </select>    
-        </br>      
-        <center>      
-            <button type="submit" class="btn btn-primary mt-3">Add</button>      
-        </center>    
-    </form>  
-</div>
-{% endblock %}
+{% block content %}  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
+    .form-container {
+    width: 60%;
+    margin: 0 auto;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-container">
+                    <form method="POST" >
+                        <div class="form-group">
+                            <label for="user_type">Select User Type:</label>
+                            <select name="user_type" id="user_type" class="form-control">
+                                <option value="">--Please select--</option>
+                                <option value="waiter">Waiter</option>
+                                <option value="kitchen">Kitchen</option>
+                            </select>
+                        </div>
+                        <!-- Waiter Fields -->
+                        <div id="waiter_fields" style="display:none;">
+                            <div class="form-group">
+                                <label for="table_number_start">Table Number Start:</label>
+                                <input type="number" name="table_number_start" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="table_number_end">Table Number End:</label>
+                                <input type="number" name="table_number_end" class="form-control">
+                            </div>
+                        </div>
+                        <!-- Kitchen Fields -->
+                        <div id="kitchen_fields" style="display:none;">
+                            <!-- No additional fields needed for kitchen user -->
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" name="username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" >Password:</label>
+                            <input type="password" name="password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var userTypeDropdown = document.getElementById("user_type");
+        var waiterFields = document.getElementById("waiter_fields");
+        var kitchenFields = document.getElementById("kitchen_fields");
+        
+        userTypeDropdown.addEventListener("change", function() {
+          if (userTypeDropdown.value === "waiter") {
+            waiterFields.style.display = "block";
+            kitchenFields.style.display = "none";
+          } else if (userTypeDropdown.value === "kitchen") {
+            waiterFields.style.display = "none";
+            kitchenFields.style.display = "block";
+          } else {
+            waiterFields.style.display = "none";
+            kitchenFields.style.display = "none";
+          }
+        });
+    </script>
+    {% endblock %}

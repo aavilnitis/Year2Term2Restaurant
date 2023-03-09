@@ -102,24 +102,31 @@ def removeItem(item_id):
 @admin.route('add-new-staff', methods=['GET', 'POST'])
 def addNewKitchen():
     if request.method == 'POST':
-        staff_type = request.form['staff_type']
-        if staff_type == 'Kitchen Staff':
-            return redirect(url_for('admin.kitchen'))
-        elif staff_type == 'Waiter':
-            return redirect(url_for('admin.add_waiter'))
+        user_type = request.form.get('user_type')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        table_number = None
+        table_number_start = None
+        table_number_end = None
+        if user_type == 'waiter':
+            table_number_start = request.form.get('table_number_start')
+            table_number_end = request.form.get('table_number_end')
+        user = User(username,bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()),user_type, table_number, table_number_start, table_number_end)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('admin.home'))
+            
     return render_template('add-new-staff.html')
 
 
-@admin.route('/add-waiter', methods=['GET', 'POST'])
-def add_waiter():
-    users = User.query.filter_by(user_type='customer').all()
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        table_number_start = request.form.get('table_number_start')
-        table_number_end = request.form.get('table_number_end')
-        waiter = User(username = username, password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()), user_type = 'waiter', table_number_start = table_number_start, table_number_end = table_number_end)
-        db.session.add(waiter)
-        db.session.commit()
-        return redirect(url_for('admin.home'))
-    return render_template("add-waiter.html", users=users)
+@admin.route('view-staff', methods = ['GET', 'POST'])
+def viewStaff():
+    users = User.query.filter(User.user_type.in_(['waiter', 'kitchen'])).all()
+    return render_template('admin-view-staff.html', users = users)
+
+@admin.route('fire-staff/<int:staff_id>', methods = ['GET', 'POST'])
+def fireStaff(staff_id):
+    user = User.query.get(staff_id)
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for('admin.viewStaff'))
