@@ -1,0 +1,102 @@
+
+ol {
+    padding: 0;
+    margin: 0;
+  }
+
+ol li{
+        margin-left: 0;
+}
+
+.view-orders{
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  color: #1b1b1b;
+}
+.table-striped{
+  color: #1b1b1b;
+  font-family: garamond;
+}
+
+.admin-home-div {
+  background-image: url("https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  background-repeat: none;
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.6);
+  background-blend-mode: darken; 
+  min-height: 90vh;
+}
+.admin-home{
+  padding-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.admin-home h1,h3{
+  color: white;
+}
+
+.admin-menu{
+  background-image: linear-gradient(rgba(0, 0, 0, 0.695),rgba(0, 0, 0, 0.782)) , url("https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  background-repeat: none;
+  background-size: cover;
+}
+
+.menu{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5%;
+}
+.menu h1{
+  color: white;
+  padding-bottom: 2%;
+}
+.cross-icon {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 20px;
+  color: red;
+}
+.col-md-4 {
+  display: flex;
+  flex-direction: column;
+  min-width: 25vw;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  /* This will make the card grow to fill the available space */
+  flex-grow: 1;
+  /* This will set a minimum height for the card */
+  flex-basis: 0;
+}
+
+.menu-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.card-body {
+  flex-grow: 1;
+}
+
+.add-staff-header{
+  padding-top: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}

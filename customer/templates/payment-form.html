@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% block title %}Payment-form{% endblock %} 
+{% block content %}
+
+<script src="https://kit.fontawesome.com/33bfa2902a.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="./static/css/payment-form.css">
+	<div class="payment-form">
+		<h1>Payment Form</h1>
+		<form action="#", method = "post">
+			<label for="card-number">Card Number:</label>
+			<input type="text" id="card-number" name="cn" placeholder="1234 5678 9012 3456" required>
+			<label for="expiry-date">Expiry Date:</label>
+			<input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
+			<label for="cvv">CVV:</label>
+			<input type="text" id="cvv" name="cvv" placeholder="123" required>
+			<label for="name-on-card">Name on Card:</label>
+			<input type="text" id="name-on-card" name="name-on-card" placeholder="John Doe" required>
+			<button type="submit">Confirm Payment <i class="fa-regular fa-credit-card"></i></button>
+		</form>
+	</div>
+
+<style>
+
+.payment-form {
+	max-width: 400px;
+	margin: 0 auto;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+.payment-form h1 {
+	text-align: center;
+}
+.payment-form form {
+	display: flex;
+	flex-direction: column;
+}
+.payment-form label {
+	margin-bottom: 10px;
+}
+.payment-form input {
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 16px;
+}
+.payment-form button {
+	padding: 10px;
+	background-color: #008CBA;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+}
+.payment-form button:hover {
+	background-color: #006B9F;
+}
+
+
+</style>
+{%endblock%}

@@ -5,23 +5,29 @@
   <div class="container">
     <h1 class="text-center my-4">Shopping Cart</h1>
     <div class="row">
-      {% for item in cart_items %}
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{ item.name }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">£{{ item.price }}</h6>
-              <p class="card-text">{{ item.description }}</p>
+      {% for cart_item in cart_items %}
+        {% for menu_item in menu_items %}
+          {% if cart_item.menu_item_id == menu_item.id %}
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ menu_item.name }}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">£{{ menu_item.price }}</h6>
+                  <p class="card-text">{{ menu_item.description }}</p>
+                  <p>Quantity: {{ cart_item.quantity }}</p>
+                  <p>Total Price: £{{ cart_item.item_price }}</p>
+                </div>
+                <div class="card-footer text-center">
+                  <a href="{{ url_for('customer.removeFromCart', id=cart_item.menu_item_id) }}" class="btn btn-danger">Remove</a>
+                </div>
+              </div>
             </div>
-            <div class="card-footer text-center">
-              <a href="{{ url_for('customer.remove_from_cart', id=item.id) }}" class="btn btn-danger">Remove</a>
-            </div>
-          </div>
-        </div>
+          {% endif %}
+        {% endfor %}
       {% endfor %}
     </div>
     <div class="text-center my-4">
-      <a href="{{ url_for('customer.confirm_cart') }}" class="btn btn-primary">Confirm Order</a>
+      <a href="{{ url_for('customer.confirmCart') }}" class="btn btn-primary">Confirm Order</a>
     </div>
   </div>
 {% endblock %}

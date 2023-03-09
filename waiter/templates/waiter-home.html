@@ -5,17 +5,19 @@
   <div class = "waiter-home">
   <h1 style="font-size: 300%">Restaurant 26</h1>
   <h3>
-    Hello Waiter!
-  </h3  >
+    Hello Waiter! 
+    Your assigned tables are {{waiter.table_number_start}} - {{waiter.table_number_end}}
+  </h3>
 
-  {% if help_needed %}
+
+  {% if not notifications == None %}
     {% for notification in notifications %}
       <div class="alert">
-        <form action="{{ url_for('waiter.remove_notification', notif_id=notification.id) }}" method="post">
+        <form action="{{ url_for('waiter.removeNotification', notif_id=notification.id) }}" method="post">
           <input type="hidden" name="notif_id" value="{{notification.id}}">
           <button class="closebtn">x</button>
         </form>
-        <strong>Client (ID: {{notification.user_id}}) needs help at table {{notification.table_number}}!</strong> 
+        <strong>{{notification.message}}</strong> 
       </div>
     {% endfor %}
     

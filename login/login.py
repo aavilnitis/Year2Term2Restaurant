@@ -21,7 +21,17 @@ def login():
                 session['user'] = found_user.user_type
                 session['user_id'] = found_user.id
                 print(found_user.id)
-                return redirect(url_for('customer.table_number'))
+                if found_user.user_type == 'customer':
+                    return redirect(url_for('customer.table_number'))
+                elif found_user.user_type == 'waiter':
+                    return redirect(url_for('waiter.home'))
+                elif found_user.user_type == 'kitchen_staff':
+                    return redirect(url_for('kitchen.home'))
+                elif found_user.user_type == 'admin':
+                    return redirect(url_for('admin.home'))
+                else:
+                    flash('Something went wrong!', category='error')
+                    return redirect(url_for('login_view.login'))
             else:
                 flash('Incorrect password', category='error')
                 return redirect(url_for('login_view.login'))

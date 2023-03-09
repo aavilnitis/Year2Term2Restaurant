@@ -1,5 +1,64 @@
 {% extends "base.html" %}
-{% block title %}Kitchen Staff Home{% endblock %}
+{% block title %}Home{% endblock %}
 {% block content %}
-    <h1>Kitchen Staff Home</h1>
-{% endblock %}
+<div class = "kitchen-home-page">
+<link rel="stylesheet" href="./static/style/kitchen-home.css">
+  <div class = "kitchen-home">
+  <h1 style="font-size: 300%">Restaurant 26</h1>
+  <h3>
+    Hello Kitchen Staff! 
+  </h3>
+
+
+  {% if not notifications == None %}
+    {% for notification in notifications %}
+      <div class="alert">
+        <form action="{{ url_for('kitchen.removeNotification', notif_id=notification.id) }}" method="post">
+          <input type="hidden" name="notif_id" value="{{notification.id}}">
+          <button class="closebtn">x</button>
+        </form>
+        <strong>{{notification.message}}</strong> 
+      </div>
+    {% endfor %}
+    
+  {% endif %}
+
+  
+
+
+    <style>
+        .alert {
+          padding: 20px;
+          background-color: #f44336;
+          color: white;
+        }
+        
+        .closebtn {
+          background: none;
+          border: none;
+          margin-left: 15px;
+          color: white;
+          font-weight: bold;
+          float: right;
+          font-size: 22px;
+          line-height: 20px;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+        
+        .closebtn:hover {
+          color: black;
+        }
+        </style>
+
+<script>
+  function refreshPage() {
+    setTimeout(() => {
+      window.location.reload();
+    }, 10000);
+  }
+  refreshPage();
+</script>
+</div>
+</div>
+{%endblock%}

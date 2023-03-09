@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script src="https://kit.fontawesome.com/95bf5595ab.js" crossorigin="anonymous"></script>
     <div class="container mt-4">
         <h1>Order Tracking</h1>
         <div class="row">
@@ -42,12 +43,22 @@
                                 <h4>Status: {{ order.status }}</h4>
                                 <h4>Delivery Status: {{ order.delivery_status }}</h4>
                             </div>
+                            {% if order.payment_status == 'unpaid'%}
+                            <form action="{{url_for('customer.pay_now', order_id = order.id)}}">
+                                <button class="btn btn-success">Pay Now<i class="fa-regular fa-credit-card" style="margin-left: 10px;"></i></button>
+                            </form>
+                            {% else %}
+                                <button class="btn btn-success" disabled>Order paid</button>
+                            {% endif %}
                         </div>
+                        
                     </div>
+                    
                 </div>
             {% endfor %}
         </div>
     </div>
+
 
     <script>
         function refreshPage() {
