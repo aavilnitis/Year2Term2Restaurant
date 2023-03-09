@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, redirect, session, url_for
 from packages.models import MenuItem, Order, User, Notification, db
-import functools
-from sqlalchemy.sql import text
+from sqlalchemy.sql import not_
 from kitchen.static.functions.kitchen_functions import change_delivery, change_delivery, kitchenstaff_required
 
 # register customer_view as a Flask Blueprint
@@ -23,9 +22,8 @@ def home():
 @kitchen.route('view-notifications')
 @kitchenstaff_required
 def viewNotifications():
-    waiter = User.query.get(session['user_id'])
-    notifications = Notification.query.filter(Notification.table_number >= waiter.table_number_start, Notification.table_number <= waiter.table_number_end).all()
-    return render_template('waiter-view-notifications.html', notifications = notifications)
+    notifications = Notification.query.filter_by(notification_type = 'new-order').all()
+    return render_template('kitchen-view-notifications.html', notifications = notifications)
 
 @kitchen.route('/remove-notification/<int:notif_id>', methods = ['POST'])
 @kitchenstaff_required
@@ -49,7 +47,7 @@ def removeNotificationPage(notif_id):
 @kitchen.route('view-orders')
 @kitchenstaff_required
 def viewOrders():
-    orders = Order.query.all()
+    orders = Order.query.filter(not_(Order.delivery_status == 'delivered')).all()
     menu_items = MenuItem.query.all()
     users = User.query.all()
     return render_template('kitchen-view-order.html', orders = orders, menu_items = menu_items, users = users)
