@@ -49,11 +49,11 @@
             <p>Wait for order status to update</p>
           {% else %}
             {% if item.delivery_status == 'waiting' %}
-              <form action="{{ url_for('kitchen.changeDelivery', order_id=item.id, status = 'preparing') }}" method="post">
+              <form action="{{ url_for('kitchen.changeDelivery', order_id=item.id, status = 'preparing', user_id = item.user_id) }}" method="post">
                 <button type="submit" class="btn btn-success order-button"> Preparing! </button>
               </form>
             {% elif item.delivery_status == 'preparing' %}
-              <form action="{{ url_for('kitchen.changeDelivery', order_id=item.id, status = 'ready') }}" method="post">
+              <form action="{{ url_for('kitchen.changeDelivery', order_id=item.id, status = 'ready', user_id = item.user_id) }}" method="post">
                 <button type="submit" class="btn btn-success order-button"> Ready! </button>
               </form>
             {% else %}

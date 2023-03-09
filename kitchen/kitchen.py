@@ -77,10 +77,12 @@ def cancelOrder(order_id):
 
 # Flask route to mark order as delivered
 # Update the status of the order
-@kitchen.route('/change-delivery/<int:order_id>/<string:status>', methods=['POST'])
+@kitchen.route('/change-delivery/<int:order_id>/<string:status>/<int:user_id>', methods=['POST'])
 @kitchenstaff_required
-def changeDelivery(order_id, status):
-    change_delivery(order_id, status)
+def changeDelivery(order_id, status, user_id):
+    customer = User.query.get(user_id)
+    table_num = customer.table_number
+    change_delivery(order_id, status, table_num, user_id)
     return redirect(url_for('kitchen.viewOrders'))
     
 

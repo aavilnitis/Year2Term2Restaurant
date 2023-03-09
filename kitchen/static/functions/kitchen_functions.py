@@ -1,6 +1,6 @@
 from flask import session, redirect, url_for
 import functools
-from packages.models import Order, db
+from packages.models import Order, Notification, db
 from sqlalchemy import text
 
 def split_string(input_string):
@@ -14,9 +14,12 @@ def populate_menu():
             db.session.execute(text(line))
             db.session.commit()
             
-def change_delivery(order_id, status):
+def change_delivery(order_id, status, table_num, user_id):
     order = Order.query.get(order_id)
     order.delivery_status = status
+    
+    notif = Notification(user_id,table_num, status)
+    db.session.add(notif)
     db.session.commit()
     
 def kitchenstaff_required(func):
