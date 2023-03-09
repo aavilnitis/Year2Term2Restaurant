@@ -1,82 +1,34 @@
-from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for, flash
-from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, db
+from flask import Blueprint, render_template, redirect, session, url_for
+from packages.models import MenuItem, Order, User, Notification, db
 import functools
 from sqlalchemy.sql import text
-from waiter.static.functions.waiter_functions import split_string, populate_menu
+from kitchen.static.functions.kitchen_functions import change_delivery, change_delivery, kitchenstaff_required
 
 # register customer_view as a Flask Blueprint
 kitchen = Blueprint("kitchen", __name__, static_folder="static", template_folder="templates")
 
-def kitchenstaff_required(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        if session.get('user') != 'kitchen_staff':
-            if session.get('user') == 'customer':
-                return redirect(url_for('customer.home'))
-            else: 
-                return "You do not have permission to view this page"
-        return func(*args, **kwargs)
-    return wrapper
 
 # HOME
 @kitchen.route('/')
- 
+@kitchenstaff_required
 def home():
-    waiter = User.query.get(session['user_id'])
-    notifications = Notification.query.all()
+    notifications = Notification.query.filter_by(notification_type = 'new-order').all()
     if notifications:
-        return render_template('waiter-home.html', notifications = notifications, waiter = waiter)
+        return render_template('kitchen-home.html', notifications = notifications)
     else:
-        return render_template('waiter-home.html', notifications = None, waiter = waiter)
-
-
-
-# MENU
-@kitchen.route('/menu')
- 
-def menu():
-    if MenuItem.query.first() == None:
-        populate_menu()
-    menu_items = MenuItem.query.all()
-    return render_template('waiter-menu.html', menu_items=menu_items)
-
-@kitchen.route('/add-item', methods=['GET', 'POST'])
- 
-def addItem():
-    if request.method == 'POST':
-        name = request.form.get('name')
-        price = request.form.get('price')
-        description = request.form.get('description')
-        ingredient_names = split_string(request.form.get('ingredients'))
-        calories = request.form.get('calories')
-        type = request.form.get('type')
-        picture = request.form.get('picture')
-        add_item(name,price,description,ingredient_names,calories,type, picture)
-        return redirect(url_for('waiter.menu'))
-    types = db.session.query(MenuItem.type).distinct()
-    return render_template('add_item.html', types = types)
-
-@kitchen.route('/remove-item/<int:item_id>', methods = ['GET','POST'])
- 
-def removeItem(item_id):
-    item = MenuItem.query.get(item_id)
-    if item:
-        db.session.delete(item)
-        db.session.commit() 
-    return redirect(url_for('waiter.menu'))
-
+        return render_template('kitchen-home.html', notifications = None)
 
 
 # NOTIFICATIONS
 @kitchen.route('view-notifications')
- 
+@kitchenstaff_required
 def viewNotifications():
     waiter = User.query.get(session['user_id'])
     notifications = Notification.query.filter(Notification.table_number >= waiter.table_number_start, Notification.table_number <= waiter.table_number_end).all()
     return render_template('waiter-view-notifications.html', notifications = notifications)
 
 @kitchen.route('/remove-notification/<int:notif_id>', methods = ['POST'])
- 
+@kitchenstaff_required
 def removeNotification(notif_id):
     notification = Notification.query.filter_by(id = notif_id).first()
     db.session.delete(notification)
@@ -84,7 +36,7 @@ def removeNotification(notif_id):
     return redirect(url_for('waiter.home'))
 
 @kitchen.route('/remove-notification-page/<int:notif_id>', methods = ['POST'])
- 
+@kitchenstaff_required
 def removeNotificationPage(notif_id):
     notification = Notification.query.filter_by(id = notif_id).first()
     db.session.delete(notification)
@@ -95,17 +47,17 @@ def removeNotificationPage(notif_id):
 
 # ORDERS
 @kitchen.route('view-orders')
- 
+@kitchenstaff_required
 def viewOrders():
     orders = Order.query.all()
     menu_items = MenuItem.query.all()
     users = User.query.all()
-    return render_template('waiter-view-order.html', orders = orders, menu_items = menu_items, users = users)
+    return render_template('kitchen-view-order.html', orders = orders, menu_items = menu_items, users = users)
 
 # Flask route to confirm order
 # Update the status of the order
 @kitchen.route('/confirm_order/<int:order_id>', methods=['POST'])
- 
+@kitchenstaff_required
 def confirmOrder(order_id):
     order = Order.query.get(order_id)
     order.status = "confirmed"
@@ -115,7 +67,7 @@ def confirmOrder(order_id):
 # Flask route to cancel an order
 # Delete the order from the database
 @kitchen.route('/cancel_order/<int:order_id>', methods=['POST'])
- 
+@kitchenstaff_required
 def cancelOrder(order_id):
     order = Order.query.get(order_id)
     if order:
@@ -128,7 +80,7 @@ def cancelOrder(order_id):
 # Flask route to mark order as delivered
 # Update the status of the order
 @kitchen.route('/change-delivery/<int:order_id>/<string:status>', methods=['POST'])
- 
+@kitchenstaff_required
 def changeDelivery(order_id, status):
     change_delivery(order_id, status)
     return redirect(url_for('waiter.viewOrders'))

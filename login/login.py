@@ -25,7 +25,7 @@ def login():
                     return redirect(url_for('customer.table_number'))
                 elif found_user.user_type == 'waiter':
                     return redirect(url_for('waiter.home'))
-                elif found_user.user_type == 'kitchen':
+                elif found_user.user_type == 'kitchen_staff':
                     return redirect(url_for('kitchen.home'))
                 elif found_user.user_type == 'admin':
                     return redirect(url_for('admin.home'))

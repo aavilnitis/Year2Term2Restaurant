@@ -1,28 +1,15 @@
-from flask import Blueprint, render_template, request, redirect, session, jsonify, url_for, flash
-from packages.models import MenuItem, Order, OrderMenuItem, User, Notification, db, Ingredient, Notification
-import functools
-from sqlalchemy.sql import text
+from flask import Blueprint, render_template, request, redirect, session, url_for
+from packages.models import MenuItem, Order, User, db, Ingredient
 import bcrypt
-from waiter.static.functions.waiter_functions import names_to_array, split_string, populate_menu
+from admin.static.functions.admin_functions import names_to_array, split_string, populate_menu, check_cleared_notifs
 
 # register customer_view as a Flask Blueprint
 admin = Blueprint("admin", __name__, static_folder="static", template_folder="templates")
-
-def checkClearedNotifs():
-    if 'cleared_notifs' not in session:
-        session['cleared_notifs'] = []
-    notifications = []
-    notifications_database = Notification.query.all()
-    cleared_notifs = session['cleared_notifs']
-    for notification in notifications_database:
-        if notification.id not in cleared_notifs:
-            notifications.append(notification)
-    return notifications
     
 # HOME
 @admin.route('/')
 def home():
-    notifications = checkClearedNotifs()
+    notifications = check_cleared_notifs()
     if len(notifications) > 0:
         return render_template('admin-home.html', notifications = notifications)
     else:
@@ -31,7 +18,7 @@ def home():
 # NOTIFICATIONS
 @admin.route('view-notifications')
 def viewNotifications():
-    notifications = checkClearedNotifs()
+    notifications = check_cleared_notifs()
     return render_template('admin-view-notifications.html', notifications = notifications)
 
 @admin.route('/remove-notification-page/<int:notif_id>', methods = ['POST'])
@@ -121,7 +108,7 @@ def addNewStaff():
 
 @admin.route('view-staff', methods = ['GET', 'POST'])
 def viewStaff():
-    users = User.query.filter(User.user_type.in_(['waiter', 'kitchen'])).all()
+    users = User.query.filter(User.user_type.in_(['waiter', 'kitchen_staff'])).all()
     return render_template('admin-view-staff.html', users = users)
 
 @admin.route('fire-staff/<int:staff_id>', methods = ['GET', 'POST'])

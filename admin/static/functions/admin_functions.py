@@ -1,5 +1,5 @@
 from flask import session, url_for, redirect
-from packages.models import Ingredient, MenuItem, Order, db
+from packages.models import Ingredient, Notification, db
 import functools
 from sqlalchemy import text
 
@@ -22,14 +22,14 @@ def populate_menu():
             db.session.execute(text(line))
             db.session.commit()
 
-def waiter_required(func):
+def admin_required(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        if session.get('user') != 'waiter':
+        if session.get('user') != 'admin':
             if session.get('user') == 'customer':
                 return redirect(url_for('customer.home'))
-            if session.get('user') == 'admin':
-                return redirect(url_for('admin.home'))
+            if session.get('user') == 'waiter':
+                return redirect(url_for('waiter.home'))
             if session.get('user') == 'kitchen_staff':
                 return redirect(url_for('kitchen.home'))
             else: 
@@ -37,17 +37,13 @@ def waiter_required(func):
         return func(*args, **kwargs)
     return wrapper
 
-def add_item(name, price, description, ingredient_names, calories, type, picture):
-    for ingredient_name in ingredient_names:
-        if Ingredient.query.filter_by(name=ingredient_name).first() == None:
-            db.session.add(Ingredient(name = ingredient_name))
-            db.session.commit()
-    ingredients = names_to_array(ingredient_names)
-    menu_item = MenuItem(name = name, price = price, description = description, ingredients = ingredients, calories = calories, type = type, picture=picture)
-    db.session.add(menu_item)
-    db.session.commit()  
-    
-def change_delivery(order_id, status):
-    order = Order.query.get(order_id)
-    order.delivery_status = status
-    db.session.commit()
+def check_cleared_notifs():
+    if 'cleared_notifs' not in session:
+        session['cleared_notifs'] = []
+    notifications = []
+    notifications_database = Notification.query.all()
+    cleared_notifs = session['cleared_notifs']
+    for notification in notifications_database:
+        if notification.id not in cleared_notifs:
+            notifications.append(notification)
+    return notifications
