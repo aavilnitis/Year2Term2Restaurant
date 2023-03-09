@@ -1,0 +1,21 @@
+.view-orders{
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    color: #1b1b1b;
+}
+.table-striped{
+    color: #1b1b1b;
+}
+
+.button-cell{
+    display: flex;
+    flex-direction: column;
+}
+
+.order-button{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+
