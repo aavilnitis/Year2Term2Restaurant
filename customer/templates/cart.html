@@ -18,7 +18,7 @@
                   <p>Total Price: £{{ cart_item.item_price }}</p>
                 </div>
                 <div class="card-footer text-center">
-                  <a href="{{ url_for('customer.removeFromCart', id=cart_item.id) }}" class="btn btn-danger">Remove</a>
+                  <a href="{{ url_for('customer.removeFromCart', id=cart_item.menu_item_id) }}" class="btn btn-danger">Remove</a>
                 </div>
               </div>
             </div>
