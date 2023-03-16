@@ -28,12 +28,14 @@ app.register_blueprint(admin, url_prefix="/manager")
 
 @app.route('/', methods = ['POST', 'GET'])
 def home():
+    # Create admin user if it does not already exist
     if not User.query.filter_by(username='admin').first():
         passw = 'admin'
         admin = User('admin', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'admin')
         db.session.add(admin)
         db.session.commit()
-        
+
+     # Check if user is logged in and redirect to appropriate page
     if 'user' in session:
         if session['user'] == 'customer':
             return redirect(url_for('customer.home'))
@@ -45,12 +47,14 @@ def home():
             return redirect(url_for('kitchen.home'))
         else:
             return "smth went wrong"
+     # If user is not logged in, redirect to login page
     else:
         return redirect(url_for("login_view.login"))
 
     
 @app.route('/logout')
 def logout():
+    # Remove user session and redirect to home page
     session.pop('user', None)
     session.clear()
     return redirect(url_for('home'))
