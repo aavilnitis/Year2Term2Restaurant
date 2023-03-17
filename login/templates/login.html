@@ -5,15 +5,24 @@
 {% endblock %}
 
 {% block content %}
+  <!-- Create a container div -->
   <div class="container mt-5">
+     <!-- Add a heading with "Login" centered -->
     <h1 class="text-center">Login</h1>
+    <!-- Create a form using the "post" method and add the "form-group" class -->
     <form method="post" class="form-group">
+      <!-- Add a label for the username input -->
       <label for="username">Username:</label>
+      <!-- Add a username input field with a "form-control" class -->
       <input type="username" id="username" name="username" required class="form-control">
+      <!-- Add a label for the password input -->
       <label for="password">Password:</label>
+      <!-- Add a password input field with a "form-control" class -->
       <input type="password" id="password" name="password" required class="form-control">
+      <!-- Add a submit button with a "btn" and "btn-primary" class -->
       <button type="submit" class="btn btn-primary mt-3">Login</button>
     </form>
+    <!-- Add a paragraph with a centered text and a link to a "signup" page -->
     <p class="text-center mt-3">Don't have an account? <a href="{{url_for('signup.sign_up')}}">Sign up</a></p>
   </div>
 {% endblock %}
