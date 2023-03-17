@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Sign up{%endblock%}
 {% block content %}
+
+<!-- Include the signup-style.css stylesheet -->
 <link rel="stylesheet" href="{{ url_for('signup.static', filename='style/signup-style.css') }}">
+
+<!-- Create a container for the signup form -->
 <div class="container">
     <h2>Sign Up</h2>
+
+    <!-- Create a form with input fields for username and password -->
     <form method="post">
         <div class="form-group">
             <label for="username">Username:</label>
@@ -13,6 +19,8 @@
             <label for="password">Password:</label>
             <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
          </div>
+
+      <!-- Add a submit button for the form -->
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>  
