@@ -2,19 +2,15 @@ from flask import Blueprint, render_template, request, redirect, session, jsonif
 from packages.models import User
 from packages.extensions import db
 import bcrypt
-
 login_view = Blueprint("login_view",__name__,static_folder="static",template_folder="templates")
-
 @login_view.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # Get the entered username and password
         username = request.form['username']
         password = request.form['password'].encode('utf-8')
-
         # Fetch the user from the database based on the entered username
         found_user = User.query.filter_by(username=username).first()
-
         # If the user exists, check the entered password against the hashed password in the database
         if found_user:
             if bcrypt.checkpw(password, found_user.password):
@@ -42,8 +38,7 @@ def login():
         else:
             # If the user is not found, flash an error message and redirect to the login page
             flash('User not found', category='error')
-            return redirect(url_for('login_view.login'))
-        
+            return redirect(url_for('login_view.login'))        
      # If the request method is GET, request render the login template    
     return render_template("login.html")
     
