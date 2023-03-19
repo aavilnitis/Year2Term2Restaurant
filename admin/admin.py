@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, session, url_for
+from flask import Blueprint, render_template, request, redirect, session, url_for, flash
 from packages.models import MenuItem, Order, User, db, Ingredient
 import bcrypt
 from admin.static.functions.admin_functions import names_to_array, split_string, populate_menu, check_cleared_notifs
@@ -122,6 +122,14 @@ def addNewStaff():
     if request.method == 'POST':
         user_type = request.form.get('user_type')
         username = request.form.get('username')
+        
+        users = User.query.all()
+        usernames = []
+        for user in users:
+            usernames.append(user.username)
+        if username in usernames:
+            flash('Username already taken!', category='error')
+            return redirect(url_for('admin.addNewStaff'))
         password = request.form.get('password')
         table_number = None
         table_number_start = None
