@@ -66,14 +66,22 @@ def notification(type):
         flash("Something went wrong!", category = "error")
         
 def check_tables():
+    """Get a list of available tables according to list of currently taken tables
+
+    Returns:
+        list: List of table numbers that are available
+    """
+    # Gets all customers from database
     customers = User.query.filter_by(user_type='customer')
     taken_tables = []
+    # If there are any customers, it will add their table_number to a list of taken table_numbers
     if customers:
         for customer in customers:
             taken_tables.append(customer.table_number)
         print(taken_tables)
-    else:
+    else: # Otherwise taken_tables list is left empty
         taken_tables = []
+    # Generates list of available tables using the taken_tables list    
     free_tables = []
     for i in range(50):
         if not (i+1) in taken_tables:
