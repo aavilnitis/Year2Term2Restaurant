@@ -8,7 +8,10 @@ def add_to_cart(item_id, quantity):
         item_id (int): The id of the MenuItem being added to cart from the menu
         quantity (int): The quantity of MenuItems being added to cart from the menu
     """
+    # Get User.id saved in session
     user_id = session.get('user_id')
+
+    # Retrieve the MenuItem using id parameter and the corresponding CartItem from database
     menu_item = MenuItem.query.get(item_id)
     cart_item = CartItem.query.filter_by(user_id=user_id, menu_item_id=item_id).first()
     
@@ -24,15 +27,26 @@ def add_to_cart(item_id, quantity):
 
 
 def remove_from_cart(id):
+    """Deletes a CartItem using parameter given or updates quantity and item_price of existing CartItem
+
+    Args:
+        id (int): The id of the MenuItem being removed from the cart
+    """
+    # Get User.id saved in session
     user_id = session.get('user_id')
+
+    # Retrieve the MenuItem using id parameter and the corresponding CartItem from database
     menu_item = MenuItem.query.get(id)
     cart_item = CartItem.query.filter_by(user_id=user_id, menu_item_id=id).first()
 
+    # If quantity of existing CartItem is greater than 1, update its quantity and item_price
     if cart_item.quantity > 1:
         cart_item.quantity -= 1
         cart_item.item_price -= menu_item.price
-    else:
+    else: # If quantity is 1, delete the CartItem from database
         db.session.delete(cart_item)
+
+    # Commit changes to the database    
     db.session.commit()
     flash(f"1 x{menu_item.name} has been removed from your cart", "success")
 
