@@ -40,12 +40,19 @@ def featured():
     menu_items = MenuItem.query.filter_by(featured = True).all()
     return render_template("menu.html", menu_items=menu_items)
 
-# Flask route to view all menu items that have been added to the database
+
 @customer.route('/menu')
 @customer_required
 def menu():
+    """Checks if a MenuItem exists, if not it will call the populate_menu function to update menu data
+
+    Returns:
+        str: The HTML content for the menu page template with all MenuItems
+    """
+    # Calls populate_menu if there are no MenuItems
     if MenuItem.query.first() == None:
         populate_menu()
+    # Query all MenuItems and render menu template
     menu_items = MenuItem.query.all()
     return render_template("menu.html", menu_items=menu_items)
 
