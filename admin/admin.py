@@ -84,6 +84,37 @@ def removeItem(item_id):
         db.session.commit() 
     return redirect(url_for('admin.menu'))
 
+@admin.route('/edit-item/<int:item_id>', methods = ['GET','POST'])
+def editItem(item_id):
+    item = MenuItem.query.get(item_id)
+    if request.method == 'POST':
+        db.session.delete(item)
+        db.session.commit()
+        name = request.form.get('name')
+        price = request.form.get('price')
+        description = request.form.get('description')
+        ingredient_names = split_string(request.form.get('ingredients'))
+        picture = request.form.get('picture')
+        for ingredient_name in ingredient_names:
+            if Ingredient.query.filter_by(name=ingredient_name).first() == None:
+                db.session.add(Ingredient(name = ingredient_name))
+                db.session.commit()
+        ingredients = names_to_array(ingredient_names)
+        calories = request.form.get('calories')
+        type = request.form.get('type')
+        
+        menu_item = MenuItem(name = name, price = price, description = description, ingredients = ingredients, calories = calories, type = type, picture=picture)
+        db.session.add(menu_item)
+        db.session.commit()
+        return redirect(url_for('admin.menu'))
+
+    else:
+        types = db.session.query(MenuItem.type).distinct()
+        ingredient_save = ""
+        for ingredient in item.ingredients:
+            ingredient_save = ingredient_save + "," + ingredient.name
+        return render_template('admin-edit_item.html', types = types, item = item, ingredient_save = ingredient_save[1:])
+
 
 # ADD WAITER/KITCHEN
 @admin.route('add-new-staff', methods=['GET', 'POST'])
