@@ -217,7 +217,12 @@ def table_number():
 @customer.route('/help-needed', methods=['GET','POST'])
 @customer_required
 def help_needed():
-    notification('help')
+    """Calls notfication function giving it the notification_type of help when customer wants to call waiter
+
+    Returns:
+        flask.Response: Redirect to home page for customer
+    """
+    notification('help') # Calls notification function to create a Notification
     return redirect(url_for('customer.home'))
 
 
