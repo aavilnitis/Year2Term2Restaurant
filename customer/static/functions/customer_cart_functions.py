@@ -12,14 +12,14 @@ def add_to_cart(item_id, quantity):
     menu_item = MenuItem.query.get(item_id)
     cart_item = CartItem.query.filter_by(user_id=user_id, menu_item_id=item_id).first()
     
-    if cart_item:
+    if cart_item: # If CartItem exists, update its quantity and item_price
         cart_item.quantity += quantity
         cart_item.item_price += (quantity * menu_item.price)
-    else:
+    else: # If it doesn't exists, create a new CartItem using the item_id and quantity parameters
         cart_item = CartItem(user_id=user_id, menu_item_id=item_id, quantity=quantity, item_price=(quantity * menu_item.price))
         db.session.add(cart_item)
     
-    db.session.commit()
+    db.session.commit() # Commit changes to the database
     flash(f"{menu_item.name} has been added to your cart", "success")
 
 
