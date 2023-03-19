@@ -227,23 +227,30 @@ def help_needed():
 
 
 
-
-# PAYMENT FORM AND PROCESSING
-
-#Flask route for payment button
 @customer.route('/pay-now/<int:order_id>', methods=['GET','POST'])
 @customer_required
 def pay_now(order_id):
+    """Handles payment form for an Order with the specified order_id
+
+    Args:
+        order_id (int): The id of Order for payment is being made
+
+    Returns:
+        flask.Response: If GET request is made, the payment form is rendered. If a POST request is made and payment is accepted, customer is redirected to their order-tracking page, otherwise will be redirected to a payment-error page
+    """
     if request.method == 'POST':
+        # Gets payment information from form
         card_number = request.form['cn']
         name_on_card = request.form['name-on-card']
         expiration_date = request.form['expiry-date']
         csv = request.form['cvv']
+        # If payment is valid, update Order in database
         if len(card_number) == 16 and len(name_on_card) > 0 and len(expiration_date) == 5 and len(csv) == 3:
             order = Order.query.get(order_id)
             order.payment_status = 'paid'
             db.session.commit()
+            # Successful payment means redirect back to order-tracking
             return redirect(url_for('customer.show_orders'))
-        else:
+        else: # Failed payment means redirect to a payment-error page
             return render_template('payment_error.html')
     return render_template('payment-form.html')
