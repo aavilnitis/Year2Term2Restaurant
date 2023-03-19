@@ -22,6 +22,7 @@ def login():
                 session['user_id'] = found_user.id
                 print(found_user.id)
                 if found_user.user_type == 'customer':
+                    session['cart-amount'] = 0
                     return redirect(url_for('customer.table_number'))
                 elif found_user.user_type == 'waiter':
                     return redirect(url_for('waiter.home'))

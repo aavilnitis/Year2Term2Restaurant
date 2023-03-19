@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../static/css/base_style.css">
+    
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -19,20 +19,38 @@
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+      *{
+        font-family: 'Roboto', sans-serif;
+      }
+
+      nav.navbar{
+        background-color: #152238 !important;
+      }
+    </style>
+    <script src="https://kit.fontawesome.com/4550fb712b.js" crossorigin="anonymous"></script>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
         {% if session['user'] == 'customer' %}
-          <div class="navbar-nav w-100">
-            <a class="nav-item nav-link" id="home" href="{{url_for('home')}}">Home</a>
-            <a class="nav-item nav-link" id="menu" href="{{url_for('customer.menu')}}">Menu</a>
-            <a class="nav-item nav-link" id="cart" href="{{url_for('customer.cart')}}">Cart</a>
-            <a class="nav-item nav-link ml-auto mr-2" id="notify" href="{{url_for('customer.help_needed')}}">Call a waiter</a>
-            <a class="nav-item nav-link  mr-2" id="show_orders" href="{{url_for('customer.show_orders')}}">Track your orders</a>
-            <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}">Logout</a>
+        <div class="navbar-nav w-100 d-flex justify-content-between">
+          <div class = "d-flex">
+            <a class="nav-item nav-link" id="home" href="{{url_for('home')}}" title = "Home page"><i class="fa-solid fa-house"></i></a>
+            <a class="nav-item nav-link" id="menu" href="{{url_for('customer.menu')}}" title = "View restaurant menu"><i class="fa-solid fa-bars"></i></a>
+            <a class="nav-item nav-link" id="cart" href="{{url_for('customer.cart')}}" title = "View items in cart"><i class="fa-solid fa-cart-shopping" style = "padding-right: 5px;"></i>{{session['cart-amount']}}</a>
           </div>
+          <div class = "d-flex" style = "margin-left: -5%;">
+            <a class="nav-item nav-link" id="notify" href="{{url_for('customer.help_needed')}}" title = "Call a waiter for help"><i class="fa-solid fa-lightbulb"></i></a>
+            <a class="nav-item nav-link" id="show_orders" href="{{url_for('customer.show_orders')}}" title = "Track your orders"><i class="fa-solid fa-clock"></i></a>
+          </div>
+          <div class = "d-flex">
+            <a class="nav-item nav-link" id= "logout" href="{{url_for('logout')}}" title = "Logout"><i class= "fa-solid fa-right-from-bracket"></i></a> 
+          </div> 
+        </div>
         {% endif %}
         {% if session['user'] == 'waiter' %}
           <div class="navbar-nav w-100">
@@ -40,7 +58,7 @@
             <a class="nav-item nav-link" id="menu" href="{{url_for('waiter.menu')}}">Menu</a>
             <a class="nav-item nav-link" id="cart" href="{{url_for('waiter.viewOrders')}}">Orders</a>
             <a class="nav-item nav-link" id="notifications" href="{{url_for('waiter.viewNotifications')}}">Notifications</a>
-            <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}">Logout</a>
+            <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}"><i class= "fa-solid fa-right-from-bracket"></i></a>
           </div>
         {% endif %}
         {% if session['user'] == 'kitchen_staff' %}
@@ -48,7 +66,7 @@
             <a class="nav-item nav-link" id="home" href="{{url_for('kitchen.home')}}">Home</a>
             <a class="nav-item nav-link" id="cart" href="{{url_for('kitchen.viewOrders')}}">Orders</a>
             <a class="nav-item nav-link" id="notifications" href="{{url_for('kitchen.viewNotifications')}}">Notifications</a>
-            <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}">Logout</a>
+            <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}"><i class= "fa-solid fa-right-from-bracket"></i></a>
           </div>
         {% endif %}
         {% if session['user'] == 'admin' %}
@@ -59,7 +77,7 @@
             <a class="nav-item nav-link" id="notifications" href="{{url_for('admin.viewNotifications')}}">Notifications</a>
             <a class="nav-item nav-link" id="add-staff" href="{{url_for('admin.addNewStaff')}}">Add new Staff</a>
             <a class="nav-item nav-link" id="view-staff" href="{{url_for('admin.viewStaff')}}">View Staff</a>
-            <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}">Logout</a>
+            <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}"><i class= "fa-solid fa-right-from-bracket"></i></a>
           </div>
         {% endif %}
       </div>
