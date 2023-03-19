@@ -9,6 +9,7 @@
     <div class="container mt-4">
         <div class="row">
             {% for order in orders %}
+            <!--Displays card for each Order and relevant information-->
                 <div class="col-md-6">
                     <div class="card mb-4 shadow-sm">
                         <div class="card-header">
@@ -18,6 +19,7 @@
                             </div>
                         </div>
                         <div class="card-body">
+                            <!--Displays the information inside each Order card-->
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -47,6 +49,7 @@
                                 <h4>Delivery Status: {{ order.delivery_status }}</h4>
                             </div>
                             {% if order.payment_status == 'unpaid'%}
+                            <!--Calls pay_now method from customer.py-->
                             <form action="{{url_for('customer.pay_now', order_id = order.id)}}">
                                 <button class="btn btn-success">Pay Now<i class="fa-regular fa-credit-card" style="margin-left: 10px;"></i></button>
                             </form>
