@@ -27,16 +27,18 @@ def home():
         #this is only for now:
         return render_template("home.html")
     
-    
+
 @customer.route('/featured')
 @customer_required
 def featured():
+    """Displays featured MenuItems
+
+    Returns:
+        str: The HTML content of the menu template with featured MenuItems
+    """
+    # Query all featured MenuItems
     menu_items = MenuItem.query.filter_by(featured = True).all()
     return render_template("menu.html", menu_items=menu_items)
-
-
-
-# MENU AND FILTERED MENU
 
 # Flask route to view all menu items that have been added to the database
 @customer.route('/menu')
