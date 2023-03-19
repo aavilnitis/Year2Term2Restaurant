@@ -52,26 +52,54 @@ def remove_from_cart(id):
 
 
 def confirm_cart(cart_items):
+    """Converts CartItems for current user to OrderMenuItems and adding them to a Order 
+
+    Args:
+        cart_items (list): A list of CartItem objects to be convered to OrderMenuItems
+
+    Returns:
+        int: The id of the created Order
+    """
+
+    # Get User.id saved in session
     user_id = session.get('user_id')
+
+    # Get User.table_number saved in session
     table_number = session.get('table_number')
+
+    # Create a empty Order and a order_total of 0
     order = Order(user_id=user_id, order_menu_items=[])
     order_total = 0
+
+    # Add Order to database and flush to get the Order.id
     db.session.add(order)
     db.session.flush()
+
+    # Iterate through list of CartItems and create OrderMenuItem using information from the CartItem and corresponding MenuItem
     for cart_item in cart_items:
         menu_item = MenuItem.query.filter_by(id = cart_item.menu_item_id).first()
         order_menu_item = OrderMenuItem(order_id=order.id, menu_item_id=menu_item.id, quantity=cart_item.quantity, item_price = cart_item.item_price)
+
+        # Update order_total after OrderMenuItem has been created
         order_total += order_menu_item.item_price
         db.session.add(order_menu_item)
+
+        # Add the OrderMenuItem to the list of order_menu_items of Order
         order.order_menu_items.append(order_menu_item)
     order_total = round(order_total, 2)
+
+    # Update Order.order_total
     order.order_total = order_total   
 
+    # Iterate through list of CartItems and delete them as they are no longer needed
     for cart_item in cart_items:
         db.session.delete(cart_item)     
-        
+
+    # Create Notification to let staff know of the new order that has been created 
     notif = Notification(user_id, table_number, 'new-order')
     db.session.add(notif)
+
+    # Commit changes to the database
     db.session.commit()
     flash('Order sent to restaurant', category='success')
     return order.id
