@@ -1,13 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, session, url_for, flash
 from packages.models import MenuItem, Order, User, db, Ingredient
 import bcrypt
-from admin.static.functions.admin_functions import names_to_array, split_string, populate_menu, check_cleared_notifs
+from admin.static.functions.admin_functions import names_to_array, split_string, populate_menu, check_cleared_notifs, admin_required
 
 # register customer_view as a Flask Blueprint
 admin = Blueprint("admin", __name__, static_folder="static", template_folder="templates")
     
 # HOME
 @admin.route('/')
+@admin_required
 def home():
     notifications = check_cleared_notifs()
     if len(notifications) > 0:
@@ -17,11 +18,13 @@ def home():
     
 # NOTIFICATIONS
 @admin.route('view-notifications')
+@admin_required
 def viewNotifications():
     notifications = check_cleared_notifs()
     return render_template('admin-view-notifications.html', notifications = notifications)
 
 @admin.route('/remove-notification-page/<int:notif_id>', methods = ['POST'])
+@admin_required
 def removeNotificationPage(notif_id):
     cleared_notifs = session['cleared_notifs']
     cleared_notifs.append(notif_id)
@@ -29,6 +32,7 @@ def removeNotificationPage(notif_id):
     return redirect(url_for('admin.viewNotifications'))
 
 @admin.route('/remove-notification/<int:notif_id>', methods = ['POST'])
+@admin_required
 def removeNotification(notif_id):
     cleared_notifs = session['cleared_notifs']
     cleared_notifs.append(notif_id)
@@ -39,6 +43,7 @@ def removeNotification(notif_id):
     
 # ORDERS
 @admin.route('view-orders')
+@admin_required
 def viewOrders():
     orders = Order.query.all()
     menu_items = MenuItem.query.all()
@@ -48,6 +53,7 @@ def viewOrders():
 
 # MENU 
 @admin.route('/menu')
+@admin_required
 def menu():
     if MenuItem.query.first() == None:
         populate_menu()
@@ -55,6 +61,7 @@ def menu():
     return render_template('admin-menu.html', menu_items=menu_items)
 
 @admin.route('/admin-add-item', methods=['GET', 'POST'])
+@admin_required
 def addItem():
     if request.method == 'POST':
         name = request.form.get('name')
@@ -77,6 +84,7 @@ def addItem():
     return render_template('admin-add_item.html', types = types)
 
 @admin.route('/remove-item/<int:item_id>', methods = ['GET','POST'])
+@admin_required
 def removeItem(item_id):
     item = MenuItem.query.get(item_id)
     if item:
@@ -85,6 +93,7 @@ def removeItem(item_id):
     return redirect(url_for('admin.menu'))
 
 @admin.route('/edit-item/<int:item_id>', methods = ['GET','POST'])
+@admin_required
 def editItem(item_id):
     item = MenuItem.query.get(item_id)
     if request.method == 'POST':
@@ -118,6 +127,7 @@ def editItem(item_id):
 
 # ADD WAITER/KITCHEN
 @admin.route('add-new-staff', methods=['GET', 'POST'])
+@admin_required
 def addNewStaff():
     if request.method == 'POST':
         user_type = request.form.get('user_type')
@@ -146,11 +156,13 @@ def addNewStaff():
 
 
 @admin.route('view-staff', methods = ['GET', 'POST'])
+@admin_required
 def viewStaff():
     users = User.query.filter(User.user_type.in_(['waiter', 'kitchen_staff'])).all()
     return render_template('admin-view-staff.html', users = users)
 
 @admin.route('fire-staff/<int:staff_id>', methods = ['GET', 'POST'])
+@admin_required
 def fireStaff(staff_id):
     user = User.query.get(staff_id)
     db.session.delete(user)

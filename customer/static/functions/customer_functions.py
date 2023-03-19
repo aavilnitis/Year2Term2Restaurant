@@ -42,6 +42,14 @@ def notification(type):
         
 def check_tables():
     customers = User.query.filter_by(user_type='customer')
+    waiters = User.query.filter_by(user_type='waiter')
+    max_tables = 0
+    if waiters:
+        for waiter in waiters:
+            if waiter.table_number_end >= max_tables:
+                max_tables = waiter.table_number_end
+    
+    
     taken_tables = []
     if customers:
         for customer in customers:
@@ -50,7 +58,7 @@ def check_tables():
     else:
         taken_tables = []
     free_tables = []
-    for i in range(50):
+    for i in range(max_tables):
         if not (i+1) in taken_tables:
             free_tables.append((i+1))
     return free_tables
