@@ -12,7 +12,7 @@ def populate_menu():
         for line in lines:
             db.session.execute(text(line))
             db.session.commit()
-            
+
 def customer_required(func):
     """Checks if current User is a Customer, if not redirects User to corresponding home page
 
@@ -37,7 +37,7 @@ def customer_required(func):
                 return redirect(url_for('admin.home'))
             if session.get('user') == 'kitchen':
                 return redirect(url_for('kitchen.home'))
-            else: 
+            else:
                 return "something went wrong"
         return func(*args, **kwargs)
     return wrapper
@@ -59,12 +59,13 @@ def notification(type):
         db.session.commit()
         # Displays message according to the notification_type
         if type == 'table':
-            flash("Waiter has been informed about your table selection!", category='success')
+            flash("Waiter has been informed about your table selection!",
+                  category='success')
         else:
             flash("Waiter has been notified!", category='success')
-    else: # Displays error message if User.id and/or User.table_number are not in session
-        flash("Something went wrong!", category = "error")
-        
+    else:  # Displays error message if User.id and/or User.table_number are not in session
+        flash("Something went wrong!", category="error")
+
 def check_tables():
     """Get a list of available tables according to list of currently taken tables
 
@@ -79,9 +80,9 @@ def check_tables():
         for customer in customers:
             taken_tables.append(customer.table_number)
         print(taken_tables)
-    else: # Otherwise taken_tables list is left empty
+    else:  # Otherwise taken_tables list is left empty
         taken_tables = []
-    # Generates list of available tables using the taken_tables list    
+    # Generates list of available tables using the taken_tables list
     free_tables = []
     for i in range(50):
         if not (i+1) in taken_tables:
