@@ -2,6 +2,12 @@ from flask import session, request, flash
 from packages.models import MenuItem, Order, Notification, OrderMenuItem, CartItem, db
 
 def add_to_cart(item_id, quantity):
+    """Creates a CartItem using parameters given or updates quantity and item_price of existing CartItem
+
+    Args:
+        item_id (int): The id of the MenuItem being added to cart from the menu
+        quantity (int): The quantity of MenuItems being added to cart from the menu
+    """
     user_id = session.get('user_id')
     menu_item = MenuItem.query.get(item_id)
     cart_item = CartItem.query.filter_by(user_id=user_id, menu_item_id=item_id).first()
