@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% block title %}All Users{% endblock %}
 {% block content %}
+ <!-- This for loop iterates over all users in the "users" list -->
 {% for user in users %}
+    <!-- This line displays the user ID -->
     <p>{{user.id}}</p>
+    <!-- This line displays the username -->
     <p>{{user.username}}</p>
-    <p>{{user.password}}</p>
-    
-    
+    <!-- This line displays the password -->
+    <p>{{user.password}}</p>    
 {% endfor %}
 {% endblock %}
