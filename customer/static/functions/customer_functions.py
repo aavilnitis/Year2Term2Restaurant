@@ -3,7 +3,6 @@ from packages.models import Notification, User, db
 import functools
 from sqlalchemy import text
 
-# Populates the database with premade SQL inserts
 def populate_menu():
     """Populates the menu with data from the SQL file
     """
@@ -15,8 +14,22 @@ def populate_menu():
             db.session.commit()
             
 def customer_required(func):
+    """Checks if current User is a Customer, if not redirects User to corresponding home page
+
+    Args:
+        func (function): The function to be decorated
+
+    Returns:
+        function: The decorated function
+    """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
+        """Checks if current User is a Customer, if not redirects User to corresponding home page if they are not
+
+        Returns:
+            function: The decorated function
+        """
+        # Checks User.user_type and redirects User to corresponding home page
         if session.get('user') != 'customer':
             if session.get('user') == 'waiter':
                 return redirect(url_for('waiter.home'))
