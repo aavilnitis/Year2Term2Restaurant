@@ -5,6 +5,7 @@
 <div class="jumbotron">
   <h1 class="home-heading display-4">Your order:</h1>
 </div>
+<!--Displays table headers-->
 <table class="table">
   <thead>
     <tr>
@@ -14,6 +15,7 @@
     </tr>
   </thead>
   <tbody>
+    <!--Displays information about each item in order-->
     {% for item in items %}
       {% for menu_item in menu_items %}
         {% if item.menu_item_id == menu_item.id %}
