@@ -111,7 +111,10 @@ def cart():
 
     # Gets all Menuitems to help display item details in the cart
     menu_items = MenuItem.query.all()
-    return render_template("cart.html", cart_items = cart_items, menu_items = menu_items)
+    cart_full = False
+    if len(cart_items) > 0:
+        cart_full = True
+    return render_template("cart.html", cart_items = cart_items, menu_items = menu_items, cart_full = cart_full)
 
 
 @customer.route('/remove_from_cart/<int:id>', methods=['POST', 'GET'])
