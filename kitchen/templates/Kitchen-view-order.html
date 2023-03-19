@@ -43,7 +43,7 @@
         </td>
         <td>{{ item.status }}</td>
         <td>{{item.delivery_status}}</td>
-        <td>{{ item.time_placed.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td id="time-placed-{{ item.id }}">{{ item.time_placed.strftime('%Y-%m-%d %H:%M:%S') }}</td>
         <td class="button-cell">
           {% if item.status == 'incomplete' %}
             <p>Wait for order status to update</p>
@@ -62,6 +62,27 @@
           {% endif %}
         </td>
       </tr>
+      <script>
+        function updateTimePlaced{{ item.id }}() {
+          // Get the current time
+          var now = new Date();
+          
+          // Get the time the order was placed (from your Flask template)
+          var timePlaced = new Date('{{ item.time_placed.strftime('%Y-%m-%d %H:%M:%S') }}');
+          
+          // Calculate the time difference in milliseconds
+          var diff = now - timePlaced;
+          
+          // Calculate minutes and seconds
+          var minutes = Math.floor(diff / 60000);
+          var seconds = ((diff % 60000) / 1000).toFixed(0);
+          
+          // Update the content of the table cell
+          document.getElementById('time-placed-{{ item.id }}').innerHTML = minutes + 'm ' + seconds + 's';
+        }
+        setInterval(updateTimePlaced{{ item.id }}, 1000); // update every second
+        updateTimePlaced{{ item.id }}();
+      </script>
     {% endfor %}
   </tbody>
 </table>
@@ -78,6 +99,15 @@ ol li{
         margin-left: 0;
 }
 </style>
+
+<script>
+  function refreshPage() {
+    setTimeout(() => {
+      window.location.reload();
+    }, 10000);
+  }
+  refreshPage();
+</script>
 {%endblock%}
 
 
