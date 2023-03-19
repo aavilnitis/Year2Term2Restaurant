@@ -43,17 +43,26 @@ def customer_required(func):
     return wrapper
 
 def notification(type):
+    """Adds Notification to the database and displays a corresponding message
+
+    Args:
+        type (Enum): The notification_type of the Notification being created
+    """
+    # Get User.id and User.table_number saved in session
     user_id = session['user_id']
     table = session['table_number']
+
+    # If they exist in session Create Notification with that information
     if user_id and table:
         notif = Notification(user_id, table, type)
         db.session.add(notif)
         db.session.commit()
+        # Displays message according to the notification_type
         if type == 'table':
             flash("Waiter has been informed about your table selection!", category='success')
         else:
             flash("Waiter has been notified!", category='success')
-    else:
+    else: # Displays error message if User.id and/or User.table_number are not in session
         flash("Something went wrong!", category = "error")
         
 def check_tables():
