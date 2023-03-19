@@ -42,6 +42,7 @@
         
         
         {% for item in menu_items %}
+        <!-- Creates a car for each item in menu_items-->
         <div class="col-md-4">
           <div class="card mb-3">
             <img class="card-img-top" src="{{ item.picture }}" alt="{{ item.name }}">
@@ -62,6 +63,7 @@
                   {% endfor %}
                 </ul>
               </div>
+              <!-- Calls the addToCart method in customer.py-->
               <form action="{{url_for('customer.addToCart')}}" method="post">
                 <input type="hidden" name="item_id" value="{{item.id}}">
                 <div class="form-group">
