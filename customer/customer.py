@@ -189,22 +189,25 @@ def show_orders():
     return render_template("order-tracking.html", orders=orders, items=ordered_items, menu_items=menu_items)
 
 
-
-# TABLES AND NOTIFICATIONS
-
 @customer.route('/table-number', methods=['GET', 'POST'])
 @customer_required
 def table_number():
-    if 'user' not in session: # make sure user is logged in
+    """Displays a form where customer selects a table number which is then updated in database
+
+    Returns:
+        flask.Response: Redirect to home page for customer
+    """
+    if 'user' not in session: # Make sure user is logged in
         return "Could not add table number, are you logged in?"
     if request.method == 'POST':
-        
+        # Gets User.id from session
         user = User.query.get(session['user_id'])
         table_number = request.form['table-number']
+        # Updates users table number in database
         user.table_number = table_number
         session['table_number'] = table_number
         db.session.commit() #add table number to User table in DB
-        notification('table')
+        notification('table') # Creates a Notification calling the notifcation function
         return redirect(url_for('home'))
     
     return render_template('table-number.html', free_tables = check_tables())
