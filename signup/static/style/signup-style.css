@@ -1,4 +1,31 @@
-.container {
-    padding-top: 20px;
-    max-width: 50vw;
-  }
+.card.mb-3{
+  min-height: 55vh;
+  width: 60%;
+}
+section.text-center.text-lg-start{
+  height: 95vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+img.login-image{
+  height: 55vh;
+  width: 100%;
+  object-fit: cover;
+}
+.col-lg-4.d-none.d-lg-flex{
+  display: flex;
+}
+
+button.btn.btn-primary.mt-3{
+  width: 100%;
+  background-color: #152238;
+  border-color: #152238;
+}
+
+button.btn.btn-primary.mt-3:hover{
+  width: 100%;
+  background-color: #33415b;
+  border-color: #33415b;
+}

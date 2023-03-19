@@ -1,44 +1,39 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
+<!-- Include the custom CSS file -->
 <link rel="stylesheet" href="./static/css/customer-style.css">
+<!-- Display a jumbotron with a welcome message -->
 <div class="jumbotron">
-    <h1 class="display-4">Welcome to Restaurant 26</h1>
-    <!-- Use a paragraph element to add some lorem ipsum text -->
-    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis leo sed nisi sagittis aliquet. Sed quis nisl vitae lacus fringilla lacinia.</p>
+    <h1 class="home-heading display-4">Team 26</h1>
+    <img class = "home-icon" src = "https://cdn-icons-png.flaticon.com/512/5787/5787016.png">
 </div>
-    
+    <!-- Display the featured items section -->
     <div class = "customer-home">
-        <h1 class="display-4 featured-items-heading">Featured Items</h1>
+        <h1 class="home-heading" style = "color: white; padding-top: 5%; padding-bottom: 2%;">Featured Items</h1>
+    
     <div class = "featured">
         <div class="row">
           {% for item in menu_items %}
             <div class="col-md-4">
               <div class="card mb-3">
+                <!-- Display the item picture -->
                 <img class="card-img-top" src="{{ item.picture }}" alt="{{ item.name }}">
                 <div class="card-body">
+                  <!-- Display the item name -->
                   <h5 class="card-title text-success">{{ item.name }}</h5>
+                  <!-- Display the item price -->
                   <h6 class="card-subtitle mb-2 text-muted" >{{ item.price }}</h6>
-                  <i  data-toggle="collapse" data-target="#ingredients-{{ item.id }}" style="cursor:pointer; text-decoration:none">
-                    <i class="fa fa-angle-down"></i> Show more
-                  </i>
-                  <div id="ingredients-{{ item.id }}" class="collapse">
-                    <p class="card-text">{{ item.description }}</p>
-                    <p class="card-text">Calories: {{ item.calories }}</p>
-                    <p class="card-text">Ingredients:</p>
-                    <ul>
-                      {% for ingredient in item.ingredients %}
-                        <li>{{ ingredient.name }}</li>
-                      {% endfor %}
-                    </ul>
-                  </div>
+                  <!-- Add a form to allow the customer to add the item to their cart -->
                   <form action="{{url_for('customer.addToCart')}}" method="post">
                     <input type="hidden" name="item_id" value="{{item.id}}">
                     <div class="form-group">
+                      <!-- Allow the customer to select the quantity of the item they want to order -->
                       <label for="quantity-{{ item.id }}">Quantity:</label>
                       <input type="number" class="form-control" id="quantity-{{ item.id }}" name="quantity" min="1" value="1">
                     </div>
-                    <button class="btn btn-primary">Add to order</button>
+                    <!-- Display a button to add the item to the cart -->
+                    <button class="add-to-order btn btn-primary">Add to order</button>
                   </form>
                 </div>
               </div>

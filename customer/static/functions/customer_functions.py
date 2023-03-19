@@ -74,6 +74,14 @@ def check_tables():
     """
     # Gets all customers from database
     customers = User.query.filter_by(user_type='customer')
+    waiters = User.query.filter_by(user_type='waiter')
+    max_tables = 0
+    if waiters:
+        for waiter in waiters:
+            if waiter.table_number_end >= max_tables:
+                max_tables = waiter.table_number_end
+    
+    
     taken_tables = []
     # If there are any customers, it will add their table_number to a list of taken table_numbers
     if customers:
@@ -84,7 +92,7 @@ def check_tables():
         taken_tables = []
     # Generates list of available tables using the taken_tables list
     free_tables = []
-    for i in range(50):
+    for i in range(max_tables):
         if not (i+1) in taken_tables:
             free_tables.append((i+1))
     return free_tables
