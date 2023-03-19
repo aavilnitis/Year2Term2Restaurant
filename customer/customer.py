@@ -152,12 +152,18 @@ def confirmCart():
         return redirect(url_for("customer.cart"))
 
 
-
-# ORDER FUNCTIONS AND ROUTES
-
 @customer.route('/order/<int:order_id>')
 @customer_required
 def show_order(order_id):
+    """Displays the details of the Order the customer has just completed
+
+    Args:
+        order_id (int): The id of the Order that is being displayed
+
+    Returns:
+        str: The HTML content for the order-confirmation page template
+    """
+    # Gets the Order and items that were ordered
     order = Order.query.filter_by(id=order_id).first()
     ordered_items = OrderMenuItem.query.filter_by(order_id=order.id).all()
     menu_items = MenuItem.query.all()
