@@ -12,6 +12,7 @@
       {% for cart_item in cart_items %}
         {% for menu_item in menu_items %}
           {% if cart_item.menu_item_id == menu_item.id %}
+          <!-- Creates a card and displays information for each cart_item-->
             <div class="col-md-4">
               <div class="card">
                 <div class="card-body">
@@ -22,6 +23,7 @@
                   <p>Total Price: £{{ cart_item.item_price }}</p>
                 </div>
                 <div class="card-footer text-center">
+                  <!-- Calls the removeFromCart method in customer.py-->
                   <a href="{{ url_for('customer.removeFromCart', id=cart_item.menu_item_id) }}" class="btn btn-danger">Remove</a>
                 </div>
               </div>
@@ -32,11 +34,13 @@
     </div>
     {% if cart_full %}
     <div class="text-center my-4">
+      <!-- Calls the confirmCart method in customer.py-->
       <a href="{{ url_for('customer.confirmCart') }}" class="cart-button btn btn-primary">Confirm Order</a>
     </div>
   </div>
   {% else %}
     <div class="text-center my-4">
+      <!-- Calls the menu method in customer.py-->
       <a href="{{ url_for('customer.menu') }}" class="cart-button btn btn-primary">Back to Menu</a>
     </div>
   </div>
