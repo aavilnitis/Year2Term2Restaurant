@@ -1,6 +1,7 @@
 from flask import session, request, flash
 from packages.models import MenuItem, Order, Notification, OrderMenuItem, CartItem, db
 
+
 def add_to_cart(item_id, quantity):
     """Creates a CartItem using parameters given or updates quantity and item_price of existing CartItem
 
@@ -13,16 +14,18 @@ def add_to_cart(item_id, quantity):
 
     # Retrieve the MenuItem using id parameter and the corresponding CartItem from database
     menu_item = MenuItem.query.get(item_id)
-    cart_item = CartItem.query.filter_by(user_id=user_id, menu_item_id=item_id).first()
-    
-    if cart_item: # If CartItem exists, update its quantity and item_price
+    cart_item = CartItem.query.filter_by(
+        user_id=user_id, menu_item_id=item_id).first()
+
+    if cart_item:  # If CartItem exists, update its quantity and item_price
         cart_item.quantity += quantity
         cart_item.item_price += (quantity * menu_item.price)
-    else: # If it doesn't exists, create a new CartItem using the item_id and quantity parameters
-        cart_item = CartItem(user_id=user_id, menu_item_id=item_id, quantity=quantity, item_price=(quantity * menu_item.price))
+    else:  # If it doesn't exists, create a new CartItem using the item_id and quantity parameters
+        cart_item = CartItem(user_id=user_id, menu_item_id=item_id,
+                             quantity=quantity, item_price=(quantity * menu_item.price))
         db.session.add(cart_item)
-    
-    db.session.commit() # Commit changes to the database
+
+    db.session.commit()  # Commit changes to the database
     flash(f"{menu_item.name} has been added to your cart", "success")
 
 
@@ -37,16 +40,17 @@ def remove_from_cart(id):
 
     # Retrieve the MenuItem using id parameter and the corresponding CartItem from database
     menu_item = MenuItem.query.get(id)
-    cart_item = CartItem.query.filter_by(user_id=user_id, menu_item_id=id).first()
+    cart_item = CartItem.query.filter_by(
+        user_id=user_id, menu_item_id=id).first()
 
     # If quantity of existing CartItem is greater than 1, update its quantity and item_price
     if cart_item.quantity > 1:
         cart_item.quantity -= 1
         cart_item.item_price -= menu_item.price
-    else: # If quantity is 1, delete the CartItem from database
+    else:  # If quantity is 1, delete the CartItem from database
         db.session.delete(cart_item)
 
-    # Commit changes to the database    
+    # Commit changes to the database
     db.session.commit()
     flash(f"1 x{menu_item.name} has been removed from your cart", "success")
 
@@ -77,8 +81,9 @@ def confirm_cart(cart_items):
 
     # Iterate through list of CartItems and create OrderMenuItem using information from the CartItem and corresponding MenuItem
     for cart_item in cart_items:
-        menu_item = MenuItem.query.filter_by(id = cart_item.menu_item_id).first()
-        order_menu_item = OrderMenuItem(order_id=order.id, menu_item_id=menu_item.id, quantity=cart_item.quantity, item_price = cart_item.item_price)
+        menu_item = MenuItem.query.filter_by(id=cart_item.menu_item_id).first()
+        order_menu_item = OrderMenuItem(order_id=order.id, menu_item_id=menu_item.id,
+                                        quantity=cart_item.quantity, item_price=cart_item.item_price)
 
         # Update order_total after OrderMenuItem has been created
         order_total += order_menu_item.item_price
@@ -86,16 +91,17 @@ def confirm_cart(cart_items):
 
         # Add the OrderMenuItem to the list of order_menu_items of Order
         order.order_menu_items.append(order_menu_item)
+
     order_total = round(order_total, 2)
 
     # Update Order.order_total
-    order.order_total = order_total   
+    order.order_total = order_total
 
     # Iterate through list of CartItems and delete them as they are no longer needed
     for cart_item in cart_items:
-        db.session.delete(cart_item)     
+        db.session.delete(cart_item)
 
-    # Create Notification to let staff know of the new order that has been created 
+    # Create Notification to let staff know of the new order that has been created
     notif = Notification(user_id, table_number, 'new-order')
     db.session.add(notif)
 
