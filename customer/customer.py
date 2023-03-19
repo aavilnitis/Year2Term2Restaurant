@@ -78,25 +78,38 @@ def filtered_menu():
     return render_template("menu.html", menu_items=menu_items)
 
 
-
-# CART FUNCTIONS AND ROUTES
-
-# Flask route to add an item to the cart and redirect the customer to the cart page
-# This route isn't accessed manually, but instead from pressing "Add to cart" button in menu page
 @customer.route('/add-to-cart/', methods=["POST"])
 @customer_required
 def addToCart():
+    """Adds selected MenuItems to the cart by calling a add_to_cart method
+
+    Returns:
+        flask.Response: A Flask redirect response to the customer menu page
+    """
+    # Retrieves MenuItem's id and quantity from POST request form
     item_id = int(request.form.get("item_id"))
     quantity = int(request.form.get("quantity"))
+
+    # Calls add_to_cart functions with the retrieved item_id and quantity
     add_to_cart(item_id, quantity)
+
+    #Redirect customer to menu page
     return redirect(url_for("customer.menu"))
 
 # Flask route to view all items that have been added to the cart
 @customer.route('/cart')
 @customer_required
 def cart():
+    """Displays the items in cart using current users id stored in session
+
+    Returns:
+        str: The HTML content of the cart page template
+    """
+    # Gets the User.id stored in session and associated CartItems
     user_id = session.get('user_id')
     cart_items = CartItem.query.filter_by(user_id=user_id).all()
+    
+    # Gets all Menuitems to help display item details in the cart
     menu_items = MenuItem.query.all()
     return render_template("cart.html", cart_items = cart_items, menu_items = menu_items)
 
