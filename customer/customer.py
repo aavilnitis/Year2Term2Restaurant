@@ -172,9 +172,17 @@ def show_order(order_id):
 @customer.route('/orders')
 @customer_required
 def show_orders():
+    """Displays a page to shows Order information for all orders made by current customer
+
+    Returns:
+        str: The HTML content of the order-tracking template with the users' orders 
+    """
+    # Gets User.id from session
     user_id = session.get('user_id')
+    # Gets all orders placed by current user
     orders = Order.query.filter_by(user_id=user_id).all()
     ordered_items = {}
+    # For every order it gets the items they ordered and saves it in dictioanry
     for order in orders:
         ordered_items[order.id] = OrderMenuItem.query.filter_by(order_id=order.id).all()
     menu_items = MenuItem.query.all()
