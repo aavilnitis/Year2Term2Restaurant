@@ -5,6 +5,9 @@ from sqlalchemy import text
 
 # Populates the database with premade SQL inserts
 def populate_menu():
+    """Populates the menu with data from the SQL file
+    """
+    # Open the SQL file and iterate through each line and execute the SQL statement
     with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
         lines = f.readlines()
         for line in lines:
