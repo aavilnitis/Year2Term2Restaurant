@@ -8,24 +8,19 @@ from login.login import login_view
 from kitchen.kitchen import kitchen
 from admin.admin import admin
 import bcrypt
-
 #if os.path.exists("instance/database.db"):
 #    print('is database')
 #    os.remove("instance/database.db")
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db.init_app(app)
-
 app.register_blueprint(customer, url_prefix="/customer")
 app.register_blueprint(waiter, url_prefix="/waiter")
 app.register_blueprint(signup, url_prefix="/signup")
 app.register_blueprint(login_view, url_prefix="/login")
 app.register_blueprint(kitchen, url_prefix="/kitchen")
 app.register_blueprint(admin, url_prefix="/manager")
-
-
 @app.route('/', methods = ['POST', 'GET'])
 def home():
     # Create admin user if it does not already exist
@@ -34,7 +29,6 @@ def home():
         admin = User('admin', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'admin')
         db.session.add(admin)
         db.session.commit()
-
      # Check if user is logged in and redirect to appropriate page
     if 'user' in session:
         if session['user'] == 'customer':
@@ -49,18 +43,14 @@ def home():
             return "smth went wrong"
      # If user is not logged in, redirect to login page
     else:
-        return redirect(url_for("login_view.login"))
-
-    
+        return redirect(url_for("login_view.login"))   
 @app.route('/logout')
 def logout():
     # Remove user session and redirect to home page
     session.pop('user', None)
     session.clear()
     return redirect(url_for('home'))
-
 with app.app_context():
     db.create_all()
-
 if __name__ == "__main__":
     app.run(debug=True)

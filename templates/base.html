@@ -3,27 +3,33 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Link to custom css file -->
     <link rel="stylesheet" href="../static/css/base_style.css">
+    <!-- Link to Bootstrap CSS file -->
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
+    <!-- Link to Font Awesome CSS file -->
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       crossorigin="anonymous"
     />
 
+    <!-- Define the title of the page, which can be overridden in child templates -->
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
+    <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
+        <!-- If user is a customer -->
         {% if session['user'] == 'customer' %}
           <div class="navbar-nav w-100">
             <a class="nav-item nav-link" id="home" href="{{url_for('home')}}">Home</a>
@@ -34,6 +40,7 @@
             <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}">Logout</a>
           </div>
         {% endif %}
+        <!-- If user is a waiter -->
         {% if session['user'] == 'waiter' %}
           <div class="navbar-nav w-100">
             <a class="nav-item nav-link" id="home" href="{{url_for('waiter.home')}}">Home</a>
@@ -43,6 +50,7 @@
             <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}">Logout</a>
           </div>
         {% endif %}
+        <!-- If user is a kitchen staff member -->
         {% if session['user'] == 'kitchen_staff' %}
           <div class="navbar-nav w-100">
             <a class="nav-item nav-link" id="home" href="{{url_for('kitchen.home')}}">Home</a>
@@ -51,6 +59,7 @@
             <a class="nav-item nav-link ml-auto mr-2" id="logout" href="{{url_for('logout')}}">Logout</a>
           </div>
         {% endif %}
+        <!-- If user is an admin -->
         {% if session['user'] == 'admin' %}
           <div class="navbar-nav w-100">
             <a class="nav-item nav-link" id="home" href="{{url_for('admin.home')}}">Home</a>
@@ -65,8 +74,6 @@
       </div>
     </nav>
     
-    
-
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
