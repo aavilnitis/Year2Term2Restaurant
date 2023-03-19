@@ -4,6 +4,7 @@ from packages.extensions import db
 import bcrypt
 # register customer_view as a Flask Blueprint
 signup = Blueprint("signup", __name__, static_folder="static", template_folder="templates")
+
 @signup.route('/', methods = ['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
