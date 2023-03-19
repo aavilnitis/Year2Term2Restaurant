@@ -3,13 +3,11 @@
 {% extends "base.html" %}
 {% block title %}Menu{% endblock %}
 {% block content %}
-<div class = "menu-background">
-
-  <div class="jumbotron">
-    <h1 class="home-heading display-4">Menu</h1>
-</div>
 <link rel="stylesheet" href="./static/css/customer-style.css">
+<h1 class="text-center mb-5">Menu</h1>
   <div class = "menu-page">
+
+
     <div class = "filter">
       <form action="/customer/filtered-menu" method="post">
         <div class="form-check">
@@ -32,54 +30,49 @@
           <input type="checkbox" class="form-check-input" id="drinks" name="category" value="drinks">
           <label class="form-check-label" for="drinks">Drinks</label>
         </div>
-        <button type="submit" class="filter-btn add-to-order btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
 
 
     <div class = "menu">
       <div class="row">
-        
-        
         {% for item in menu_items %}
-        <div class="col-md-4">
-          <div class="card mb-3">
-            <img class="card-img-top" src="{{ item.picture }}" alt="{{ item.name }}">
-            <div style="position: absolute; top: 0px; left: 0px; width: 100%; background-color: rgba(21,34,56, 0.8); padding-left: 10px; color: white; letter-spacing: 1px;">{{item.type}}</div>
-            <div class="card-body">
-              <h5 class="card-title text-success">{{ item.name }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted" >£{{ item.price }}</h6>
-              <i data-toggle="collapse" data-target="#ingredients-{{ item.id }}" style="cursor:pointer; text-decoration:none; font-style: normal;">
-                <i class="fa fa-angle-down"></i> Show more
-              </i>
-              <div id="ingredients-{{ item.id }}" class="collapse">
-                <p class="card-text">{{ item.description }}</p>
-                <p class="card-text">Calories: {{ item.calories }}</p>
-                <p class="card-text">Ingredients:</p>
-                <ul>
-                  {% for ingredient in item.ingredients %}
-                    <li>{{ ingredient.name }}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-              <form action="{{url_for('customer.addToCart')}}" method="post">
-                <input type="hidden" name="item_id" value="{{item.id}}">
-                <div class="form-group">
-                  <label for="quantity-{{ item.id }}">Quantity:</label>
-                  <input type="number" class="form-control" id="quantity-{{ item.id }}" name="quantity" min="1" value="1">
+          <div class="col-md-4">
+            <div class="card mb-3">
+              <img class="card-img-top" src="{{ item.picture }}" alt="{{ item.name }}">
+              <div class="card-body">
+                <h5 class="card-title text-success">{{ item.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted" >£{{ item.price }}</h6>
+                <i  data-toggle="collapse" data-target="#ingredients-{{ item.id }}" style="cursor:pointer; text-decoration:none">
+                  <i class="fa fa-angle-down"></i> Show more
+                </i>
+                <div id="ingredients-{{ item.id }}" class="collapse">
+                  <p class="card-text">{{ item.description }}</p>
+                  <p class="card-text">Calories: {{ item.calories }}</p>
+                  <p class="card-text">Ingredients:</p>
+                  <ul>
+                    {% for ingredient in item.ingredients %}
+                      <li>{{ ingredient.name }}</li>
+                    {% endfor %}
+                  </ul>
                 </div>
-                <button class="add-to-order btn btn-primary">Add to order</button>
-              </form>
+                <form action="{{url_for('customer.addToCart')}}" method="post">
+                  <input type="hidden" name="item_id" value="{{item.id}}">
+                  <div class="form-group">
+                    <label for="quantity-{{ item.id }}">Quantity:</label>
+                    <input type="number" class="form-control" id="quantity-{{ item.id }}" name="quantity" min="1" value="1">
+                  </div>
+                  <button class="btn btn-primary">Add to order</button>
+                </form>
               </div>
             </div>
           </div>
         {% endfor %}
-      
-      
-        
       </div>
-    </div>
-</div>
+      
+      
+  </div>
 </div>
 {% endblock %}
 

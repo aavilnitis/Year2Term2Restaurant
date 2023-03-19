@@ -1,12 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<link rel="stylesheet" href="./static/css/customer-style.css">
-<div class="jumbotron">
-  <h1 class="home-heading display-4">Order Tracking</h1>
-</div>
 <script src="https://kit.fontawesome.com/95bf5595ab.js" crossorigin="anonymous"></script>
     <div class="container mt-4">
+        <h1>Order Tracking</h1>
         <div class="row">
             {% for order in orders %}
                 <div class="col-md-6">

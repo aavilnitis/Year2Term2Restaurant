@@ -1,42 +1,19 @@
 {% extends "base.html" %}
 
-  
+{% block styles %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="./static/style/login.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-    crossorigin="anonymous">
-<section class=" text-center text-lg-start">
-  <div class="card mb-3">
-    <div class="row g-0 d-flex align-items-center">
-      <div class="col-lg-5 d-none d-lg-flex">
-        <img src="https://toohotel.com/wp-content/uploads/2022/09/TOO_restaurant_Panoramique_vue_Paris_Seine_Tour_Eiffel_2.jpg" alt="Trendy Pants and Shoes"
-          class="login-image" />
-      </div>
-      <div class="col-lg-7">
-        <div class="card-body py-5 px-md-5">
-          <h2 style = "text-align: left;">Login</h2>
-
-          <form method="post" class="">
-            <div class="form-outline mb-4">
-              <input type="text" placeholder = "Username" id=username name=username required class=form-control />
-            </div>
-
-            <!-- Password input -->
-            <div class=form-outline mb=4>
-              <input type=password placeholder = "Password" id=password name=password required class=form-control />
-            </div>
-
-          
-<!-- Submit button -->
-<button type="submit" class="btn btn-primary mt-3">Login</button>
-</form>
-<p class="text-center mt-3">Don't have an account? <a href="{{url_for('signup.sign_up')}}">Sign up</a></p>
-</div>
-</div>
-</div>
-</div>
-</section>
-
+  <div class="container mt-5">
+    <h1 class="text-center">Login</h1>
+    <form method="post" class="form-group">
+      <label for="username">Username:</label>
+      <input type="username" id="username" name="username" required class="form-control">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required class="form-control">
+      <button type="submit" class="btn btn-primary mt-3">Login</button>
+    </form>
+    <p class="text-center mt-3">Don't have an account? <a href="{{url_for('signup.sign_up')}}">Sign up</a></p>
+  </div>
 {% endblock %}
