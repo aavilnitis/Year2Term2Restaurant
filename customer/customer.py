@@ -108,16 +108,24 @@ def cart():
     # Gets the User.id stored in session and associated CartItems
     user_id = session.get('user_id')
     cart_items = CartItem.query.filter_by(user_id=user_id).all()
-    
+
     # Gets all Menuitems to help display item details in the cart
     menu_items = MenuItem.query.all()
     return render_template("cart.html", cart_items = cart_items, menu_items = menu_items)
 
-# Flask route to remove an item from the cart and redirect the customer back to the cart page
-# This route isn't accessed manually, but instead from pressing "remove" button in cart
+
 @customer.route('/remove_from_cart/<int:id>', methods=['POST', 'GET'])
 @customer_required
 def removeFromCart(id):
+    """Removes MenuItem from  customers Cart 
+
+    Args:
+        id (int): The id of the MenuItem to remove from the cart
+
+    Returns:
+        flask.Response: A redirect response to the customers cart page
+    """
+    # Call to remove_from_cart function giving it the MenuItems id
     remove_from_cart(id)
     return redirect(url_for("customer.cart"))
 
