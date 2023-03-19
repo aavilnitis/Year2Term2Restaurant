@@ -1,6 +1,64 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
+<!-- Include the custom CSS file -->
+<link rel="stylesheet" href="./static/css/customer-style.css">
+<!-- Display a jumbotron with a welcome message -->
+<div class="jumbotron">
+    <h1 class="home-heading display-4">Team 26</h1>
+    <img class = "home-icon" src = "https://cdn-icons-png.flaticon.com/512/5787/5787016.png">
+</div>
+    <!-- Display the featured items section -->
+    <div class = "customer-home">
+        <h1 class="home-heading" style = "color: white; padding-top: 5%; padding-bottom: 2%;">Featured Items</h1>
+    
+    <div class = "featured">
+        <div class="row">
+          {% for item in menu_items %}
+            <div class="col-md-4">
+              <div class="card mb-3">
+                <!-- Display the item picture -->
+                <img class="card-img-top" src="{{ item.picture }}" alt="{{ item.name }}">
+                <div class="card-body">
+                  <!-- Display the item name -->
+                  <h5 class="card-title text-success">{{ item.name }}</h5>
+                  <!-- Display the item price -->
+                  <h6 class="card-subtitle mb-2 text-muted" >{{ item.price }}</h6>
+                  <!-- Add a form to allow the customer to add the item to their cart -->
+                  <form action="{{url_for('customer.addToCart')}}" method="post">
+                    <input type="hidden" name="item_id" value="{{item.id}}">
+                    <div class="form-group">
+                      <!-- Allow the customer to select the quantity of the item they want to order -->
+                      <label for="quantity-{{ item.id }}">Quantity:</label>
+                      <input type="number" class="form-control" id="quantity-{{ item.id }}" name="quantity" min="1" value="1">
+                    </div>
+                    <!-- Display a button to add the item to the cart -->
+                    <button class="add-to-order btn btn-primary">Add to order</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+{%endblock%}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
     <!-- Include the custom CSS file -->
     <link rel="stylesheet" href="./static/css/customer-style.css">
      <!-- Display a jumbotron with a welcome message -->
