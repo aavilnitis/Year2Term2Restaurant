@@ -13,8 +13,6 @@ def add_to_cart(item_id, quantity):
         cart_item = CartItem(user_id=user_id, menu_item_id=item_id, quantity=quantity, item_price=(quantity * menu_item.price))
         db.session.add(cart_item)
     
-    cart_amount = session['cart-amount'] + quantity
-    session['cart-amount'] = cart_amount
     db.session.commit()
     flash(f"{menu_item.name} has been added to your cart", "success")
 
@@ -29,9 +27,6 @@ def remove_from_cart(id):
         cart_item.item_price -= menu_item.price
     else:
         db.session.delete(cart_item)
-    
-    cart_amount = session['cart-amount'] - 1
-    session['cart-amount'] = cart_amount
     db.session.commit()
     flash(f"1 x{menu_item.name} has been removed from your cart", "success")
 

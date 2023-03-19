@@ -2,9 +2,7 @@
 {% block title %}Order Confirmation{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-  <h1 class="home-heading display-4">Your order:</h1>
-</div>
+<h3>This is the Order you placed</h3>
 <table class="table">
   <thead>
     <tr>
@@ -28,26 +26,4 @@
   </tbody>
 </table>
 <h4 class="text-center">Order Total: £{{ order.order_total }}</h4>
-
-<style>
-  .table{
-    width: 50%;
-    margin: auto;
-  }
-  .jumbotron{
-    background-image: url("https://t4.ftcdn.net/jpg/01/59/36/13/360_F_159361310_b45IDWsgcizXh3gzRI3SRmZyljJVG3eh.jpg");
-    background-size: cover;
-    background-position: center;
-    color: white;
-    display: flex;
-    border-radius: 0;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 5%;
-}
-h4{
-  padding-top: 2%;
-}
-</style>
 {% endblock %}

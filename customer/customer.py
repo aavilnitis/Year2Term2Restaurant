@@ -77,10 +77,7 @@ def cart():
     user_id = session.get('user_id')
     cart_items = CartItem.query.filter_by(user_id=user_id).all()
     menu_items = MenuItem.query.all()
-    cart_full = False
-    if len(cart_items) > 0:
-        cart_full = True
-    return render_template("cart.html", cart_items = cart_items, menu_items = menu_items, cart_full = cart_full)
+    return render_template("cart.html", cart_items = cart_items, menu_items = menu_items)
 
 # Flask route to remove an item from the cart and redirect the customer back to the cart page
 # This route isn't accessed manually, but instead from pressing "remove" button in cart

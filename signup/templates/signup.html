@@ -1,42 +1,19 @@
 {% extends "base.html" %}
-
-  
-
+{% block title %}Sign up{%endblock%}
 {% block content %}
-<link rel="stylesheet" href="./static/style/signup-style.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-    crossorigin="anonymous">
-<section class=" text-center text-lg-start">
-  <div class="card mb-3">
-    <div class="row g-0 d-flex align-items-center">
-      <div class="col-lg-5 d-none d-lg-flex">
-        <img src="https://toohotel.com/wp-content/uploads/2022/09/TOO_restaurant_Panoramique_vue_Paris_Seine_Tour_Eiffel_2.jpg" alt="Trendy Pants and Shoes"
-          class="login-image" />
-      </div>
-      <div class="col-lg-7">
-        <div class="card-body py-5 px-md-5">
-          <h2 style = "text-align: left;">Sign up</h2>
-
-          <form method="post" class="">
-            <div class="form-outline mb-4">
-              <input type="text" placeholder = "Username" id=username name=username required class=form-control />
-            </div>
-
-            <!-- Password input -->
-            <div class=form-outline mb=4>
-              <input type=password placeholder = "Password" id=password name=password required class=form-control />
-            </div>
-
-          
-<!-- Submit button -->
-<button type="submit" class="btn btn-primary mt-3">Sign up</button>
-</form>
-<p class="text-center mt-3">Back to <a href="{{url_for('login_view.login')}}">Login</a></p>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-{% endblock %}
+<link rel="stylesheet" href="{{ url_for('signup.static', filename='style/signup-style.css') }}">
+<div class="container">
+    <h2>Sign Up</h2>
+    <form method="post">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+         </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>  
+  {% endblock %}

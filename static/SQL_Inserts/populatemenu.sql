@@ -94,7 +94,7 @@ INSERT INTO menu_item_ingredient (menu_item_id, ingredient_id) VALUES (3, 25);
 
 --MAINS GO HERE: 
 --Inserting Cheeseburger and Ingredients
-INSERT INTO menu_items (name, price, description, calories, type, picture, featured) VALUES ('Cheeseburger', 8.99, 'Juicy beef patty topped with melted cheese and served on a sesame seed bun.', 480, 'mains', 'https://images.immediate.co.uk/production/volatile/sites/2/2020/04/Cheeseburger-74e8cde.jpg?resize=768,574', True);
+INSERT INTO menu_items (name, price, description, calories, type, picture, featured) VALUES ('Cheeseburger', 8.99, 'Juicy beef patty topped with melted cheese and served on a sesame seed bun.', 480, 'mains', 'https://s7d1.scene7.com/is/image/mcdonalds/mcdonalds-Cheeseburger-new:1-3-product-tile-desktop?wid=829&hei=515&dpr=off', True);
 INSERT INTO menu_item_ingredient (menu_item_id, ingredient_id) VALUES (4, 11);
 INSERT INTO menu_item_ingredient (menu_item_id, ingredient_id) VALUES (4, 12);
 INSERT INTO menu_item_ingredient (menu_item_id, ingredient_id) VALUES (4, 13);

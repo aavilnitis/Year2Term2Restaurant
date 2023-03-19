@@ -2,12 +2,8 @@
 {% block title %} Shopping Cart {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="./static/css/customer-style.css">
-<div class="jumbotron">
-  <h1 class="home-heading display-4">Cart</h1>
-</div>
-  <div class="container cart">
-    
+  <div class="container">
+    <h1 class="text-center my-4">Shopping Cart</h1>
     <div class="row">
       {% for cart_item in cart_items %}
         {% for menu_item in menu_items %}
@@ -30,15 +26,8 @@
         {% endfor %}
       {% endfor %}
     </div>
-    {% if cart_full %}
     <div class="text-center my-4">
-      <a href="{{ url_for('customer.confirmCart') }}" class="cart-button btn btn-primary">Confirm Order</a>
+      <a href="{{ url_for('customer.confirmCart') }}" class="btn btn-primary">Confirm Order</a>
     </div>
   </div>
-  {% else %}
-    <div class="text-center my-4">
-      <a href="{{ url_for('customer.menu') }}" class="cart-button btn btn-primary">Back to Menu</a>
-    </div>
-  </div>
-  {%endif%}
 {% endblock %}
