@@ -129,14 +129,21 @@ def removeFromCart(id):
     remove_from_cart(id)
     return redirect(url_for("customer.cart"))
 
-# Flask route to confirm an order and "send it to the restaurant"
+
 @customer.route('/confirm_cart', methods=['POST', 'GET'])
 @customer_required
 def confirmCart():
+    """Confirms the items in Cart by calling the confirm_cart function where the Order is created
+
+    Returns:
+        flask.Response: Redirects to order confirmation page or cart page if cart is empty
+    """
+    # Gets User.id from session
     user_id = session.get('user_id')
+    # Gets CartItems associated with current customer
     cart_items = CartItem.query.filter_by(user_id=user_id).all()
     if len(cart_items) > 0:
-        order_id = confirm_cart(cart_items)
+        order_id = confirm_cart(cart_items) # Function creates an Order and returns Order.id
         return redirect(url_for("customer.show_order", order_id=order_id))
     else:
         return redirect(url_for("customer.cart"))
@@ -215,5 +222,3 @@ def pay_now(order_id):
         else:
             return render_template('payment_error.html')
     return render_template('payment-form.html')
-
-
