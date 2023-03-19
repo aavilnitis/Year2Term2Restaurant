@@ -56,15 +56,24 @@ def menu():
     menu_items = MenuItem.query.all()
     return render_template("menu.html", menu_items=menu_items)
 
-# Flask route to view all menu items that have been added to the database
+
 @customer.route('/filtered-menu', methods = ['POST'])
 @customer_required
 def filtered_menu():
+    """Renders menu template with MenuItems based on the selected categories by Customer
+
+    Returns:
+        str: The HTML content of menu page template with filetered MenuItems
+    """
+    # Retrieve selected categories from POST request
     selected_categories = request.form.getlist('category')
+
+    # Loop through selected_categories and add MenuItem of that category to list menu_items
     menu_items = []
     for category in selected_categories:
         category_items = MenuItem.query.filter_by(type=category).all()
-        if category_items:
+        # If there is a MenuItem of that category, add it to menu_items list
+        if category_items: 
             menu_items.extend(category_items)
     return render_template("menu.html", menu_items=menu_items)
 
