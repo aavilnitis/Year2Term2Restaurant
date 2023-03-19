@@ -8,23 +8,26 @@ from .static.functions.customer_cart_functions import add_to_cart, remove_from_c
 # register customer_view as a Flask Blueprint
 customer = Blueprint("customer", __name__, static_folder="static", template_folder="templates")
 
-# HOME AND FEATURED
-
-# Flask home route
 @customer.route('/')
 @customer_required
 def home():
+    """If authenticated as Customer - Renders the home page for the customer, otherwise will redirect user to the login page
+
+    Returns:
+        str: The HTML content of the home page template
+    """
+    # Checks if User in session is of type Customer
     if 'user' in session:
-        if session['user'] == 'customer':
+        if session['user'] == 'customer': # Will render home page with featured MenuItems
             menu_items = MenuItem.query.filter_by(featured = True).all()
             return render_template("home.html", menu_items = menu_items)
-        else:
+        else: # If User is not a customer, render login page template
             return redirect(url_for("login.login"))
     else:
         #this is only for now:
         return render_template("home.html")
     
-# Flask route to view all menu items that have been added to the database
+    
 @customer.route('/featured')
 @customer_required
 def featured():
