@@ -6,7 +6,9 @@ from .static.functions.customer_functions import populate_menu, customer_require
 from .static.functions.customer_cart_functions import add_to_cart, remove_from_cart, confirm_cart
 
 # register customer_view as a Flask Blueprint
-customer = Blueprint("customer", __name__, static_folder="static", template_folder="templates")
+customer = Blueprint("customer", __name__,
+                     static_folder="static", template_folder="templates")
+
 
 @customer.route('/')
 @customer_required
@@ -18,15 +20,15 @@ def home():
     """
     # Checks if User in session is of type Customer
     if 'user' in session:
-        if session['user'] == 'customer': # Will render home page with featured MenuItems
-            menu_items = MenuItem.query.filter_by(featured = True).all()
-            return render_template("home.html", menu_items = menu_items)
-        else: # If User is not a customer, render login page template
+        if session['user'] == 'customer':  # Will render home page with featured MenuItems
+            menu_items = MenuItem.query.filter_by(featured=True).all()
+            return render_template("home.html", menu_items=menu_items)
+        else:  # If User is not a customer, render login page template
             return redirect(url_for("login.login"))
     else:
-        #this is only for now:
+        # this is only for now:
         return render_template("home.html")
-    
+
 
 @customer.route('/featured')
 @customer_required
@@ -37,7 +39,7 @@ def featured():
         str: The HTML content of the menu template with featured MenuItems
     """
     # Query all featured MenuItems
-    menu_items = MenuItem.query.filter_by(featured = True).all()
+    menu_items = MenuItem.query.filter_by(featured=True).all()
     return render_template("menu.html", menu_items=menu_items)
 
 
@@ -57,7 +59,7 @@ def menu():
     return render_template("menu.html", menu_items=menu_items)
 
 
-@customer.route('/filtered-menu', methods = ['POST'])
+@customer.route('/filtered-menu', methods=['POST'])
 @customer_required
 def filtered_menu():
     """Renders menu template with MenuItems based on the selected categories by Customer
@@ -73,7 +75,7 @@ def filtered_menu():
     for category in selected_categories:
         category_items = MenuItem.query.filter_by(type=category).all()
         # If there is a MenuItem of that category, add it to menu_items list
-        if category_items: 
+        if category_items:
             menu_items.extend(category_items)
     return render_template("menu.html", menu_items=menu_items)
 
@@ -93,10 +95,10 @@ def addToCart():
     # Calls add_to_cart functions with the retrieved item_id and quantity
     add_to_cart(item_id, quantity)
 
-    #Redirect customer to menu page
+    # Redirect customer to menu page
     return redirect(url_for("customer.menu"))
 
-# Flask route to view all items that have been added to the cart
+
 @customer.route('/cart')
 @customer_required
 def cart():
@@ -114,7 +116,7 @@ def cart():
     cart_full = False
     if len(cart_items) > 0:
         cart_full = True
-    return render_template("cart.html", cart_items = cart_items, menu_items = menu_items, cart_full = cart_full)
+    return render_template("cart.html", cart_items=cart_items, menu_items=menu_items, cart_full=cart_full)
 
 
 @customer.route('/remove_from_cart/<int:id>', methods=['POST', 'GET'])
@@ -132,91 +134,128 @@ def removeFromCart(id):
     remove_from_cart(id)
     return redirect(url_for("customer.cart"))
 
-# Flask route to confirm an order and "send it to the restaurant"
+
 @customer.route('/confirm_cart', methods=['POST', 'GET'])
 @customer_required
 def confirmCart():
+    """Confirms the items in Cart by calling the confirm_cart function where the Order is created
+
+    Returns:
+        flask.Response: Redirects to order confirmation page or cart page if cart is empty
+    """
+    # Gets User.id from session
     user_id = session.get('user_id')
+    # Gets CartItems associated with current customer
     cart_items = CartItem.query.filter_by(user_id=user_id).all()
     if len(cart_items) > 0:
+        # Function creates an Order and returns Order.id
         order_id = confirm_cart(cart_items)
         return redirect(url_for("customer.show_order", order_id=order_id))
     else:
         return redirect(url_for("customer.cart"))
 
 
-
-# ORDER FUNCTIONS AND ROUTES
-
 @customer.route('/order/<int:order_id>')
 @customer_required
 def show_order(order_id):
+    """Displays the details of the Order the customer has just completed
+
+    Args:
+        order_id (int): The id of the Order that is being displayed
+
+    Returns:
+        str: The HTML content for the order-confirmation page template
+    """
+    # Gets the Order and items that were ordered
     order = Order.query.filter_by(id=order_id).first()
     ordered_items = OrderMenuItem.query.filter_by(order_id=order.id).all()
     menu_items = MenuItem.query.all()
-    return render_template("order-confirmation.html", order = order, items=ordered_items, menu_items = menu_items)
+    return render_template("order-confirmation.html", order=order, items=ordered_items, menu_items=menu_items)
+
 
 @customer.route('/orders')
 @customer_required
 def show_orders():
+    """Displays a page to shows Order information for all orders made by current customer
+
+    Returns:
+        str: The HTML content of the order-tracking template with the users' orders 
+    """
+    # Gets User.id from session
     user_id = session.get('user_id')
+    # Gets all orders placed by current user
     orders = Order.query.filter_by(user_id=user_id).all()
     ordered_items = {}
+    # For every order it gets the items they ordered and saves it in dictioanry
     for order in orders:
-        ordered_items[order.id] = OrderMenuItem.query.filter_by(order_id=order.id).all()
+        ordered_items[order.id] = OrderMenuItem.query.filter_by(
+            order_id=order.id).all()
     menu_items = MenuItem.query.all()
     return render_template("order-tracking.html", orders=orders, items=ordered_items, menu_items=menu_items)
 
 
-
-# TABLES AND NOTIFICATIONS
-
 @customer.route('/table-number', methods=['GET', 'POST'])
 @customer_required
 def table_number():
-    if 'user' not in session: # make sure user is logged in
+    """Displays a form where customer selects a table number which is then updated in database
+
+    Returns:
+        flask.Response: Redirect to home page for customer
+    """
+    if 'user' not in session:  # Make sure user is logged in
         return "Could not add table number, are you logged in?"
     if request.method == 'POST':
-        
+        # Gets User.id from session
         user = User.query.get(session['user_id'])
         table_number = request.form['table-number']
+        # Updates users table number in database
         user.table_number = table_number
         session['table_number'] = table_number
-        db.session.commit() #add table number to User table in DB
+        db.session.commit()  # add table number to User table in DB
+        # Creates a Notification calling the notifcation function
         notification('table')
         return redirect(url_for('home'))
-    
-    return render_template('table-number.html', free_tables = check_tables())
+
+    return render_template('table-number.html', free_tables=check_tables())
 
 
-
-@customer.route('/help-needed', methods=['GET','POST'])
+@customer.route('/help-needed', methods=['GET', 'POST'])
 @customer_required
 def help_needed():
-    notification('help')
+    """Calls notfication function giving it the notification_type of help when customer wants to call waiter
+
+    Returns:
+        flask.Response: Redirect to home page for customer
+    """
+    notification(
+        'help')  # Calls notification function to create a Notification
     return redirect(url_for('customer.home'))
 
 
-
-
-# PAYMENT FORM AND PROCESSING
-
-#Flask route for payment button
-@customer.route('/pay-now/<int:order_id>', methods=['GET','POST'])
+@customer.route('/pay-now/<int:order_id>', methods=['GET', 'POST'])
 @customer_required
 def pay_now(order_id):
+    """Handles payment form for an Order with the specified order_id
+
+    Args:
+        order_id (int): The id of Order for payment is being made
+
+    Returns:
+        flask.Response: If GET request is made, the payment form is rendered. If a POST request is made and payment is accepted, customer is redirected to their order-tracking page, otherwise will be redirected to a payment-error page
+    """
     if request.method == 'POST':
+        # Gets payment information from form
         card_number = request.form['cn']
         name_on_card = request.form['name-on-card']
         expiration_date = request.form['expiry-date']
         csv = request.form['cvv']
+        # If payment is valid, update Order in database
         if len(card_number) == 16 and len(name_on_card) > 0 and len(expiration_date) == 5 and len(csv) == 3:
             order = Order.query.get(order_id)
             order.payment_status = 'paid'
             db.session.commit()
+            # Successful payment means redirect back to order-tracking
             return redirect(url_for('customer.show_orders'))
-        else:
+        else:  # Failed payment means redirect to a payment-error page
             return render_template('payment_error.html')
     return render_template('payment-form.html')
-
-
