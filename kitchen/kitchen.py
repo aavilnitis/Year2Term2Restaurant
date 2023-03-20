@@ -40,6 +40,14 @@ def viewNotifications():
 @kitchen.route('/remove-notification/<int:notif_id>', methods = ['POST'])
 @kitchenstaff_required
 def removeNotification(notif_id):
+    """Removes a notification from kitchen staff home page.
+
+    Args:
+        notif_id (id): The id of the Notification to remove
+
+    Returns:
+        flask.Response: A redirect response to the kitchen staff home page
+    """
     notification = Notification.query.filter_by(id = notif_id).first()
     db.session.delete(notification)
     db.session.commit()
@@ -48,6 +56,14 @@ def removeNotification(notif_id):
 @kitchen.route('/remove-notification-page/<int:notif_id>', methods = ['POST'])
 @kitchenstaff_required
 def removeNotificationPage(notif_id):
+    """Removes a notification from kitchen staff notifications page.
+
+    Args:
+        notif_id (id): The id of the Notification to remove
+
+    Returns:
+        flask.Response: A redirect response to the kitchen staff home notifications page
+    """
     notification = Notification.query.filter_by(id = notif_id).first()
     db.session.delete(notification)
     db.session.commit()
