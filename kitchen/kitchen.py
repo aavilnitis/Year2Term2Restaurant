@@ -75,6 +75,12 @@ def removeNotificationPage(notif_id):
 @kitchen.route('view-orders')
 @kitchenstaff_required
 def viewOrders():
+    """Queries the database for all orders that have not yet been delivered (are still active)
+        and renders the kitchen-view-orders template displaying said orders.
+
+    Returns:
+        str: The HTML content of the kitchen-view-orders template.
+    """
     orders = Order.query.filter(not_(Order.delivery_status == 'delivered')).all()
     menu_items = MenuItem.query.all()
     users = User.query.all()
