@@ -28,6 +28,12 @@ def home():
 @kitchen.route('view-notifications')
 @kitchenstaff_required
 def viewNotifications():
+    """Queries the database for all new-order type notifications and renders the kitchen-view-notifications 
+        template displaying said notifications with an option to dismiss them.
+
+    Returns:
+        str: The HTML content of the kitchen-view-notifications template.
+    """
     notifications = Notification.query.filter_by(notification_type = 'new-order').all()
     return render_template('kitchen-view-notifications.html', notifications = notifications)
 
