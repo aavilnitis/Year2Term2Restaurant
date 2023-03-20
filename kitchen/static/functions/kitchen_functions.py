@@ -4,10 +4,20 @@ from packages.models import Order, Notification, db
 from sqlalchemy import text
 
 def split_string(input_string):
+    """Splits a comma separated string into a list of strings 
+
+    Args:
+        input_string (str): The comma separated string to be split
+
+    Returns:
+        List[str]: The list of the split strings
+    """
     return [word.strip() for word in input_string.split(',')]
 
 # Populates the database with premade SQL inserts
 def populate_menu():
+    """Populated menu with data from the SQL file
+    """
     with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
         lines = f.readlines()
         for line in lines:
