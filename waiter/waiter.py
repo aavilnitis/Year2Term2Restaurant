@@ -20,11 +20,12 @@ def home():
     # Gets User.id of current waiter and find the User from database
     waiter = User.query.get(session['user_id'])
     # Gets all notifications for which its table_number is assigned to current waiter
-    notifications = Notification.query.filter(Notification.table_number >= waiter.table_number_start, Notification.table_number <= waiter.table_number_end).all()
+    notifications = Notification.query.filter(
+        Notification.table_number >= waiter.table_number_start, Notification.table_number <= waiter.table_number_end).all()
     if notifications:
-        return render_template('waiter-home.html', notifications = notifications, waiter = waiter)
+        return render_template('waiter-home.html', notifications=notifications, waiter=waiter)
     else:
-        return render_template('waiter-home.html', notifications = None, waiter = waiter)
+        return render_template('waiter-home.html', notifications=None, waiter=waiter)
 
 
 @waiter.route('/menu')
@@ -61,12 +62,14 @@ def addItem():
         type = request.form.get('type')
         picture = request.form.get('picture')
         # Call add_item function to create new MenuItem and redirect to menu page
-        add_item(name,price,description,ingredient_names,calories,type, picture)
+        add_item(name, price, description,
+                 ingredient_names, calories, type, picture)
         return redirect(url_for('waiter.menu'))
     types = db.session.query(MenuItem.type).distinct()
-    return render_template('add_item.html', types = types)
+    return render_template('add_item.html', types=types)
 
-@waiter.route('/edit-item/<int:item_id>', methods = ['GET','POST'])
+
+@waiter.route('/edit-item/<int:item_id>', methods=['GET', 'POST'])
 def editItem(item_id):
     """Edits data of an existing MenuItem
 
@@ -89,14 +92,15 @@ def editItem(item_id):
         # Check if new ingredients are already in database or not
         for ingredient_name in ingredient_names:
             if Ingredient.query.filter_by(name=ingredient_name).first() == None:
-                db.session.add(Ingredient(name = ingredient_name))
+                db.session.add(Ingredient(name=ingredient_name))
                 db.session.commit()
         ingredients = names_to_array(ingredient_names)
         calories = request.form.get('calories')
         type = request.form.get('type')
-        
+
         # Creates the new MenuItem and commits new changes to database
-        menu_item = MenuItem(name = name, price = price, description = description, ingredients = ingredients, calories = calories, type = type, picture=picture)
+        menu_item = MenuItem(name=name, price=price, description=description,
+                             ingredients=ingredients, calories=calories, type=type, picture=picture)
         db.session.add(menu_item)
         db.session.commit()
         return redirect(url_for('waiter.menu'))
@@ -106,10 +110,10 @@ def editItem(item_id):
         ingredient_save = ""
         for ingredient in item.ingredients:
             ingredient_save = ingredient_save + "," + ingredient.name
-        return render_template('waiter-edit_item.html', types = types, item = item, ingredient_save = ingredient_save[1:])
+        return render_template('waiter-edit_item.html', types=types, item=item, ingredient_save=ingredient_save[1:])
 
 
-@waiter.route('/remove-item/<int:item_id>', methods = ['GET','POST'])
+@waiter.route('/remove-item/<int:item_id>', methods=['GET', 'POST'])
 @waiter_required
 def removeItem(item_id):
     """Gets MenuItem using item_id and removes it from database
@@ -124,7 +128,7 @@ def removeItem(item_id):
     item = MenuItem.query.get(item_id)
     if item:
         db.session.delete(item)
-        db.session.commit() 
+        db.session.commit()
     return redirect(url_for('waiter.menu'))
 
 
@@ -138,11 +142,12 @@ def viewNotifications():
     """
     # Gets waiters id from session and filters notifcation using their table number
     waiter = User.query.get(session['user_id'])
-    notifications = Notification.query.filter(Notification.table_number >= waiter.table_number_start, Notification.table_number <= waiter.table_number_end).all()
-    return render_template('waiter-view-notifications.html', notifications = notifications)
+    notifications = Notification.query.filter(
+        Notification.table_number >= waiter.table_number_start, Notification.table_number <= waiter.table_number_end).all()
+    return render_template('waiter-view-notifications.html', notifications=notifications)
 
 
-@waiter.route('/remove-notification/<int:notif_id>', methods = ['POST'])
+@waiter.route('/remove-notification/<int:notif_id>', methods=['POST'])
 @waiter_required
 def removeNotification(notif_id):
     """This will remove the notification from the database that has popped up on home page
@@ -153,13 +158,13 @@ def removeNotification(notif_id):
     Returns:
         flask.Response: Redirects waiter to home page
     """
-    notification = Notification.query.filter_by(id = notif_id).first()
+    notification = Notification.query.filter_by(id=notif_id).first()
     db.session.delete(notification)
     db.session.commit()
     return redirect(url_for('waiter.home'))
 
 
-@waiter.route('/remove-notification-page/<int:notif_id>', methods = ['POST'])
+@waiter.route('/remove-notification-page/<int:notif_id>', methods=['POST'])
 @waiter_required
 def removeNotificationPage(notif_id):
     """This will remove the notification from the database and will no longer show on notifications page
@@ -170,7 +175,7 @@ def removeNotificationPage(notif_id):
     Returns:
         flask.Response: Redirects waiter to notifications page with updated notifications from database
     """
-    notification = Notification.query.filter_by(id = notif_id).first()
+    notification = Notification.query.filter_by(id=notif_id).first()
     db.session.delete(notification)
     db.session.commit()
     return redirect(url_for('waiter.viewNotifications'))
@@ -186,13 +191,14 @@ def viewOrders():
     """
     # Gets id of current waiter from session
     waiter = User.query.get(session['user_id'])
-    
+
     # Gets all customers that are at tables assigned to current waiter and stores their ids in a list
-    users = User.query.filter(User.table_number >= waiter.table_number_start, User.table_number <= waiter.table_number_end).all()
+    users = User.query.filter(User.table_number >= waiter.table_number_start,
+                              User.table_number <= waiter.table_number_end).all()
     user_ids = []
     for user in users:
         user_ids.append(user.id)
-    
+
     # Iterates through all orders and add orders with user_id in user_ids list to a orders list
     orders = []
     all_orders = Order.query.all()
@@ -200,8 +206,8 @@ def viewOrders():
         if order.user_id in user_ids:
             orders.append(order)
     menu_items = MenuItem.query.all()
-    
-    return render_template('waiter-view-order.html', orders = orders, menu_items = menu_items, users = users)
+
+    return render_template('waiter-view-order.html', orders=orders, menu_items=menu_items, users=users)
 
 
 @waiter.route('/confirm_order/<int:order_id>', methods=['POST'])
@@ -238,7 +244,7 @@ def cancelOrder(order_id):
         for menu_item in order.order_menu_items:
             db.session.delete(menu_item)
         db.session.delete(order)
-        db.session.commit() 
+        db.session.commit()
     return redirect(url_for('waiter.viewOrders'))
 
 
@@ -257,27 +263,3 @@ def changeDelivery(order_id, status):
     # Calls change_delivery function
     change_delivery(order_id, status)
     return redirect(url_for('waiter.viewOrders'))
-
-
-
-    
-
-
-
-
-    
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
