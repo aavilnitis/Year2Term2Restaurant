@@ -18,6 +18,7 @@ def split_string(input_string):
 def populate_menu():
     """Populated menu with data from the SQL file
     """
+    # Open the SQL file and iterate through each line and execute the SQL statement
     with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
         lines = f.readlines()
         for line in lines:
@@ -33,9 +34,11 @@ def change_delivery(order_id, status, table_num, user_id):
         table_num (int): the Table number of the customer who's order is being updated 
         user_id (int): The id of the user who's order is being updated
     """
+    # Change order status
     order = Order.query.get(order_id)
     order.delivery_status = status
     
+    # Send notification to waiter and manager that order is 'preparing' or 'ready'
     notif = Notification(user_id,table_num, status)
     db.session.add(notif)
     db.session.commit()
