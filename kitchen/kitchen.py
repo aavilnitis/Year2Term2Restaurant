@@ -3,7 +3,7 @@ from packages.models import MenuItem, Order, User, Notification, db
 from sqlalchemy.sql import not_
 from kitchen.static.functions.kitchen_functions import change_delivery, change_delivery, kitchenstaff_required
 
-# register customer_view as a Flask Blueprint
+# register kitchen view as a Flask Blueprint
 kitchen = Blueprint("kitchen", __name__, static_folder="static", template_folder="templates")
 
 
@@ -11,6 +11,12 @@ kitchen = Blueprint("kitchen", __name__, static_folder="static", template_folder
 @kitchen.route('/')
 @kitchenstaff_required
 def home():
+    """Queries database for all new-order type notifications and renders Kitchen staff home page
+        template that displays said notifications
+
+    Returns:
+        str: The HTML content of the waiter-home template
+    """
     notifications = Notification.query.filter_by(notification_type = 'new-order').all()
     if notifications:
         return render_template('kitchen-home.html', notifications = notifications)
