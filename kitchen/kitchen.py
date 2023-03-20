@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, session, url_for
+from flask import Blueprint, render_template, redirect, url_for
 from packages.models import MenuItem, Order, User, Notification, db
 from sqlalchemy.sql import not_
 from kitchen.static.functions.kitchen_functions import change_delivery, change_delivery, kitchenstaff_required
@@ -7,7 +7,7 @@ from kitchen.static.functions.kitchen_functions import change_delivery, change_d
 kitchen = Blueprint("kitchen", __name__, static_folder="static", template_folder="templates")
 
 
-# HOME
+# HOME ROUTES
 @kitchen.route('/')
 @kitchenstaff_required
 def home():
@@ -17,14 +17,12 @@ def home():
     Returns:
         str: The HTML content of the waiter-home template
     """
+    # Query database to get all notifications of type 'new-order'
     notifications = Notification.query.filter_by(notification_type = 'new-order').all()
-    if notifications:
-        return render_template('kitchen-home.html', notifications = notifications)
-    else:
-        return render_template('kitchen-home.html', notifications = None)
+    return render_template('kitchen-home.html', notifications = notifications)
 
 
-# NOTIFICATIONS
+# NOTIFICATION ROUTES
 @kitchen.route('view-notifications')
 @kitchenstaff_required
 def viewNotifications():
@@ -34,6 +32,7 @@ def viewNotifications():
     Returns:
         str: The HTML content of the kitchen-view-notifications template.
     """
+    # Query database to get all notifications of type 'new-order'
     notifications = Notification.query.filter_by(notification_type = 'new-order').all()
     return render_template('kitchen-view-notifications.html', notifications = notifications)
 
@@ -48,7 +47,8 @@ def removeNotification(notif_id):
     Returns:
         flask.Response: A redirect response to the kitchen staff home page
     """
-    notification = Notification.query.filter_by(id = notif_id).first()
+    # Find notification with given id and delete it from database
+    notification = Notification.query.get(notif_id)
     db.session.delete(notification)
     db.session.commit()
     return redirect(url_for('kitchen.home'))
@@ -64,6 +64,7 @@ def removeNotificationPage(notif_id):
     Returns:
         flask.Response: A redirect response to the kitchen staff notifications page
     """
+    # Find notification with given id and delete it from database
     notification = Notification.query.filter_by(id = notif_id).first()
     db.session.delete(notification)
     db.session.commit()
@@ -71,7 +72,7 @@ def removeNotificationPage(notif_id):
 
 
 
-# ORDERS
+# ORDER ROUTES
 @kitchen.route('view-orders')
 @kitchenstaff_required
 def viewOrders():
@@ -81,8 +82,11 @@ def viewOrders():
     Returns:
         str: The HTML content of the kitchen-view-orders template.
     """
+    # Query database to find all orders who's delivery status isn't delivered
     orders = Order.query.filter(not_(Order.delivery_status == 'delivered')).all()
+    # Query database for all menu items
     menu_items = MenuItem.query.all()
+    # Query database for all users
     users = User.query.all()
     return render_template('kitchen-view-order.html', orders = orders, menu_items = menu_items, users = users)
 
@@ -103,6 +107,7 @@ def changeDelivery(order_id, status, user_id):
     Returns:
         flask.Response: A redirect response to the kitchen staff orders page
     """
+    # Query database to find user with given id
     customer = User.query.get(user_id)
     table_num = customer.table_number
     change_delivery(order_id, status, table_num, user_id)
