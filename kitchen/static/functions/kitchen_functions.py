@@ -25,6 +25,14 @@ def populate_menu():
             db.session.commit()
             
 def change_delivery(order_id, status, table_num, user_id):
+    """This changes the status field of the Order in the database
+
+    Args:
+        order_id (int): The id of the Order for which status is being changed
+        status (enum): The status of the Order that is being updated
+        table_num (int): the Table number of the customer who's order is being updated 
+        user_id (int): The id of the user who's order is being updated
+    """
     order = Order.query.get(order_id)
     order.delivery_status = status
     
