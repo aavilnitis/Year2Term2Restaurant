@@ -41,6 +41,14 @@ def change_delivery(order_id, status, table_num, user_id):
     db.session.commit()
     
 def kitchenstaff_required(func):
+    """Checks if current User is a Kitchen staff member, if not redirects User to corresponding home page
+
+    Args:
+        func (function): The function to be decorated
+
+    Returns:
+        function: The decorated function
+    """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         if session.get('user') != 'kitchen_staff':
