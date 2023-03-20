@@ -6,6 +6,7 @@
 <div class="orders">
 <table class="table table-striped">
   <thead>
+    <!--Table headers of data being displayed for each Order-->
     <tr>
       <th>Order ID</th>
       <th>Table number</th>
@@ -17,6 +18,7 @@
     </tr>
   </thead>
   <tbody>
+    <!-- Displays a table of all orders and associated data-->
     {% for item in orders %}
       <tr>
         <td>{{ item.id }}</td>
@@ -29,10 +31,12 @@
         </td>        
         <td>
           <ol>
+            <!-- Displays a list of all menu items in the order -->
             {% for order_menu_item in item.order_menu_items %}
               {% for menu_item in menu_items %}
                 {% if order_menu_item.menu_item_id == menu_item.id %}
                   <li>
+                    <!-- Displays Quantity of each menu item -->
                     {{menu_item.name}} - Quantity: {{order_menu_item.quantity}}
                     <br> Item Price: £{{order_menu_item.item_price}}
                   </li>
@@ -43,25 +47,31 @@
         </td>
         <td>{{ item.status }}</td>
         <td>{{item.delivery_status}}</td>
+        <!-- Displays a live counter from the point when the order was made -->
         <td id="time-placed-{{ item.id }}">{{ item.time_placed.strftime('%Y-%m-%d %H:%M:%S') }}</td>
         <td class="button-cell">
+          <!-- Check if order is incomplete -->
           {% if item.status == 'incomplete' %}
             <p>Wait for order status to update</p>
           {% else %}
+            <!-- If order is marked as confirmed, check if it's delivery status is 'waiting', if yes, display button to mark order as 'preparing' -->
             {% if item.delivery_status == 'waiting' %}
               <form action="{{ url_for('kitchen.changeDelivery', order_id=item.id, status = 'preparing', user_id = item.user_id) }}" method="post">
                 <button type="submit" class="btn btn-success order-button"> Preparing! </button>
               </form>
+            <!-- If order is marked as confirmed, but not 'waiting', check if it's delivery status is 'preparing', if yes, display button to mark order as 'ready' -->
             {% elif item.delivery_status == 'preparing' %}
               <form action="{{ url_for('kitchen.changeDelivery', order_id=item.id, status = 'ready', user_id = item.user_id) }}" method="post">
                 <button type="submit" class="btn btn-success order-button"> Ready! </button>
               </form>
+            <!-- If order is marked as confirmed, and none of the above are true, order is complete for kitchen -->
             {% else %}
               <p>Order Complete!</p>
             {% endif %}
           {% endif %}
         </td>
       </tr>
+      <!-- Javascript snippet to set time since order placed to seconds and minutes and update each second -->
       <script>
         function updateTimePlaced{{ item.id }}() {
           // Get the current time
