@@ -22,7 +22,8 @@ pip install -r requirements.txt
 
 ### Customer
 
-As a customer, you have to sign up for an account to log into the web. After, you can view the menu to add whatever you like to the cart. Besides, you can filter the menu by the types of dishes if needed and check the ingredients and calories. If you need help, click on the call a waiter button.
+In order to log into the web, you sign up first as a customer. Once you get into it as a customer you can select the table number, then you can view and filter an electronic menu where you can see various visuals such as picture of the food that how the food will look like when its ready, information about ingredients and calories on each item so you can avoid the food with allergens. You can select and add different items into your order with the help of "Add to cart" button. 
+
 
 ### Waiter
 
