@@ -5,9 +5,25 @@ import bcrypt
 from sqlalchemy import text
 
 def split_string(input_string):
+    """Splits a comma separated string into a list of strings 
+
+    Args:
+        input_string (str): The comma separated string to be split
+
+    Returns:
+        List[str]: The list of the split strings
+    """
     return [word.strip() for word in input_string.split(',')]
 
 def names_to_array(ingredient_names):
+    """Taks a list of ingredient names and returns an array of matching Ingredient objects from database
+
+    Args:
+        ingredient_names (List[str]): A list of ingredient names to be queried in database
+
+    Returns:
+        List: A list of Ingredient objects that matched in database with ingredient_names
+    """
     ingredients = []
     for ingredient_name in ingredient_names:
         ingredient = Ingredient.query.filter_by(name=ingredient_name).first()
@@ -17,6 +33,8 @@ def names_to_array(ingredient_names):
 
 # Populates the database with premade SQL inserts
 def populate_menu():
+    """Populated menu with data from the SQL file
+    """
     with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
         lines = f.readlines()
         for line in lines:
