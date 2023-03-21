@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 ### Customer
 
-In order to log into the web, you sign up first as a customer. Once you get into it as a customer you can select the table number, then you can view and filter an electronic menu where you can see various visuals such as picture of the food that how the food will look like when its ready, information about ingredients and calories on each item so you can avoid the food with allergens. You can select and add different items into your order with the help of "Add to cart" button. 
+In order to log into the web, you sign up first as a customer. Once you get into it as a customer you can select the table number, then you can view and filter an electronic menu where you can see various visuals such as picture of the food that how the food will look like when its ready, information about ingredients and calories on each item so you can avoid the food with allergens. You can select and add different items into your order with the help of "Add to cart" button. Afterwards, You can also see the number of items to make sure that you have ordered the food you intended to and confirm the order by "confirm Order" button. Subsequently, you can see the total cost of your order there's also a button called "call a waiter" by which you can call a waiter to get help regarding order.
 
 
 ### Waiter
