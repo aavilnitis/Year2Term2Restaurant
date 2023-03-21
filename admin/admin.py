@@ -75,6 +75,12 @@ def removeNotification(notif_id):
 @admin.route('view-orders')
 @admin_required
 def viewOrders():
+    """Queries the database for all orders and renders the admin-view-orders template 
+        displaying all orders.
+
+    Returns:
+        str: The HTML content of the admin-view-order template.
+    """
     orders = Order.query.all()
     menu_items = MenuItem.query.all()
     users = User.query.all()
