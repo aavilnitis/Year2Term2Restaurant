@@ -37,3 +37,16 @@ def test_order_menu_item():
     assert order_menu_item.menu_item_id == 1
     assert order_menu_item.quantity == 2
     assert order_menu_item.item_price == 25.99
+
+def test_cart_item():
+    cart_item = CartItem(menu_item_id=1, quantity=2, item_price=25.99)
+    assert cart_item.menu_item_id == 1
+    assert cart_item.quantity == 2
+    assert cart_item.item_price == 25.99
+
+def test_user():
+    user = User(username="testuser", password="password", user_type="customer", table_number=1)
+    assert user.username == "testuser"
+    assert user.password == "password"
+    assert user.user_type == "customer"
+    assert user.table_number == 1
