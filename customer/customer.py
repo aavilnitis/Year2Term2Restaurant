@@ -256,6 +256,6 @@ def pay_now(order_id):
             db.session.commit()
             # Successful payment means redirect back to order-tracking
             return redirect(url_for('customer.show_orders'))
-        else:  # Failed payment means redirect to a payment-error page 
-            return render_template('payment_error.html')
+        else:  # Failed payment means alerting that you have done wrong entry
+            flash("Your payment details are incorrect! Please, Try again.", category="error")
     return render_template('payment-form.html')
