@@ -15,11 +15,10 @@ def home():
     Returns:
         str: The HTML content of the admin-home template
     """
+    # Get the list of notifications that haven't been cleared
     notifications = check_cleared_notifs()
-    if len(notifications) > 0:
-        return render_template('admin-home.html', notifications = notifications)
-    else:
-        return render_template('admin-home.html')
+    return render_template('admin-home.html', notifications = notifications)
+
     
 # NOTIFICATIONS
 @admin.route('view-notifications')
@@ -31,6 +30,7 @@ def viewNotifications():
     Returns:
         str: The HTML content of the admin-view-notifications template.
     """
+    # Get the list of notifications that haven't been cleared
     notifications = check_cleared_notifs()
     return render_template('admin-view-notifications.html', notifications = notifications)
 
@@ -47,6 +47,7 @@ def removeNotificationPage(notif_id):
     Returns:
         flask.Response: A redirect response to the kitchen staff notifications page
     """
+    # Add notification to cleared notifications array and reload the page
     cleared_notifs = session['cleared_notifs']
     cleared_notifs.append(notif_id)
     session['cleared_notifs'] = cleared_notifs
@@ -65,6 +66,7 @@ def removeNotification(notif_id):
     Returns:
         flask.Response: A redirect response to the kitchen staff home page
     """
+    # Add notification to cleared notifications array and reload the page
     cleared_notifs = session['cleared_notifs']
     cleared_notifs.append(notif_id)
     session['cleared_notifs'] = cleared_notifs
@@ -96,6 +98,7 @@ def menu():
     Returns:
         str: The HTML content for the menu page template with all MenuItems
     """
+    # Check if menu is populated, if not, populate menu
     if MenuItem.query.first() == None:
         populate_menu()
     menu_items = MenuItem.query.all()
@@ -111,6 +114,7 @@ def addItem():
     Returns:
         str: The HTML content for for the admin-add-item page, or if form is submitted taken back to menu page
     """
+    # Render form, then when post request is made, call add_item and reload page
     if request.method == 'POST':
         add_item()
         return redirect(url_for('admin.menu'))
@@ -145,8 +149,10 @@ def editItem(item_id):
     Returns:
         str: The HTML content for menu page after editing a MenuItem, or renders the edit-item page to allow admin to edit item
     """
+    # Get item to edit and check if it exists
     item = MenuItem.query.get(item_id)
     if item:
+        # Render form, then when post request is made, call add_item and reload page
         if request.method == 'POST':
             add_item()
             return redirect(url_for('admin.menu'))
@@ -170,6 +176,7 @@ def addNewStaff():
     Returns:
         str: The HTML content for for the admin-add-new-staff page, or if form is submitted taken back to staff page
     """
+    # Render form, then when post request is made, call add_staff and reload page
     if request.method == 'POST':
         add_staff()
         return redirect(url_for('admin.viewStaff'))
