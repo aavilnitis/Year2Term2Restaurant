@@ -91,6 +91,11 @@ def viewOrders():
 @admin.route('/menu')
 @admin_required
 def menu():
+    """Checks if a MenuItem exists, if not it will call the populate_menu function to update menu data
+
+    Returns:
+        str: The HTML content for the menu page template with all MenuItems
+    """
     if MenuItem.query.first() == None:
         populate_menu()
     menu_items = MenuItem.query.all()
@@ -101,6 +106,11 @@ def menu():
 @admin.route('/admin-add-item', methods=['GET', 'POST'])
 @admin_required
 def addItem():
+    """Renders the add-item page and calls function for adding a new MenuItem to database
+
+    Returns:
+        str: The HTML content for for the admin-add-item page, or if form is submitted taken back to menu page
+    """
     if request.method == 'POST':
         add_item()
         return redirect(url_for('admin.menu'))
