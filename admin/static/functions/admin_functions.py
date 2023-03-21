@@ -65,6 +65,12 @@ def admin_required(func):
     return wrapper
 
 def check_cleared_notifs():
+    """Check session data on stored notifications and return array of notifications from database
+        that have not been cleared (aren't in cleared_notifs array)
+
+    Returns:
+        List: List of notifications from database that have not been cleared by admin
+    """
     if 'cleared_notifs' not in session:
         session['cleared_notifs'] = []
     notifications = []
