@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 {% block title %} Shopping Cart {% endblock %}
+
 {% block content %}  
+
 <style>
-   .form-container {
-   width: 60%;
-   margin: 0 auto;
-   }
+   
 </style>
+<script src="./static/js/admin.js"></script>
 <link rel="stylesheet" href="./static/style/admin.css">
 <div class = "add-staff-header">
    <h1>View and Edit Restaurant menu</h1>
 </div>
+
 <div class="row">
    <div class="col-md-12">
-      <div class="form-container">
+      <div class="staff form-container">
          <form method="POST" >
             <div class="form-group">
                <label for="user_type">Select User Type:</label>
@@ -53,22 +54,4 @@
       </div>
    </div>
 </div>
-<script>
-   var userTypeDropdown = document.getElementById("user_type");
-   var waiterFields = document.getElementById("waiter_fields");
-   var kitchenFields = document.getElementById("kitchen_fields");
-   
-   userTypeDropdown.addEventListener("change", function() {
-     if (userTypeDropdown.value === "waiter") {
-       waiterFields.style.display = "block";
-       kitchenFields.style.display = "none";
-     } else if (userTypeDropdown.value === "kitchen") {
-       waiterFields.style.display = "none";
-       kitchenFields.style.display = "block";
-     } else {
-       waiterFields.style.display = "none";
-       kitchenFields.style.display = "none";
-     }
-   });
-</script>
 {% endblock %}

@@ -161,7 +161,7 @@ def editItem(item_id):
             ingredient_save = ""
             for ingredient in item.ingredients:
                 ingredient_save = ingredient_save + "," + ingredient.name
-            return render_template('admin-edit_item.html', types = types, item = item, ingredient_save = ingredient_save[1:])
+            return render_template('admin-edit-item.html', types = types, item = item, ingredient_save = ingredient_save[1:])
     else:
         flash("Something went wrong!", category = "error")
         return redirect(url_for('admin.menu'))
