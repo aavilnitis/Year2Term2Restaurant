@@ -5,49 +5,54 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://kit.fontawesome.com/95bf5595ab.js" crossorigin="anonymous"></script>
 <div class = "admin-menu">
-  <div class="container">
-    <div class = "menu">
-      <div class = "menu-header">
-      <h1>View and Edit Restaurant menu</h1>
-      <div style="margin-top: 5px; margin-left: 3%; text-align: center;">
-        <form action="{{url_for('admin.addItem')}}">
-            <button class="btn btn-success">Add new item    <i class="fa-solid fa-plus" style="margin-left: 5px;"></i></button>
-        </form>
-    </div>
-      </div>
-      <div class="row">
-        <div class="cards">
-          {% for item in menu_items %}
-          <div class="col-md-4">
-            <div class="card mb-3">
-              <div class="card-body">
-                <a href="{{ url_for('admin.editItem', item_id=item.id) }}" style="color: green; float: right; margin-right: 10%; margin-top: -2.5%;"><i class="fa-solid fa-pen-to-square"></i></a>
-                <a href="{{ url_for('admin.removeItem', item_id=item.id) }}" class="cross-icon" ><span class="fa fa-times"></span></a>
-                <h6 class="card-subtitle" style="text-decoration:underline">Type: {{ item.type }}</h6><br>
-                <h5 class="card-title text-success">{{ item.name }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">£{{ item.price }}</h6>
-                <p class="card-text">{{ item.description }}</p>
-                <h5 class="card-title text-primary" data-toggle="collapse" data-target="#ingredients-{{ item.id }}" style="cursor:pointer; text-decoration:underline">See Ingredients:</h5>
-                <div id="#ingredients-{{ item.id }}" class="collapse">
-                  <ul>
-                    {% for ingredient in item.ingredients %}
-                    <li>{{ ingredient.name }}</li>
-                    {% endfor %}
-                  </ul>
-                </div>
-                <p class="card-text">Calories: {{ item.calories }}</p>
-              </div>
+   <div class="container">
+      <div class = "menu">
+         <div class = "menu-header">
+            <!-- Header and info button to add new item -->
+            <h1>View and Edit Restaurant menu</h1>
+            <div style="margin-top: 5px; margin-left: 3%; text-align: center;">
+               <form action="{{url_for('admin.addItem')}}">
+                  <button class="btn btn-success">Add new item    <i class="fa-solid fa-plus" style="margin-left: 5px;"></i></button>
+               </form>
             </div>
-          </div> 
-          {% endfor %}
-          {% if menu_items|length % 3 != 0 %}
-            {% for i in range(3 - (menu_items|length % 3)) %}
-              <div class= "col-md-4"></div> 
-            {% endfor %}
-          {% endif %}
-        </div> 
+         </div>
+         <div class="row">
+            <div class="cards">
+               <!-- Display all menu items in bootstrap cards -->
+               {% for item in menu_items %}
+               <div class="col-md-4">
+                  <div class="card mb-3">
+                     <div class="card-body">
+                        <a href="{{ url_for('admin.editItem', item_id=item.id) }}" style="color: green; float: right; margin-right: 10%; margin-top: -2.5%;"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="{{ url_for('admin.removeItem', item_id=item.id) }}" class="cross-icon" ><span class="fa fa-times"></span></a>
+                        <h6 class="card-subtitle" style="text-decoration:underline">Type: {{ item.type }}</h6>
+                        <br>
+                        <h5 class="card-title text-success">{{ item.name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">£{{ item.price }}</h6>
+                        <p class="card-text">{{ item.description }}</p>
+                        <h5 class="card-title text-primary" data-toggle="collapse" data-target="#ingredients-{{ item.id }}" style="cursor:pointer; text-decoration:underline">See Ingredients:</h5>
+                        <div id="#ingredients-{{ item.id }}" class="collapse">
+                           <ul>
+                              {% for ingredient in item.ingredients %}
+                              <li>{{ ingredient.name }}</li>
+                              {% endfor %}
+                           </ul>
+                        </div>
+                        <p class="card-text">Calories: {{ item.calories }}</p>
+                     </div>
+                  </div>
+               </div>
+               {% endfor %}
+               <!-- tackle menu items collapsing when there's less than three -->
+               {% if menu_items|length < 4 %}
+                  {% for i in range(3 - (menu_items|length)) %}
+                     <div class="col-md-4"></div>
+                  {% endfor %}
+               {% endif %}
+
+            </div>
+         </div>
       </div>
-  </div>
-  </div>
+   </div>
 </div>
 {% endblock %}

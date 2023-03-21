@@ -1,32 +1,32 @@
 {% extends "base.html" %} {% block title %}Display all Staff{% endblock %} 
-
 {% block content %}
+<link rel="stylesheet" href="./static/style/admin.css">
 <table class="table table-striped">
-  <thead>
-    <tr>
-      <th>User ID</th>
-      <th>Username</th>
-      <th>User Type</th>
-      <th>Table Number Range</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for user in users %}
+   <thead>
+      <!--Headers for data being displayed for each Staff member -->
       <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.username }}
-        <td>{{ user.user_type }}</td>
-        <td>{{ user.table_number_start}}-{{ user.table_number_end}}</td>
-        <td>
-            <form action="{{ url_for('admin.fireStaff', staff_id = user.id) }}" method="post">
-                <button type="submit" class="btn btn-success"> Promote to customer! </button>
-            </form>
-        </td>
+         <th>User ID</th>
+         <th>Username</th>
+         <th>User Type</th>
+         <th>Table Number Range</th>
+         <th>Actions</th>
       </tr>
-    {% endfor %}
-  </tbody>
-
+   </thead>
+   <tbody>
+      <!-- Iterates through each staff member and displays associated data-->
+      {% for user in users %}
+      <tr>
+         <td>{{ user.id }}</td>
+         <td>{{ user.username }}
+         <td>{{ user.user_type }}</td>
+         <td>{{ user.table_number_start}}-{{ user.table_number_end}}</td>
+         <td>
+            <form action="{{ url_for('admin.fireStaff', staff_id = user.id) }}" method="post">
+               <button type="submit" class="btn btn-success"> Promote to customer! </button>
+            </form>
+         </td>
+      </tr>
+      {% endfor %}
+   </tbody>
 </table>
-
 {%endblock%}

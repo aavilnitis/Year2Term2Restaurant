@@ -1,30 +1,22 @@
-
-ol {
-    padding: 0;
-    margin: 0;
-  }
-
-ol li{
-        margin-left: 0;
+/* All Tables */
+.table-striped{
+  color: #1b1b1b;
+  font-family: garamond;
 }
-
+/* View orders */
 .view-orders{
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 100vh;
   color: #1b1b1b;
 }
-.table-striped{
-  color: #1b1b1b;
-  font-family: garamond;
-}
-
+/* Admin Home Styling */
 .admin-home-div {
   background-image: url("https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
   background-repeat: none;
   background-size: cover;
   background-color: rgba(0, 0, 0, 0.6);
-  background-blend-mode: darken; 
+  background-blend-mode: darken;
   min-height: 95vh;
 }
 .admin-home{
@@ -37,13 +29,32 @@ ol li{
 .admin-home h1,h3{
   color: white;
 }
-
+.admin-notif.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+.admin-notif.closebtn {
+  background: none;
+  border: none;
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.closebtn:hover {
+  color: black;
+}
+/* Admin Menu Styling */
 .admin-menu{
   background-image: linear-gradient(rgba(0, 0, 0, 0.695),rgba(0, 0, 0, 0.782)) , url("https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
   background-repeat: none;
   background-size: cover;
 }
-
 .menu{
   display: flex;
   flex-direction: column;
@@ -66,37 +77,64 @@ ol li{
   flex-direction: column;
   min-width: 25vw;
 }
-
 .cards {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
-
 .card {
   display: flex;
   flex-direction: column;
-  /* This will make the card grow to fill the available space */
   flex-grow: 1;
-  /* This will set a minimum height for the card */
   flex-basis: 0;
 }
-
 .menu-header{
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 100%;
 }
-
 .card-body {
   flex-grow: 1;
 }
-
+/* Add Staff */
 .add-staff-header{
   padding-top: 5%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 100%;
+}
+/* Add and Edit Menu */
+.fa-duotone{
+  color: #6a92f1;
+}
+.add-item-page{
+  background-image: linear-gradient(rgba(0, 0, 0, 0.695),rgba(0, 0, 0, 0.782)) , url("https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  background-repeat: none;
+  background-size: cover;
+}
+.add-item-container form{
+  color: white;
+  width: 50%;
+  margin: auto;
+  padding-bottom: 5%;
+  text-align: start;
+}
+.add-item-container{
+  color: white;
+  padding-top: 5%;
+  text-align: center;
+}
+.btn-primary{
+  background-color: green;
+  border: none;
+}
+.btn-primary:hover{
+  background-color: rgb(41, 148, 41);
+  border: none;
+}
+.staff.form-container {
+  width: 60%;
+  margin: 0 auto;
 }

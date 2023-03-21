@@ -1,47 +1,47 @@
 {% extends "base.html" %} {% block title %}add_item{% endblock %} {% block
-  content %}
-  <link rel="stylesheet" href="./static/style/add-item.css">
-  <script src="https://kit.fontawesome.com/95bf5595ab.js" crossorigin="anonymous"></script>
-  
-    <div class="container">
-      
-      <h1><b>Add a new menu item</h1>
-      <form method="post">
-          <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" placeholder="Enter name" name="name"/>
-          </div>
-          <div class="form-group">
-            <label for="price"> Price:</label>
-            <input type="number" class="form-control" id="price" placeholder="Enter  price" name="price"/>
-          </div>
-          <div class="form-group">
-            <label for="description">Description:</label>
-            <input type="text" class="form-control" id="description" placeholder="Enter description" name="description"/>
-          </div>
-          <div class="form-group">
-            <label for="ingredients">Ingredients:</label>
-            <input type="text" class="form-control" id="ingredients" placeholder="Enter ingredients" name="ingredients"/>
-          </div>
-          <div class="form-group">
-            <label for="calories">Calories:</label>
-            <input type="number" class="form-control" id="calories" placeholder="Enter calories" name="calories"/>
-          </div>
-          <div class="form-group">
-            <label for="picture">Picture:</label>
-            <input type="text" class="form-control" id="picture" placeholder="Enter picture link" name="picture"/>
-          </div>
-          <div class="form-group">
-            <label for="type">Type:</label>
-            <select class="form-control" id="type" name="type">
-              <option value="" disabled selected>Select</option>
-              {% for type in types %}
-                <option value="{{ type[0] }}">{{ type[0] }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        <button type="submit" class="btn btn-primary">Add item <i class="fa-solid fa-paper-plane"></i></button>
-      </form>
-    </div>  
-  {%endblock%}
-
+   content %}
+   <link rel="stylesheet" href="./static/style/admin.css">
+   <script src="https://kit.fontawesome.com/95bf5595ab.js" crossorigin="anonymous"></script>
+   <div class = "add-item-page">
+      <div class="add-item-container">
+         <h1><b>Add a new menu item</h1>
+         <!-- Form to add new menu item -->
+         <form method="post">
+            <div class="form-group">
+               <label for="name">Name:</label>
+               <input type="text" class="form-control" id="name" placeholder="Enter name" name="name"/>
+            </div>
+            <div class="form-group">
+               <label for="price"> Price:</label>
+               <input type="number" class="form-control" id="price" placeholder="Enter  price" name="price"/>
+            </div>
+            <div class="form-group">
+               <label for="description">Description:</label>
+               <input type="text" class="form-control" id="description" placeholder="Enter description" name="description"/>
+            </div>
+            <div class="form-group">
+               <label for="ingredients">Ingredients:</label>
+               <input type="text" class="form-control" id="ingredients" placeholder="Enter ingredients" name="ingredients"/>
+            </div>
+            <div class="form-group">
+               <label for="calories">Calories:</label>
+               <input type="number" class="form-control" id="calories" placeholder="Enter calories" name="calories"/>
+            </div>
+            <div class="form-group">
+               <label for="picture">Picture:</label>
+               <input type="text" class="form-control" id="picture" placeholder="Enter picture link" name="picture"/>
+            </div>
+            <div class="form-group">
+               <label for="type">Type:</label>
+               <select class="form-control" id="type" name="type">
+                  <option value="" disabled selected>Select</option>
+                  {% for type in types %}
+                  <option value="{{ type[0] }}">{{ type[0] }}</option>
+                  {% endfor %}
+               </select>
+            </div>
+            <button type="submit" class="add-item btn btn-primary">Add item <i class="fa-solid fa-paper-plane"></i></button>
+         </form>
+      </div>
+   </div>
+   {%endblock%}

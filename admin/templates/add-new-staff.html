@@ -1,74 +1,55 @@
 {% extends "base.html" %}
 {% block title %} Shopping Cart {% endblock %}
 {% block content %}  
-<style>
-    .form-container {
-    width: 60%;
-    margin: 0 auto;
-    }
-</style>
+<!-- Javascript that handles select field -->
+<script src="./static/js/admin.js"></script>
 <link rel="stylesheet" href="./static/style/admin.css">
 <div class = "add-staff-header">
-    <h1>View and Edit Restaurant menu</h1>
-  </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-container">
-                    <form method="POST" >
-                        <div class="form-group">
-                            <label for="user_type">Select User Type:</label>
-                            <select name="user_type" id="user_type" class="form-control">
-                                <option value="">--Please select--</option>
-                                <option value="waiter">Waiter</option>
-                                <option value="kitchen_staff">Kitchen</option>
-                            </select>
-                        </div>
-                        <!-- Waiter Fields -->
-                        <div id="waiter_fields" style="display:none;">
-                            <div class="form-group">
-                                <label for="table_number_start">Table Number Start:</label>
-                                <input type="number" name="table_number_start" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="table_number_end">Table Number End:</label>
-                                <input type="number" name="table_number_end" class="form-control">
-                            </div>
-                        </div>
-                        <!-- Kitchen Fields -->
-                        <div id="kitchen_fields" style="display:none;">
-                            <!-- No additional fields needed for kitchen user -->
-                        </div>
-                        <div class="form-group">
-                            <label for="username">Username:</label>
-                            <input type="text" name="username" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="password" >Password:</label>
-                            <input type="password" name="password" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Submit" class="btn btn-primary">
-                        </div>
-                    </form>
-                </div>
+   <h1>View and Edit Restaurant menu</h1>
+</div>
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="staff form-container">
+         <!-- Form to add new staff member -->
+         <form method="POST" >
+            <div class="form-group">
+               <label for="user_type">Select User Type:</label>
+               <!-- Select field that is updated by javascript -->
+               <select name="user_type" id="user_type" class="form-control">
+                  <option value="">--Please select--</option>
+                  <option value="waiter">Waiter</option>
+                  <option value="kitchen_staff">Kitchen</option>
+               </select>
             </div>
-        </div>
-    <script>
-        var userTypeDropdown = document.getElementById("user_type");
-        var waiterFields = document.getElementById("waiter_fields");
-        var kitchenFields = document.getElementById("kitchen_fields");
-        
-        userTypeDropdown.addEventListener("change", function() {
-          if (userTypeDropdown.value === "waiter") {
-            waiterFields.style.display = "block";
-            kitchenFields.style.display = "none";
-          } else if (userTypeDropdown.value === "kitchen") {
-            waiterFields.style.display = "none";
-            kitchenFields.style.display = "block";
-          } else {
-            waiterFields.style.display = "none";
-            kitchenFields.style.display = "none";
-          }
-        });
-    </script>
-    {% endblock %}
+            <!-- Waiter Fields -->
+            <div id="waiter_fields" style="display:none;">
+               <div class="form-group">
+                  <label for="table_number_start">Table Number Start:</label>
+                  <input type="number" name="table_number_start" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label for="table_number_end">Table Number End:</label>
+                  <input type="number" name="table_number_end" class="form-control">
+               </div>
+            </div>
+            <!-- Kitchen Fields -->
+            <div id="kitchen_fields" style="display:none;">
+               <!-- No additional fields needed for kitchen user -->
+            </div>
+            <div class="form-group">
+               <label for="username">Username:</label>
+               <input type="text" name="username" class="form-control">
+            </div>
+            <div class="form-group">
+               <label for="password" >Password:</label>
+               <input type="password" name="password" class="form-control">
+            </div>
+            <div class="form-group">
+               <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+{% endblock %}
