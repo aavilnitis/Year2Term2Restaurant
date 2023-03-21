@@ -25,16 +25,17 @@ def names_to_array(ingredient_names):
         List: A list of Ingredient objects that matched in database with ingredient_names
     """
     ingredients = []
+    # Iterate through all ingredients, if it matches in database add it to list
     for ingredient_name in ingredient_names:
         ingredient = Ingredient.query.filter_by(name=ingredient_name).first()
         if ingredient:
             ingredients.append(ingredient)
     return ingredients
 
-# Populates the database with premade SQL inserts
 def populate_menu():
     """Populated menu with data from the SQL file
     """
+    # Open the SQL file and iterate through each line and execute the SQL statement
     with open("static/SQL_Inserts/populatemenu.sql", "r") as f:
         lines = f.readlines()
         for line in lines:
@@ -71,11 +72,14 @@ def check_cleared_notifs():
     Returns:
         List: List of notifications from database that have not been cleared by admin
     """
+    # If cleared_notifs array hasn't been initialised yet, initialise it
     if 'cleared_notifs' not in session:
         session['cleared_notifs'] = []
     notifications = []
     notifications_database = Notification.query.all()
+    # Get list of cleared notifications
     cleared_notifs = session['cleared_notifs']
+    # If notification not in cleared_notifs, add to list that's returned
     for notification in notifications_database:
         if notification.id not in cleared_notifs:
             notifications.append(notification)
@@ -85,6 +89,7 @@ def add_item():
     """Requests all data from add-item form and creates a new MenuItem object that is
         added to the database
     """
+    # Request all data from the form
     name = request.form.get('name')
     price = request.form.get('price')
     description = request.form.get('description')
@@ -92,11 +97,12 @@ def add_item():
     calories = request.form.get('calories')
     type = request.form.get('type')
     picture = request.form.get('picture')
+    # For each ingredient check if it's in database, if not, add it
     for ingredient_name in ingredient_names:
         if Ingredient.query.filter_by(name=ingredient_name).first() == None:
             db.session.add(Ingredient(name = ingredient_name))
             db.session.commit()
-    
+    # Split ingredients from a string to array
     ingredients = names_to_array(ingredient_names)
     menu_item = MenuItem(name=name, price=price, description=description, ingredients=ingredients, calories=calories, type=type, picture=picture)
     db.session.add(menu_item)
@@ -114,6 +120,7 @@ def add_staff():
     
     users = User.query.all()
     usernames = []
+    # Create a list of all taken usernames
     for user in users:
         usernames.append(user.username)
     if username in usernames:
@@ -123,6 +130,7 @@ def add_staff():
     table_number = None
     table_number_start = None
     table_number_end = None
+    # If user type is waiter, request table number info
     if user_type == 'waiter':
         table_number_start = request.form.get('table_number_start')
         table_number_end = request.form.get('table_number_end')
