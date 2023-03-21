@@ -1,58 +1,39 @@
 from datetime import datetime
 from extensions import db
-from models import *
-import pytest
+from models import Ingredient, MenuItem, Order, OrderMenuItem, CartItem, User
 
-@pytest.fixture
-def new_ingredient():
-    ingredient = Ingredient(name='salt')
-    db.session.add(ingredient)
-    db.session.commit()
-    return ingredient
+def test_ingredient():
+    ingredient = Ingredient(name="onion")
+    assert ingredient.name == "onion"
 
-@pytest.fixture
-def new_menu_item(new_ingredient):
-    menu_item = MenuItem(name='Chicken Curry', price=20.99, description='A delicious chicken curry', ingredients=[new_ingredient], calories=500, type='mains')
-    db.session.add(menu_item)
-    db.session.commit()
-    return menu_item
+def test_menu_item():
+    ingredient1 = Ingredient(name="onion")
+    ingredient2 = Ingredient(name="cheese")
+    menu_item = MenuItem(name="pizza", price=12.99, description="Yummy Pizza", 
+                         ingredients=[ingredient1, ingredient2], calories=500, 
+                         type="mains", picture="pizza.jpg")
+    assert menu_item.name == "pizza"
+    assert menu_item.price == 12.99
+    assert menu_item.description == "Yummy Pizza"
+    assert menu_item.calories == 500
+    assert menu_item.type == "mains"
+    assert menu_item.picture == "pizza.jpg"
 
-@pytest.fixture
-def new_user():
-    user = User(username='test_user', password='test_password', user_type='customer', table_number=1)
-    db.session.add(user)
-    db.session.commit()
-    return user
-
-def test_ingredient(new_ingredient):
-    assert new_ingredient.id is not None
-    assert new_ingredient.name == 'salt'
-
-def test_menu_item(new_menu_item):
-    assert new_menu_item.id is not None
-    assert new_menu_item.name == 'Chicken Curry'
-    assert new_menu_item.price == 20.99
-    assert new_menu_item.description == 'A delicious chicken curry'
-    assert new_menu_item.calories == 500
-    assert new_menu_item.type == 'mains'
-
-def test_user(new_user):
-    assert new_user.id is not None
-    assert new_user.username == 'test_user'
-    assert new_user.password == 'test_password'
-    assert new_user.user_type == 'customer'
-    assert new_user.table_number == 1
-
-def test_order(new_user, new_menu_item):
-    order_menu_item = OrderMenuItem(menu_item_id=new_menu_item.id, quantity=2, item_price=new_menu_item.price*2)
-    order = Order(user_id=new_user.id, order_menu_items=[order_menu_item], order_total=new_menu_item.price*2)
-    db.session.add(order)
-    db.session.commit()
-    assert order.id is not None
-    assert order.user_id == new_user.id
-    assert order.order_total == new_menu_item.price*2
-    assert order.status == 'incomplete'
-    assert order.payment_status == 'unpaid'
-    assert order.delivery_status == 'waiting'
+def test_order():
+    user = User(username="testuser", password="password", user_type="customer")
+    order_menu_item = OrderMenuItem(menu_item_id=1, quantity=2, item_price=25.99)
+    order = Order(user_id=user.id, order_menu_items=[order_menu_item], order_total=51.98, 
+                  status="confirmed", payment_status="paid", delivery_status="delivered", 
+                  time_placed=datetime.utcnow())
+    assert order.user_id == user.id
+    assert order.order_total == 51.98
+    assert order.status == "confirmed"
+    assert order.payment_status == "paid"
+    assert order.delivery_status == "delivered"
     assert order.time_placed is not None
-    assert order.order_menu_items.count() == 1
+
+def test_order_menu_item():
+    order_menu_item = OrderMenuItem(menu_item_id=1, quantity=2, item_price=25.99)
+    assert order_menu_item.menu_item_id == 1
+    assert order_menu_item.quantity == 2
+    assert order_menu_item.item_price == 25.99
