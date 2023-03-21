@@ -120,6 +120,14 @@ def addItem():
 @admin.route('/remove-item/<int:item_id>', methods = ['GET','POST'])
 @admin_required
 def removeItem(item_id):
+    """Gets MenuItem using item_id and removes it from database
+
+    Args:
+        item_id (int): The id of the MenuItem to be removed
+
+    Returns:
+        flask.Response: Redirects admin back to menu
+    """
     item = MenuItem.query.get(item_id)
     if item:
         db.session.delete(item)
@@ -129,6 +137,14 @@ def removeItem(item_id):
 @admin.route('/edit-item/<int:item_id>', methods = ['GET','POST'])
 @admin_required
 def editItem(item_id):
+    """Edits data of an existing MenuItem
+
+    Args:
+        item_id (id): The id of the MenuItem in database
+
+    Returns:
+        str: The HTML content for menu page after editing a MenuItem, or renders the edit-item page to allow admin to edit item
+    """
     item = MenuItem.query.get(item_id)
     if item:
         if request.method == 'POST':
