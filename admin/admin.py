@@ -37,6 +37,16 @@ def viewNotifications():
 @admin.route('/remove-notification-page/<int:notif_id>', methods = ['POST'])
 @admin_required
 def removeNotificationPage(notif_id):
+    """Removes a notification from admin notifications page by adding it to cleared_notifs array.
+        It doesn't remove notification by deleting it like in other views as other staff
+        members might still need that notification.
+
+    Args:
+        notif_id (id): The id of the Notification to remove
+
+    Returns:
+        flask.Response: A redirect response to the kitchen staff notifications page
+    """
     cleared_notifs = session['cleared_notifs']
     cleared_notifs.append(notif_id)
     session['cleared_notifs'] = cleared_notifs
@@ -45,6 +55,16 @@ def removeNotificationPage(notif_id):
 @admin.route('/remove-notification/<int:notif_id>', methods = ['POST'])
 @admin_required
 def removeNotification(notif_id):
+    """Removes a notification from admin home page by adding it to cleared_notifs array.
+        It doesn't remove notification by deleting it like in other views as other staff
+        members might still need that notification.
+
+    Args:
+        notif_id (id): The id of the Notification to remove
+
+    Returns:
+        flask.Response: A redirect response to the kitchen staff home page
+    """
     cleared_notifs = session['cleared_notifs']
     cleared_notifs.append(notif_id)
     session['cleared_notifs'] = cleared_notifs
