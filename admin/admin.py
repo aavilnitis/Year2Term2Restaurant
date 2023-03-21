@@ -165,9 +165,14 @@ def editItem(item_id):
 @admin.route('add-new-staff', methods=['GET', 'POST'])
 @admin_required
 def addNewStaff():
+    """Renders the add-staff page and calls function for adding a new staff member to database
+
+    Returns:
+        str: The HTML content for for the admin-add-new-staff page, or if form is submitted taken back to staff page
+    """
     if request.method == 'POST':
         add_staff()
-        return redirect(url_for('admin.home'))
+        return redirect(url_for('admin.viewStaff'))
             
     return render_template('add-new-staff.html')
 
@@ -175,12 +180,26 @@ def addNewStaff():
 @admin.route('view-staff', methods = ['GET', 'POST'])
 @admin_required
 def viewStaff():
+    """Queries the database for all staff members and renders the admin-view-staff template 
+        displaying all staff members.
+
+    Returns:
+        str: The HTML content of the admin-view-staff template.
+    """
     users = User.query.filter(User.user_type.in_(['waiter', 'kitchen_staff'])).all()
     return render_template('admin-view-staff.html', users = users)
 
 @admin.route('fire-staff/<int:staff_id>', methods = ['GET', 'POST'])
 @admin_required
 def fireStaff(staff_id):
+    """Gets staff member using staff_id and removes them from database
+
+    Args:
+        staff_id (int): The id of the staff member to be removed
+
+    Returns:
+        flask.Response: Redirects admin back to viewStaff route
+    """
     user = User.query.get(staff_id)
     db.session.delete(user)
     db.session.commit()
