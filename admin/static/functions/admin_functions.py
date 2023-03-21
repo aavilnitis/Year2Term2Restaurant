@@ -82,6 +82,9 @@ def check_cleared_notifs():
     return notifications
 
 def add_item():
+    """Requests all data from add-item form and creates a new MenuItem object that is
+        added to the database
+    """
     name = request.form.get('name')
     price = request.form.get('price')
     description = request.form.get('description')
@@ -100,6 +103,12 @@ def add_item():
     db.session.commit()
     
 def add_staff():
+    """Requests all data from add-staff-member form and creates a new User object that is
+        then added to the database. If new staff username is taken, redirects and flashes message
+
+    Returns:
+        flask.Response: Redirects admin back to staff page
+    """
     user_type = request.form.get('user_type')
     username = request.form.get('username')
     
