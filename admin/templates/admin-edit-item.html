@@ -4,6 +4,7 @@
 <div class = "add-item-page">
    <div class = "add-item-container">
       <h1><b>Edit menu item</h1>
+      <!-- Form to edit menu items - {{item.value}} syntax denotes values that are loaded from database -->
       <form method="post">
          <div class="form-group">
             <label for="name">Name:</label>
@@ -32,6 +33,7 @@
          <div class="form-group">
             <label for="type">Type:</label>
             <select class="form-control" id="type" name="type">
+               <!-- Type value is also loaded from database object -->
                <option value="" disabled>Select</option>
                {% for type in types %}
                {% if type[0] == item.type %}

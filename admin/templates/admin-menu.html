@@ -8,6 +8,7 @@
    <div class="container">
       <div class = "menu">
          <div class = "menu-header">
+            <!-- Header and info button to add new item -->
             <h1>View and Edit Restaurant menu</h1>
             <div style="margin-top: 5px; margin-left: 3%; text-align: center;">
                <form action="{{url_for('admin.addItem')}}">
@@ -17,6 +18,7 @@
          </div>
          <div class="row">
             <div class="cards">
+               <!-- Display all menu items in bootstrap cards -->
                {% for item in menu_items %}
                <div class="col-md-4">
                   <div class="card mb-3">
@@ -41,11 +43,13 @@
                   </div>
                </div>
                {% endfor %}
-               {% if menu_items|length % 3 != 0 %}
-               {% for i in range(3 - (menu_items|length % 3)) %}
-               <div class= "col-md-4"></div>
-               {% endfor %}
+               <!-- tackle menu items collapsing when there's less than three -->
+               {% if menu_items|length < 4 %}
+                  {% for i in range(3 - (menu_items|length)) %}
+                     <div class="col-md-4"></div>
+                  {% endfor %}
                {% endif %}
+
             </div>
          </div>
       </div>

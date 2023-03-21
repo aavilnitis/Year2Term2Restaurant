@@ -1,11 +1,7 @@
 {% extends "base.html" %}
 {% block title %} Shopping Cart {% endblock %}
-
 {% block content %}  
-
-<style>
-   
-</style>
+<!-- Javascript that handles select field -->
 <script src="./static/js/admin.js"></script>
 <link rel="stylesheet" href="./static/style/admin.css">
 <div class = "add-staff-header">
@@ -15,9 +11,11 @@
 <div class="row">
    <div class="col-md-12">
       <div class="staff form-container">
+         <!-- Form to add new staff member -->
          <form method="POST" >
             <div class="form-group">
                <label for="user_type">Select User Type:</label>
+               <!-- Select field that is updated by javascript -->
                <select name="user_type" id="user_type" class="form-control">
                   <option value="">--Please select--</option>
                   <option value="waiter">Waiter</option>

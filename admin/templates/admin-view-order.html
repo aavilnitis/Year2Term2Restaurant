@@ -5,6 +5,7 @@
    <div class="orders">
       <table class="table table-striped">
          <thead>
+            <!--Headers for data being displayed for each Order-->
             <tr>
                <th>User ID</th>
                <th>Table number</th>
@@ -16,6 +17,7 @@
             </tr>
          </thead>
          <tbody>
+            <!-- Iterates through each order and displays associated data-->
             {% for item in orders %}
             <tr>
                <td>{{ item.user_id }}</td>
@@ -27,6 +29,7 @@
                   {% endfor %}
                </td>
                <td>
+                  <!-- compares id of menu_item to menu_item_id of order_menu_item and displays correct data-->
                   <ol>
                      {% for order_menu_item in item.order_menu_items %}
                      {% for menu_item in menu_items %}

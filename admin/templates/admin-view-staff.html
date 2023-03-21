@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="./static/style/admin.css">
 <table class="table table-striped">
    <thead>
+      <!--Headers for data being displayed for each Staff member -->
       <tr>
          <th>User ID</th>
          <th>Username</th>
@@ -12,6 +13,7 @@
       </tr>
    </thead>
    <tbody>
+      <!-- Iterates through each staff member and displays associated data-->
       {% for user in users %}
       <tr>
          <td>{{ user.id }}</td>
