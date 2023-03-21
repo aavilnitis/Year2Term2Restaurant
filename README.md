@@ -31,7 +31,8 @@ You can create a waiter account by the manager account. Waiters can edit the ite
 
 ### Kitchen Staff
 
-You can create a kitchen staff account by the manager account. 
+you can create a kitchen staff account. Here you get the notifications of each confirmed order along with the table no once customer confirms it from the cart and can find out that when the orders were made so you can be on track regarding orders. You can also notify waiter that the order is ready to be delivered and can dismiss once you are done with it.
+ 
 
 ### Manager
 
