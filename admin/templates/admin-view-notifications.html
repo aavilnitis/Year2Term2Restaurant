@@ -1,32 +1,29 @@
 {% extends "base.html" %} {% block title %}Display all Notifications{% endblock %} 
-
 {% block content %}
 <table class="table table-striped">
-  <thead>
-    <tr>
-      <th>User ID</th>
-      <th>Table Number</th>
-      <th>Message</th>
-      <th>Status</th>
-      <th>Dismiss</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for notification in notifications %}
+   <thead>
       <tr>
-        <td>{{ notification.user_id }}</td>
-        <td>{{ notification.table_number }}</td>
-        <td>{{ notification.message }}</td>
-        <td>{{ notification.status}}</td>
-        <td>
-            <form action="{{ url_for('admin.removeNotificationPage', notif_id=notification.id) }}" method="post">
-              <button type="submit" class="btn btn-success"> Dismiss notification </button>
-            </form>
-      </td>
+         <th>User ID</th>
+         <th>Table Number</th>
+         <th>Message</th>
+         <th>Status</th>
+         <th>Dismiss</th>
       </tr>
-    {% endfor %}
-  </tbody>
-
+   </thead>
+   <tbody>
+      {% for notification in notifications %}
+      <tr>
+         <td>{{ notification.user_id }}</td>
+         <td>{{ notification.table_number }}</td>
+         <td>{{ notification.message }}</td>
+         <td>{{ notification.status}}</td>
+         <td>
+            <form action="{{ url_for('admin.removeNotificationPage', notif_id=notification.id) }}" method="post">
+               <button type="submit" class="btn btn-success"> Dismiss notification </button>
+            </form>
+         </td>
+      </tr>
+      {% endfor %}
+   </tbody>
 </table>
-
 {%endblock%}
