@@ -42,6 +42,14 @@ def populate_menu():
             db.session.commit()
 
 def admin_required(func):
+    """Checks if current User is an Admin, if not redirects User to corresponding home page
+
+    Args:
+        func (function): The function to be decorated
+
+    Returns:
+        function: The decorated function
+    """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         if session.get('user') != 'admin':
