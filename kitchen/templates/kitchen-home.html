@@ -2,63 +2,26 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 <div class = "kitchen-home-page">
-<link rel="stylesheet" href="./static/style/kitchen-home.css">
-  <div class = "kitchen-home">
-  <h1 style="font-size: 300%">Restaurant 26</h1>
-  <h3>
-    Hello Kitchen Staff! 
-  </h3>
+   <script src="./static/js/kitchen.js"></script>
+   <link rel="stylesheet" href="./static/style/kitchen-style.css">
+   <div class = "kitchen-home">
+      <!-- Display restaurant name and staff message -->
+      <h1 style="font-size: 300%">Restaurant 26</h1>
+      <h3> Hello Kitchen Staff!</h3>
 
-
-  {% if not notifications == None %}
-    {% for notification in notifications %}
-      <div class="alert">
-        <form action="{{ url_for('kitchen.removeNotification', notif_id=notification.id) }}" method="post">
-          <input type="hidden" name="notif_id" value="{{notification.id}}">
-          <button class="closebtn">x</button>
-        </form>
-        <strong>{{notification.message}}</strong> 
-      </div>
-    {% endfor %}
-    
-  {% endif %}
-
-  
-
-
-    <style>
-        .alert {
-          padding: 20px;
-          background-color: #f44336;
-          color: white;
-        }
-        
-        .closebtn {
-          background: none;
-          border: none;
-          margin-left: 15px;
-          color: white;
-          font-weight: bold;
-          float: right;
-          font-size: 22px;
-          line-height: 20px;
-          cursor: pointer;
-          transition: 0.3s;
-        }
-        
-        .closebtn:hover {
-          color: black;
-        }
-        </style>
-
-<script>
-  function refreshPage() {
-    setTimeout(() => {
-      window.location.reload();
-    }, 10000);
-  }
-  refreshPage();
-</script>
-</div>
+      <!-- Display all notifications if they exist -->
+      {% if not notifications == None %}
+         {% for notification in notifications %}
+         <div class="home-notif">
+            <!-- Adds a cross button to each notification, that calls kitchen.removenotification function and removes said notification -->
+            <form action="{{ url_for('kitchen.removeNotification', notif_id=notification.id) }}" method="post">
+               <input type="hidden" name="notif_id" value="{{notification.id}}">
+               <button class="close-notif">x</button>
+            </form>
+            <strong>{{notification.message}}</strong> 
+         </div>
+         {% endfor %}
+      {% endif %}
+   </div>
 </div>
 {%endblock%}
