@@ -36,6 +36,7 @@ def sign_up():
         flash('User created succesfully', category='success')
         session['user'] = 'customer'
         session['user_id'] = user.id
+        session['cart-amount'] = 0
         # redirect to the next page, which is the table number selection page for the customer
         return redirect(url_for("customer.table_number"))
      # render the sign-up page if the request method is GET
