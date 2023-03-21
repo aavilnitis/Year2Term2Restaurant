@@ -15,7 +15,7 @@ def home():
         template that displays said notifications
 
     Returns:
-        str: The HTML content of the waiter-home template
+        str: The HTML content of the kitchen-home template
     """
     # Query database to get all notifications of type 'new-order'
     notifications = Notification.query.filter_by(notification_type = 'new-order').all()

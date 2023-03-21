@@ -1,6 +1,7 @@
-from flask import session, url_for, redirect
-from packages.models import Ingredient, Notification, db
+from flask import session, url_for, redirect, flash, request
+from packages.models import Ingredient, Notification, MenuItem, User, db
 import functools
+import bcrypt
 from sqlalchemy import text
 
 def split_string(input_string):
@@ -47,3 +48,43 @@ def check_cleared_notifs():
         if notification.id not in cleared_notifs:
             notifications.append(notification)
     return notifications
+
+def add_item():
+    name = request.form.get('name')
+    price = request.form.get('price')
+    description = request.form.get('description')
+    ingredient_names = split_string(request.form.get('ingredients')) 
+    calories = request.form.get('calories')
+    type = request.form.get('type')
+    picture = request.form.get('picture')
+    for ingredient_name in ingredient_names:
+        if Ingredient.query.filter_by(name=ingredient_name).first() == None:
+            db.session.add(Ingredient(name = ingredient_name))
+            db.session.commit()
+    
+    ingredients = names_to_array(ingredient_names)
+    menu_item = MenuItem(name=name, price=price, description=description, ingredients=ingredients, calories=calories, type=type, picture=picture)
+    db.session.add(menu_item)
+    db.session.commit()
+    
+def add_staff():
+    user_type = request.form.get('user_type')
+    username = request.form.get('username')
+    
+    users = User.query.all()
+    usernames = []
+    for user in users:
+        usernames.append(user.username)
+    if username in usernames:
+        flash('Username already taken!', category='error')
+        return redirect(url_for('admin.addNewStaff'))
+    password = request.form.get('password')
+    table_number = None
+    table_number_start = None
+    table_number_end = None
+    if user_type == 'waiter':
+        table_number_start = request.form.get('table_number_start')
+        table_number_end = request.form.get('table_number_end')
+    user = User(username,bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()),user_type, table_number, table_number_start, table_number_end)
+    db.session.add(user)
+    db.session.commit()
