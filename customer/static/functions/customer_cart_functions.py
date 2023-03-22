@@ -111,4 +111,5 @@ def confirm_cart(cart_items):
     # Commit changes to the database
     db.session.commit()
     flash('Order sent to restaurant', category='success')
+    session['cart-amount'] = 0
     return order.id
