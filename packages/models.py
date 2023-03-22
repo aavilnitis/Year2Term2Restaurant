@@ -1,5 +1,5 @@
 from datetime import datetime
-from extensions import db
+from .extensions import db
 
 class Ingredient(db.Model):
     __tablename__ = "ingredients"
