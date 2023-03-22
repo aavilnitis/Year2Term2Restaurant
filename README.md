@@ -4,40 +4,90 @@
 
 ## Introduction
 
-**This team project is an online restaurant system based on flask, which converts most of the in-store restaurant functions to network. Users can log in as customer/waiter/kitchen staff/manager. It helps to manage the restaurant intuitionisticly and order food easily.**
+This team project is an online restaurant system based on flask, which converts most of the in-store restaurant functions to network. Users can log in as customer/waiter/kitchen-staff/manager. It helps to manage the restaurant intuitionisticly and order food easily.
 
 ![rainbow](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-## Setup
 
-The following code can install the required enviroment for running the program. You have to run this code in the project folder by terminal.
+
+## Authors
+
+- Aleksis Aleksandrs Vilnitis
+- Jaskirat Sachdeva
+- Youssef Mohamed Helal
+- Robert Marshall
+- Abdullah Aamir 
+- Muhammad Saqib
+- Mohamed Mohamed 
+- Sicheng Xie
+
+![rainbow](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+## Setup
+Clone this repository to your local machine:
+
+```shell
+git clone https://gitlab.cim.rhul.ac.uk/TeamProject26/PROJECT.git
+```
+
+Navigate to the root directory of the project:
+
+```shell
+cd PROJECT/
+```
+
+Install the required packages:
 
 ```shell
 pip install -r requirements.txt
 ```
 
-![rainbow](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+Run the python app:
 
+```shell
+python3 main.py
+```
+
+![rainbow](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 ## Usage
 
 ### Customer
-
-As a customer, you have to sign up for an account to log into the web. After, you can view the menu to add whatever you like to the cart. Besides, you can filter the menu by the types of dishes if needed and check the ingredients and calories. If you need help, click on the call a waiter button.
+As a customer, you have to sign up for an account to use the restaurant system. When you do, you have the following functionality: 
+* See featured items
+* View Menu
+* Filter menu
+* See menu item calories, ingredients
+* Add items to cart
+* Confirm cart (order)
+* Call waiter for help
+* Track your orders
+* Pay for your order
 
 ### Waiter
-
-You can create a waiter account by the manager account. Waiters can edit the items in the menu by clicking the menu button and check every order by clicking the order button. Orders can be edited or deleted if anything happened to the customer. Notification will be stored on the notification page which will give the table number that needs help. ![rainbow](/Users/sichen/Downloads/rainbow.png
+As a waiter, you have to wait until an admin user creates an account for you and gives you login details. When you're logged in, you have the following functionality:
+* View most recent notifications
+* View menu
+* Edit menu items
+* View all orders corresponding to your table range with information about them
+* Confirm/Delete orders
+* Mark orders as on the way/delivered
+* View all notifications corresponding to your table range
+* Clear/Dismiss notifications
 
 ### Kitchen Staff
+As kitchen staff, you have to wait until an admin user creates an account for you and gives you login details. When you're logged in, you have the following functionality:
+* View most recent notifications
+* View all orders
+* Mark orders as preparing/ready
+* View all notifications about new orders
+* Clear/Dismiss notifications about new orders
+* See how long ago an order was placed
 
-You can create a kitchen staff account by the manager account. 
-
-### Manager
-
-Manager can view everything in the system and add waiter, kitchen staff account. 
+### Manager/Admin
+There is a single admin/manager account that is created when the app is run. From this account, you have all previously mentioned functionality of both kitchen staff and waiter profiles. Extra functionality includes:
+* Add new staff members
+* Fire staff members
 
 ![rainbow](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
-
 ## Folder Structure
 
 ```
@@ -75,4 +125,3 @@ PROJECT
 ├── requirements.txt
 ├── Readme.md  
 ```
-
