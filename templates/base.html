@@ -28,6 +28,9 @@
          nav.navbar{
          background-color: #152238 !important;
          }
+         .flashed.alert{
+            margin-bottom: -20px;
+         }
       </style>
       <!-- Link to Font Awesome CSS file -->
       <script src="https://kit.fontawesome.com/4550fb712b.js" crossorigin="anonymous"></script>
@@ -91,14 +94,14 @@
       {% if messages %}
       {% for category, message in messages %}
       {% if category == 'error' %}
-      <div class="alert alert-danger alert-dismissable fade show" role="alert">
+      <div class="flashed alert alert-danger alert-dismissable fade show" role="alert">
          {{message}}
          <button type = "button" class="close" data-dismiss="alert">
          <span aria-hidden="true">&times;</span>
          </button>
       </div>
       {% else %}
-      <div class="alert alert-success alert-dismissable fade show" role="alert">
+      <div class="flashed alert alert-success alert-dismissable fade show" role="alert">
          {{message}}
          <button type = "button" class="close" data-dismiss="alert">
          <span aria-hidden="true">&times;</span>

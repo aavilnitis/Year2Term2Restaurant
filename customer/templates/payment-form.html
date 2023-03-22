@@ -2,7 +2,7 @@
 {% block content %}
 
 <script src="https://kit.fontawesome.com/33bfa2902a.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="./static/css/payment-form.css">
+<link rel="stylesheet" href="../static/css/customer-style.css">
 	<div class="payment-form">
 		<!--Payment form where user enters card details-->
 		<h1>Payment Form</h1>
@@ -18,48 +18,4 @@
 			<button type="submit">Confirm Payment <i class="fa-regular fa-credit-card"></i></button>
 		</form>
 	</div>
-
-<style>
-
-.payment-form {
-	max-width: 400px;
-	margin: 0 auto;
-	padding: 20px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	margin-top: 5%;
-	margin-bottom: 5%;
-}
-.payment-form h1 {
-	text-align: center;
-}
-.payment-form form {
-	display: flex;
-	flex-direction: column;
-}
-.payment-form label {
-	margin-bottom: 10px;
-}
-.payment-form input {
-	padding: 10px;
-	margin-bottom: 20px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	font-size: 16px;
-}
-.payment-form button {
-	padding: 10px;
-	background-color: #008CBA;
-	color: #fff;
-	border: none;
-	border-radius: 5px;
-	font-size: 16px;
-	cursor: pointer;
-}
-.payment-form button:hover {
-	background-color: #006B9F;
-}
-
-
-</style>
 {%endblock%}

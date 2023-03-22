@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, session
 from packages.extensions import db
-from packages.models import User
+from packages.models import User, CartItem
 from customer.customer import customer
 from waiter.waiter import waiter
 from signup.signup import signup
@@ -71,7 +71,11 @@ def home():
 @app.route('/logout')
 def logout():
     # Remove user session and redirect to home page
-    session.pop('user', None)
+    user_id = session.get('user_id')
+    cart_item = CartItem.query.filter_by(user_id=user_id).first()
+    if cart_item:
+        db.session.delete(cart_item)
+        db.session.commit()
     session.clear()
     return redirect(url_for('home'))
 

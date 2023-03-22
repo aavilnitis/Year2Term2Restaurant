@@ -7,6 +7,12 @@ signup = Blueprint("signup", __name__, static_folder="static", template_folder="
 
 @signup.route('/', methods = ['GET', 'POST'])
 def sign_up():
+    """Signup view and route that renders a signup form and handles form submission
+        for customer profiles
+
+    Returns:
+        str: The HTML content for the signup page template
+    """
     if request.method == 'POST':
         # get all existing customers' usernames from the database
         users = User.query.filter_by(user_type='customer').all()
