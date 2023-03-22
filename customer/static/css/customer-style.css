@@ -136,3 +136,85 @@ button.add-to-order:hover{
     background-color: #33415b;
     border-color: #33415b;
 }
+
+.payment-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.payment-form h1 {
+    text-align: center;
+}
+.payment-form form {
+    display: flex;
+    flex-direction: column;
+}
+.payment-form label {
+    margin-bottom: 10px;
+}
+.payment-form input {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.payment-form button {
+    padding: 10px;
+    background-color: #008CBA;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.payment-form button:hover {
+    background-color: #006B9F;
+}
+
+.card.mb-3.login-card{
+    min-height: 35vh;
+}
+
+img.login-image{
+    height: 55vh;
+    width: 100%;
+    object-fit: cover;
+}
+.col-lg-4.d-none.d-lg-flex{
+    display: flex;
+}
+
+button.btn.btn-primary.mt-3.login-button{
+    width: 100%;
+    background-color: #152238;
+    border-color: #152238;
+}
+
+button.btn.btn-primary.mt-3.login-button:hover{
+    width: 100%;
+    background-color: #33415b;
+    border-color: #33415b;
+}
+
+.container.table-number{
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card{
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+}
+
+form.table-form{
+    width: 90%;
+    margin: auto;
+}

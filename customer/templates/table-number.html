@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<link rel="stylesheet" href="./static/css/table.css">
+<link rel="stylesheet" href="./static/css/customer-style.css">
 <!--Form for selecting table number-->
-  <div class="container">
+  <div class="container table-number">
     <div class="row">
         <div class="card mb-3 login-card">
           <h2 style = "text-align: left; display: inline; width: 90%; margin: auto;">Enter your table number</h2>
           <!--Calls table_number function from customer.py-->
-          <form action="{{ url_for('customer.table_number') }}" method="POST">
+          <form class = "table-form" action="{{ url_for('customer.table_number') }}" method="POST">
             <div class="form-group">
               <label for="table-number">Table Number:</label>
               <select class="form-control" id="table-number" name="table-number" required>

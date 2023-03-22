@@ -5,6 +5,12 @@ import bcrypt
 login_view = Blueprint("login_view",__name__,static_folder="static",template_folder="templates")
 @login_view.route('/', methods=['GET', 'POST'])
 def login():
+    """Login view and route that renders a login form and handles form submission
+        for all profiles and redirects them to their pages.
+
+    Returns:
+        str: The HTML content for the login page template
+    """
     if request.method == 'POST':
         # Get the entered username and password
         username = request.form['username']

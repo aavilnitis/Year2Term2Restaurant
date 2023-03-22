@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, session
 from packages.extensions import db
-from packages.models import User
+from packages.models import User, CartItem
 from customer.customer import customer
 from waiter.waiter import waiter
 from signup.signup import signup
@@ -34,6 +34,22 @@ def home():
         admin = User('admin', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'admin')
         db.session.add(admin)
         db.session.commit()
+        
+    # Create waiter1 and waiter2  user if it does not already exist
+    if not User.query.filter_by(username='waiter1').first():
+        passw = 'waiter'
+        waiter1 = User('waiter1', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 1, 10)
+        waiter2 = User('waiter2', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'waiter', None, 11, 20)
+        db.session.add(waiter1)
+        db.session.add(waiter2)
+        db.session.commit()
+        
+    # Create kitchen staff user if it does not already exist
+    if not User.query.filter_by(username='kitchen').first():
+        passw = 'kitchen'
+        kitchen = User('kitchen', bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt()), 'kitchen_staff', None, None, None)
+        db.session.add(kitchen)
+        db.session.commit()
     
      # Check if user is logged in and redirect to appropriate page
     if 'user' in session:
@@ -55,7 +71,11 @@ def home():
 @app.route('/logout')
 def logout():
     # Remove user session and redirect to home page
-    session.pop('user', None)
+    user_id = session.get('user_id')
+    cart_item = CartItem.query.filter_by(user_id=user_id).first()
+    if cart_item:
+        db.session.delete(cart_item)
+        db.session.commit()
     session.clear()
     return redirect(url_for('home'))
 
