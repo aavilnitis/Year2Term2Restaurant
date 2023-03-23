@@ -105,14 +105,14 @@ class Notification(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     table_number = db.Column(db.Integer, db.ForeignKey('users.table_number'))
-    status = db.Column(db.Enum('helped', 'not_helped', name = 'notification_status'), nullable=False, default='not_helped')
     message = db.Column(db.String(1000), nullable = True)
-    notification_type = db.Column(db.Enum('help', 'table', 'new-order', 'preparing', 'ready', name = 'notification_status'), nullable=True, default='not_helped')
+    notification_type = db.Column(db.Enum('help', 'table', 'new-order', 'preparing', 'ready', name = 'notification_status'), nullable=True)
 
-    def __init__(self, user_id, table_number, notification_type = None):
+    def __init__(self, user_id, table_number, notification_type = None, message = None):
         self.user_id = user_id
         self.table_number = table_number
         self.notification_type = notification_type
+        self.message = message
         if self.notification_type == 'help':
             self.message = "Client (ID: " + str(self.user_id) + ")" + " needs help at table: " + str(self.table_number)
         elif self.notification_type == 'table':
@@ -123,9 +123,5 @@ class Notification(db.Model):
             self.message = "Order for Client (ID: " + str(self.user_id) + ")" + " is being prepared for table: " + str(self.table_number)
         elif self.notification_type == 'ready':
             self.message = "Order for Client (ID: " + str(self.user_id) + ")" + " ready to be delivered to table: " + str(self.table_number)
-            
-        #if User.query.filter_by(id = user_id, user_type = 'customer').first() and table_number is not None:
-        #    self.user_id = user_id
-        #    self.table_number = table_number
-        #else:
-        #    raise ValueError("It seems you have forgotten to enter table number or you are not logged in as a customer.")
+
+
