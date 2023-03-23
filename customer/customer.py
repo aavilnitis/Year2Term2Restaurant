@@ -258,5 +258,5 @@ def pay_now(order_id):
             return redirect(url_for('customer.show_orders'))
         else:  # Failed payment means redirect to a payment-error page
             flash("Your payment details are incorrect! Please, Try again.", category="error")
-            return render_template('payment_error.html')
+            return render_template('payment-form.html')
     return render_template('payment-form.html')
