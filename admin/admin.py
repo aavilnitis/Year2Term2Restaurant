@@ -154,6 +154,8 @@ def editItem(item_id):
     if item:
         # Render form, then when post request is made, call add_item and reload page
         if request.method == 'POST':
+            db.session.delete(item)
+            db.session.commit()
             add_item()
             return redirect(url_for('admin.menu'))
         else:
